@@ -4,6 +4,12 @@ target/
 !**/src/test/**/target/
 .kotlin
 
+# Archivos de configuracion de IntelliJ y compilacion
+.idea/
+*.iml
+target/
+build/
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
