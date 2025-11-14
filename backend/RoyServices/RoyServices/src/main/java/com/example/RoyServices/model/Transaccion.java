@@ -1,4 +1,4 @@
-package com.example.zoe.model;
+package com.example.RoyServices.model;
 
 
 import jakarta.persistence.*;

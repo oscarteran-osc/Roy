@@ -1,8 +1,8 @@
-package com.example.zoe.controller;
+package com.example.RoyServices.controller;
 
-import com.example.zoe.dto.ObjetoDto;
-import com.example.zoe.model.Objeto;
-import com.example.zoe.service.ObjetoService;
+import com.example.RoyServices.dto.ObjetoDto;
+import com.example.RoyServices.model.Objeto;
+import com.example.RoyServices.service.ObjetoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("Zoe/api")
+@RequestMapping("/api/objeto")
 @RestController
 @AllArgsConstructor
 public class ObjetoController {

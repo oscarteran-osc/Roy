@@ -1,8 +1,7 @@
-package com.example.zoe.service.impl;
+package com.example.RoyServices.service.impl;
 
-import com.example.zoe.model.Objeto;
-import com.example.zoe.repository.ObjetoRepository;
-import com.example.zoe.service.ObjetoService;
+import com.example.RoyServices.model.Objeto;
+import com.example.RoyServices.repository.ObjetoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class ObjetoServiceImpl implements com.example.zoe.service.ObjetoService {
+public class ObjetoServiceImpl implements com.example.RoyServices.service.ObjetoService {
     private final ObjetoRepository objetoRepository;
 
     @Override

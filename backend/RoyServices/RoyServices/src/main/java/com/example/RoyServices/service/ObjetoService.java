@@ -1,6 +1,6 @@
-package com.example.zoe.service;
+package com.example.RoyServices.service;
 
-import com.example.zoe.model.Objeto;
+import com.example.RoyServices.model.Objeto;
 
 import java.util.List;
 

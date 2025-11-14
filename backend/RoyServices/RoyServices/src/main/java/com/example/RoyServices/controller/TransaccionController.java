@@ -1,8 +1,8 @@
-package com.example.zoe.controller;
+package com.example.RoyServices.controller;
 
-import com.example.zoe.dto.TransaccionDto;
-import com.example.zoe.model.Transaccion;
-import com.example.zoe.service.TransaccionService;
+import com.example.RoyServices.dto.TransaccionDto;
+import com.example.RoyServices.model.Transaccion;
+import com.example.RoyServices.service.TransaccionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("Zoe/api")
+@RequestMapping("/api/transaccion")
 @RestController
 @AllArgsConstructor
 public class TransaccionController {

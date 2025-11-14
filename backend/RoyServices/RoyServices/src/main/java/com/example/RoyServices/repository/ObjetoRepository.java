@@ -1,6 +1,6 @@
-package com.example.zoe.repository;
+package com.example.RoyServices.repository;
 
-import com.example.zoe.model.Objeto;
+import com.example.RoyServices.model.Objeto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
