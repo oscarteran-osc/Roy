@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.RoyServices.dto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
 @Builder
 
 public class UsuarioDto {
-    private int id;
+    private int idUsuario;
     private String nombre;
     private String apellido;
     private String correo;

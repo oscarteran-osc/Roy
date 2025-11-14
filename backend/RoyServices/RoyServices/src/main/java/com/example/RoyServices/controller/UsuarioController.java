@@ -1,13 +1,14 @@
-package com.example.demo.controler;
+package com.example.RoyServices.controller;
 
-import com.example.demo.dto.UsuarioDto;
-import com.example.demo.model.Usuario;
-import com.example.demo.service.UsuarioService;
+import com.example.RoyServices.dto.UsuarioDto;
+import com.example.RoyServices.model.Usuario;
+import com.example.RoyServices.repository.UsuarioRepository;
+import com.example.RoyServices.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate; // ¡Necesitas esta importación!
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class UsuarioController {
         for (int i = 0; i < 10; i++) {
             usuarioDtos.add(
                     UsuarioDto.builder()
-                            .id(i++)
+                            .idUsuario(i++)
                             .nombre("Nombre " + i)
                             .apellido("Apellido " + i)
                             .correo("Correo " + i)
@@ -55,7 +56,7 @@ public class UsuarioController {
                                 .stream()
                                 .filter(u -> nombre.isEmpty() || u.getNombre().equalsIgnoreCase(nombre) )
                                 .map(u -> UsuarioDto.builder()
-                                        .id(u.getId())
+                                        .idUsuario(u.getIdUsuario())
                                         .nombre(u.getNombre())
                                         .apellido(u.getApellido())
                                         .correo(u.getCorreo())
@@ -78,7 +79,7 @@ public class UsuarioController {
             return  ResponseEntity.notFound( ).build( );
         }
         return ResponseEntity.ok(UsuarioDto.builder()
-                .id( u.getId())
+                .idUsuario( u.getIdUsuario())
                 .nombre( u.getNombre())
                 .apellido(u.getApellido())
                 .correo(u.getCorreo())
@@ -104,7 +105,7 @@ public class UsuarioController {
         usuarioService.save( u );
 
         return ResponseEntity.ok(UsuarioDto.builder()
-                .id( u.getId())
+                .idUsuario( u.getIdUsuario())
                 .nombre( u.getNombre())
                 .apellido( u.getApellido() )
                 .correo( u.getCorreo() )
@@ -137,7 +138,7 @@ public class UsuarioController {
                 .build( ) );
 
         return ResponseEntity.ok(UsuarioDto.builder()
-                .id( aux.getId( ) )
+                .idUsuario( aux.getIdUsuario( ) )
                 .nombre( aux.getNombre( ) )
                 .apellido( aux.getApellido( ) )
                 .correo( aux.getCorreo( ) )

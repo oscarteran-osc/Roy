@@ -1,5 +1,5 @@
-package com.example.demo.repository;
-import com.example.demo.model.Usuario;
+package com.example.RoyServices.repository;
+import com.example.RoyServices.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
