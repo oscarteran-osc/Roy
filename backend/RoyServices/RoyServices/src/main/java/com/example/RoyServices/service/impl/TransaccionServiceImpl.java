@@ -1,8 +1,8 @@
-package com.example.zoe.service.impl;
+package com.example.RoyServices.service.impl;
 
-import com.example.zoe.model.Transaccion;
-import com.example.zoe.repository.TransaccionRepository;
-import com.example.zoe.service.TransaccionService;
+import com.example.RoyServices.model.Transaccion;
+import com.example.RoyServices.repository.TransaccionRepository;
+import com.example.RoyServices.service.TransaccionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

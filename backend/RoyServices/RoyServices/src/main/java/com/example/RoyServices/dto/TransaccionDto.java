@@ -1,4 +1,4 @@
-package com.example.zoe.dto;
+package com.example.RoyServices.dto;
 
 import lombok.Builder;
 import lombok.Data;
