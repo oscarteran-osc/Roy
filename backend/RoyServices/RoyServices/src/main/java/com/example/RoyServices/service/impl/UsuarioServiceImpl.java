@@ -1,11 +1,12 @@
-package com.example.demo.service.impl;
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.UsuarioRepository;
-import com.example.demo.service.UsuarioService;
+package com.example.RoyServices.service.impl;
+import com.example.RoyServices.service.UsuarioService;
+import com.example.RoyServices.repository.UsuarioRepository;
+import com.example.RoyServices.model.Usuario;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @AllArgsConstructor
 @Service
 
