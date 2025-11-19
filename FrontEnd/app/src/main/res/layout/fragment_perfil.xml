@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyPerfil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#134299"
+        android:text="Mi Perfil"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="20dp"
+        android:textSize="28dp"
+        />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/imgperfil"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Julie Godoy"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="#1D1D1F"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="julieG@gmail.com"
+        android:textSize="14sp"
+        android:textColor="#6B6B6B"
+        android:layout_marginTop="2dp"
+        android:layout_gravity="center_horizontal" />
+
+
+
+    <!-- Fila de reputación -->
+    <LinearLayout
+        android:id="@+id/lyReputacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/icStar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/estrellita"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/tvReputacionLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="  Reputación"
+            android:textStyle="bold"
+            android:textColor="#1D1D1F"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvReputacionValor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.5"
+            android:textStyle="bold"
+            android:textColor="#1D1D1F" />
+    </LinearLayout>
+
+    <!-- Título de la sección -->
+    <TextView
+        android:id="@+id/tvTituloHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Historial de objetos rentados"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#1D1D1F"
+        android:layout_marginTop="12dp" />
+
+    <ListView
+        android:id="@+id/lvHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+</LinearLayout>
