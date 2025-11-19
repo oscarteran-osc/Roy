@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="137dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/white"
+            android:paddingVertical="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/taladro">
+            </ImageView>
+
+            <View
+                android:id="@+id/divider_line"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_marginStart="105dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="15dp"
+                android:text="Taladro Truper"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="40dp"
+                android:text="Solicitante: Ana Luz"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="68dp"
+                android:text="Fecha de solicitud: 07/10/25"
+                android:textSize="16dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="90dp"
+                android:text="Aceptar"
+                android:backgroundTint="#4CAF50"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="230dp"
+                android:layout_marginTop="90dp"
+                android:text="Rechazar"
+                android:backgroundTint="#E91E1E"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="137dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/white"
+            android:paddingVertical="12dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/camara">
+            </ImageView>
+
+            <View
+                android:id="@+id/divider_line2"
+                android:layout_width="1dp"
+                android:layout_height="86dp"
+                android:layout_marginStart="105dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="15dp"
+                android:text="Cámara Canon EOS M50"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="40dp"
+                android:text="Solicitante: Natanael Ramírez"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="68dp"
+                android:text="Fecha de solicitud: 04/10/25"
+                android:textSize="16dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="90dp"
+                android:text="Aceptar"
+                android:backgroundTint="#4CAF50"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="230dp"
+                android:layout_marginTop="90dp"
+                android:text="Rechazar"
+                android:backgroundTint="#E91E1E"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</FrameLayout>

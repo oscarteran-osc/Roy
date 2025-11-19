@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/home3">
+
+    <fragment
+        android:id="@+id/objeto"
+        android:name="com.example.roy.home.Objeto"
+        android:label="fragment_objeto"
+        tools:layout="@layout/fragment_objeto" >
+        <action
+            android:id="@+id/action_objeto_to_home3"
+            app:destination="@id/home3" />
+        <action
+            android:id="@+id/action_objeto_to_objetito"
+            app:destination="@id/objetito" />
+    </fragment>
+    <fragment
+        android:id="@+id/home3"
+        android:name="com.example.roy.home.Home"
+        android:label="Home" >
+        <action
+            android:id="@+id/action_home3_to_objeto"
+            app:destination="@id/objeto" />
+    </fragment>
+    <fragment
+        android:id="@+id/objetito"
+        android:name="com.example.roy.home.objetito"
+        android:label="fragment_objetito"
+        tools:layout="@layout/fragment_objetito" >
+        <action
+            android:id="@+id/action_objetito_to_objeto"
+            app:destination="@id/objeto" />
+        <action
+            android:id="@+id/action_objetito_to_resenas2"
+            app:destination="@id/resenas2" />
+    </fragment>
+    <fragment
+        android:id="@+id/resenas2"
+        android:name="com.example.roy.home.resenas"
+        android:label="resenas" >
+        <action
+            android:id="@+id/action_resenas2_to_objetito"
+            app:destination="@id/objetito" />
+    </fragment>
+    <fragment
+        android:id="@+id/misObjetos"
+        android:name="com.example.roy.misobjetos.MisObjetos"
+        android:label="MisObjetos" >
+        <action
+            android:id="@+id/action_misObjetos_to_listaobjetos"
+            app:destination="@id/listaobjetos" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaobjetos"
+        android:name="com.example.roy.misobjetos.listaobjetos"
+        android:label="listaobjetos" >
+        <action
+            android:id="@+id/action_listaobjetos_to_detalles"
+            app:destination="@id/detalles" />
+        <action
+            android:id="@+id/action_listaobjetos_to_solis"
+            app:destination="@id/solis" />
+        <action
+            android:id="@+id/action_listaobjetos_to_plantillaagregar"
+            app:destination="@id/plantillaagregar" />
+    </fragment>
+    <activity
+        android:id="@+id/detalles"
+        android:name="com.example.roy.misobjetos.detalles"
+        android:label="activity_detalles"
+        tools:layout="@layout/activity_detalles" />
+    <activity
+        android:id="@+id/plantillaagregar"
+        android:name="com.example.roy.misobjetos.plantillaagregar"
+        android:label="activity_plantillaagregar"
+        tools:layout="@layout/activity_plantillaagregar" />
+    <fragment
+        android:id="@+id/solis"
+        android:name="com.example.roy.misobjetos.solis"
+        android:label="solis" >
+        <action
+            android:id="@+id/action_solis_to_listaobjetos"
+            app:destination="@id/listaobjetos" />
+    </fragment>
+    <fragment
+        android:id="@+id/perfil"
+        android:name="com.example.roy.profile.perfil"
+        android:label="perfil" >
+        <action
+            android:id="@+id/action_perfil_to_rentalDetailActivity"
+            app:destination="@id/rentalDetailActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/rentalDetailActivity"
+        android:name="com.example.roy.profile.RentalDetailActivity"
+        android:label="RentalDetailActivity" />
+    <fragment
+        android:id="@+id/ofertante"
+        android:name="com.example.roy.solicitudes.Ofertante"
+        android:label="Ofertante" >
+        <action
+            android:id="@+id/action_ofertante_to_solicitudes"
+            app:destination="@id/solicitudes" />
+    </fragment>
+    <fragment
+        android:id="@+id/rentador"
+        android:name="com.example.roy.solicitudes.Rentador"
+        android:label="Rentador" >
+        <action
+            android:id="@+id/action_rentador_to_solicitudes"
+            app:destination="@id/solicitudes" />
+    </fragment>
+    <fragment
+        android:id="@+id/solicitudes"
+        android:name="com.example.roy.solicitudes.solicitudes"
+        android:label="solicitudes" >
+        <action
+            android:id="@+id/action_solicitudes_to_ofertante"
+            app:destination="@id/ofertante" />
+        <action
+            android:id="@+id/action_solicitudes_to_rentador"
+            app:destination="@id/rentador" />
+        <action
+            android:id="@+id/action_solicitudes_to_rentador2"
+            app:destination="@id/rentador" />
+    </fragment>
+    <activity
+        android:id="@+id/inicio"
+        android:name="com.example.roy.Inicio"
+        android:label="Inicio" />
+</navigation>

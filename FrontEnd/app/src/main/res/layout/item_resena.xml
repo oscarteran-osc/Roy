@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="12dp"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            tools:src="@drawable/img"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nombre -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Monse Gutiérrez"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/imgAvatar"
+            app:layout_constraintTop_toTopOf="@id/imgAvatar"
+            app:layout_constraintEnd_toStartOf="@id/tvFecha"
+            android:layout_marginStart="8dp" />
+
+        <!-- Fecha -->
+        <TextView
+            android:id="@+id/tvFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29/08/25"
+            android:textSize="12dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toTopOf="@id/tvNombre"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Rating -->
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            tools:rating="4"
+            android:progressTint="#FFEB3B"
+            android:progressBackgroundTint="#737171"
+            android:secondaryProgressTint="#9B9898"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/rating"/>
+
+        <!-- Texto de la reseña -->
+        <TextView
+            android:id="@+id/tvContenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="La tienda está en excelentes condiciones..."
+            android:textSize="13sp"
+            android:lineSpacingExtra="2dp"
+            android:paddingTop="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
