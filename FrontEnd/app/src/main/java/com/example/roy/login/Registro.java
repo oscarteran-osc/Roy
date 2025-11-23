@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,8 +47,27 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
             finish();
         }
         else if (id == R.id.sig1) {
+            // ---> INICIO DE CORRECCIÓN <---
+            String nombre = nom.getText().toString().trim();
+            String apell = apellido.getText().toString().trim();
+            String numero = num.getText().toString().trim();
+
+            if (nombre.isEmpty() || apell.isEmpty() || numero.isEmpty()) {
+                Toast.makeText(this, "Completa todos los campos.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Intent gosig1 = new Intent(this, Registro2.class);
+            // 1. Crear el Bundle y añadir datos
+            Bundle bundle = new Bundle();
+            bundle.putString("nombre", nombre);
+            bundle.putString("apellido", apell);
+            bundle.putString("telefono", numero); // Usamos 'telefono' para coincidir con el backend
+
+            // 2. Adjuntar el Bundle al Intent
+            gosig1.putExtras(bundle);
             startActivity(gosig1);
+            // ---> FIN DE CORRECCIÓN <---
         }
         else if (id == R.id.backlogin) {
             Intent gobacklogin = new Intent(this, LoginActivity.class);

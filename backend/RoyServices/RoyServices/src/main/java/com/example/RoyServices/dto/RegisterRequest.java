@@ -1,17 +1,17 @@
 package com.example.RoyServices.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegisterRequest {
-    private String nombreUs;
-    private String apellidoUs;
-    private String correo;
-    private String telefono;
-    private String contrasena;
-    private String domicilio;
+    private String nombre;      // Viene del Android
+    private String apellido;    // Viene del Android
+    private String correo;      // Viene del Android
+    private String telefono;    // Viene del Android
+    private String domicilio;   // Viene del Android como "direccion"
+    private String password;    // Viene del Android
 }
-
-
-
-

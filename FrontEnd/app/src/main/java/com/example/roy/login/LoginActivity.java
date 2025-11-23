@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +15,10 @@ import com.example.roy.Inicio;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
-import com.example.roy.models.Usuario;
+import com.example.roy.models.AuthResponse; // Importar AuthResponse
+import com.example.roy.models.LoginRequest; // Importar LoginRequest
+// Importar la Activity principal después del login (Ajusta el nombre de tu Activity principal)
+import com.example.roy.login.MainActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,14 +26,12 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton back;
+    private SharedPreferences prefs;
+    private ApiService apiService;
     private EditText etMail, etContra;
     private Button btnIniciar;
-    private TextView gobackregister;
+    private TextView goBackRegister;
     private ProgressBar progressBar;
-
-    private SharedPreferences prefs;
-    private ApiService apiService; // Instancia de Retrofit Service
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,106 +43,90 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
 
         // Inicializar vistas
-        back = findViewById(R.id.rowlogin);
-        etMail = findViewById(R.id.loginmail);
-        etContra = findViewById(R.id.logincontra);
+        etMail = findViewById(R.id.loginmail); // Asegúrate que el ID sea correcto
+        etContra = findViewById(R.id.logincontra); // Asegúrate que el ID sea correcto
         btnIniciar = findViewById(R.id.btnlogin);
-        gobackregister = findViewById(R.id.backregister);
-
-        // Asumiendo que has añadido un ProgressBar con el ID 'progressBar' en tu activity_login.xml
+        goBackRegister = findViewById(R.id.backregister);
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE); // Ocultar al inicio
+        progressBar.setVisibility(View.GONE);
 
-        back.setOnClickListener(this);
         btnIniciar.setOnClickListener(this);
-        gobackregister.setOnClickListener(this);
+        goBackRegister.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
-        if (id == R.id.rowlogin) {
-            finish();
-        } else if (id == R.id.backregister) {
-            Intent goregister = new Intent(this, Registro.class);
-            startActivity(goregister);
-        } else if (id == R.id.btnlogin) {
+        if (id == R.id.btnlogin) {
             realizarLogin();
+        } else if (id == R.id.backregister) {
+            Intent goRegister = new Intent(this, Registro.class);
+            startActivity(goRegister);
         }
     }
 
     private void realizarLogin() {
-        String correo = etMail.getText().toString().trim();
+        String email = etMail.getText().toString().trim();
         String password = etContra.getText().toString().trim();
 
-        // 1. Validaciones
-        if (correo.isEmpty()) {
-            etMail.setError("Ingresa tu correo");
-            etMail.requestFocus();
-            return;
-        }
-        if (password.isEmpty()) {
-            etContra.setError("Ingresa tu contraseña");
-            etContra.requestFocus();
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Ingresa correo y contraseña.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 2. Prepara la UI (Mostrar loading)
+        // 1. Mostrar loading
         btnIniciar.setEnabled(false);
         btnIniciar.setText("Iniciando...");
         progressBar.setVisibility(View.VISIBLE);
 
-        // 3. Crea el objeto de credenciales para enviar al servidor
-        Usuario loginCredentials = new Usuario();
-        loginCredentials.setCorreo(correo);
-        loginCredentials.setPassword(password);
+        // 2. Construir el objeto LoginRequest
+        LoginRequest credenciales = new LoginRequest(email, password);
 
-        // 4. Realiza la llamada con Retrofit
-        Call<Usuario> call = apiService.loginUser(loginCredentials);
-
-        call.enqueue(new Callback<Usuario>() {
+        // 3. Llamada a Retrofit y espera AuthResponse
+        apiService.loginUser(credenciales).enqueue(new Callback<AuthResponse>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                // Ocultar loading
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                btnIniciar.setEnabled(true);
+                btnIniciar.setText("Iniciar Sesión");
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    Usuario usuario = response.body();
-                    // Login exitoso
-                    guardarSesion(usuario);
-                    Toast.makeText(LoginActivity.this, "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_SHORT).show();
+                    AuthResponse authResponse = response.body();
 
-                    // Navegar a la actividad principal
-                    Intent intent = new Intent(LoginActivity.this, Inicio.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    // ✅ CAMBIO: Obtener directamente del AuthResponse
+                    Integer userId = authResponse.getIdUsuario();
+                    String token = authResponse.getToken();
+
+                    // ✅ Validar que los datos no sean nulos
+                    if (userId != null && token != null) {
+                        // Guardar ID de usuario y Token
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("userId", userId);
+                        editor.putString("token", token);
+                        editor.apply();
+
+                        Toast.makeText(LoginActivity.this, "¡Bienvenido " + authResponse.getNombre() + "!", Toast.LENGTH_SHORT).show();
+
+                        // Navegar a la pantalla principal
+                        Intent goinicio = new Intent(LoginActivity.this, Inicio.class);
+                        startActivity(goinicio);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Error al procesar respuesta del servidor.", Toast.LENGTH_LONG).show();
+                    }
+
                 } else {
-                    // Login fallido (Ej: 401 Unauthorized, o error lógico del servidor)
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas o error en el servidor.", Toast.LENGTH_LONG).show();
-                    btnIniciar.setEnabled(true);
-                    btnIniciar.setText("Iniciar Sesión");
+                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-                // Ocultar loading y manejar error de red (sin conexión, timeout, etc.)
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
                 btnIniciar.setEnabled(true);
                 btnIniciar.setText("Iniciar Sesión");
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void guardarSesion(Usuario usuario) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("userId", usuario.getIdUsuario() != null ? usuario.getIdUsuario() : -1);
-        editor.putString("userName", usuario.getNombre());
-        editor.putString("userEmail", usuario.getCorreo());
-        editor.putBoolean("isLoggedIn", true);
-        editor.apply();
     }
 }
