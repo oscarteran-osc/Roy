@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".misobjetos.detalles">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Galería -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp">
+
+            <ImageView
+                android:id="@+id/mainimg"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginVertical="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/casacampania" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/mini1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="15dp"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/casacampania" />
+
+                <ImageView
+                    android:id="@+id/mini2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="15dp"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tienda2" />
+
+                <ImageView
+                    android:id="@+id/mini3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tienda3" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Texto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del producto:"
+            android:textSize="12sp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Canon EOS M50 marca 2 cámara"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="#C7BFBF"
+            android:padding="5dp"
+            android:fontFamily="@font/poppins_mediumitalic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Precio:"
+            android:textSize="12sp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_semibolditalic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$1500.00"
+            android:textSize="15sp"
+            android:textColor="#5B5050"
+            android:background="#C7BFBF"
+            android:padding="5dp"
+            android:fontFamily="@font/poppins_mediumitalic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría:"
+            android:textSize="12sp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_semibolditalic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tecnología"
+            android:textSize="15sp"
+            android:textColor="#5B5050"
+            android:padding="5dp"
+            android:fontFamily="@font/poppins_semibolditalic" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción:"
+            android:textSize="12sp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_semibolditalic" />
+
+        <TextView
+            android:id="@+id/descobj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fabricada con fibras sintéticas y Oxford 600D con material reflectante Mylar, resistente y duradera......"
+            android:textSize="15sp"
+            android:textColor="#5B5050"
+            android:background="#C7BFBF"
+            android:padding="5dp"
+            android:fontFamily="@font/poppins_mediumitalic" />
+
+        <!-- Botón -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_medium"
+                android:backgroundTint="#3469CC" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

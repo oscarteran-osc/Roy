@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ROY</string>
+    <string name="textiniciosesion">
+        ¿Ya estás en ROY? <font color="#ff7b00">Inicia Sesión</font>
+    </string>
+    <string name="textregister">
+        ¿Nuevo en ROY? <font color="#ff7b00">Regístrate</font>
+    </string>
+    <string name="app_name2">Objeto</string>
+    <string name="desc">
+        "Fabricada con fibras sintéticas y Oxford 600D con material reflectante Mylar, resistente y duradera\n"
+        "Cuenta con una habitación y capacidad para 4-5 personas."
+        "Su impermeabilidad exterior es de 2000-3000 mm y la del suelo 1500-2000 mm."
+        "Diseño plegable, de doble capa y estilo outdoor ideal para camping."\n\n
+        "Medidas: 210 × 180 × 140 cm.\n"
+        "Color: rosa"
+    </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
