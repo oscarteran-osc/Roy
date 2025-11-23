@@ -64,6 +64,16 @@
         android:layout_marginTop="65dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/btnborde"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-55dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/blue_dark"/>
+
     <TextView
         android:id="@+id/backregister"
         android:layout_width="wrap_content"
