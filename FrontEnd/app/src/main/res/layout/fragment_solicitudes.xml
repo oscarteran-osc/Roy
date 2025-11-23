@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#134299"
+        android:text="Mis Solicitudes"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="40dp"
+        android:textSize="28dp"
+        />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_rol"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_gravity="center"
+        app:checkedButton="@id/btn_rentador">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_rentador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rentador"
+            android:backgroundTint="@color/segmented_background_selector"
+            android:textColor="@color/segmented_text_color"
+            android:fontFamily="@font/poppins_medium"
+            style="@style/Widget.Material3.Button"
+            app:strokeWidth="0dp"
+            app:elevation="0dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ofertante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ofertante"
+            android:backgroundTint="@color/segmented_background_selector"
+            android:textColor="@color/segmented_text_color"
+            android:fontFamily="@font/poppins_medium"
+            style="@style/Widget.Material3.Button"
+            app:strokeWidth="0dp"
+            app:elevation="0dp"
+            />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/contenedor_frag"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             android:background="@android:color/white"
+            android:name="androidx.navigation.fragment.NavHostFragment">
+        </androidx.fragment.app.FragmentContainerView>
+
+    </FrameLayout>
+
+
+
+
+
+
+</LinearLayout>

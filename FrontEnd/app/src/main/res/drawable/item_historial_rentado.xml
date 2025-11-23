@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:background="@drawable/bg_card"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp">
+
+    <ImageView
+        android:id="@+id/imgMiniatura"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:src="@drawable/imgg"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_img_rounded"
+        android:contentDescription="Imagen del objeto"
+        android:layout_marginRight="10dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tvNombreObjeto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tienda de campaña 4 - 5 personas"
+            android:textStyle="bold"
+            android:textColor="#1D1D1F"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tvDetalleObjeto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accesorios incluidos"
+            android:textColor="#6B6B6B"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tvFechas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12/10/25 - 20/10/25"
+            android:textColor="#1D1D1F"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+</LinearLayout>

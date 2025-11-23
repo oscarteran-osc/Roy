@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".login.LoginActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <ImageButton
+            android:id="@+id/rowlogin"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/backrow"/>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/royazul"/>
+    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Bienvenido de nuevo!"
+        android:textSize="25sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#0349A5"
+        android:layout_gravity="center_horizontal"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Correo electrónico"
+        android:id="@+id/loginmail"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Contraseña"
+        android:id="@+id/logincontra"/>
+    <Button
+        android:id="@+id/btnlogin"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesión"
+        android:textColor="#0349A5"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="65dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btnborde"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-55dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/blue_dark"/>
+
+    <TextView
+        android:id="@+id/backregister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="@string/textregister"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
