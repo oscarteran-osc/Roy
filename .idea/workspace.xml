@@ -5,47 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/FavoritoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ImagenObjetoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/MensajeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/NotificacionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ReporteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/FavoritoRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/ImagenRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/MensajeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/ReporteDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Favorito.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/ImagenObjeto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Mensaje.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Notificacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Reporte.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/FavoritoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ImagenObjetoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/MensajeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/NotificacionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ReporteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/FavoritoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ImagenObjetoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/MensajeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/NotificacionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ReporteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/AuthServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/FavoritoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ImagenObjetoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/MensajeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/NotificacionServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ReporteServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/color/chip_background_selector.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/color/chip_text_selector.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_banner_categoria.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_orange.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_outline_blue.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_solid_orange.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_circle_white.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_gradient_blue_primary.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_pill_white.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_rounded_corners.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/ic_delete.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/item_objeto_categoria.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/SolicitudRentaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/SolicitudRentaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/Home.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_category.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ObjetoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ObjetoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ObjetoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ObjetoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ObjetoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ObjetoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ObjetoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ObjetoServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +103,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.RoyServicesApplication.executor": "Run",
-    "git-widget-placeholder": "jamara",
+    "git-widget-placeholder": "homefuncional",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

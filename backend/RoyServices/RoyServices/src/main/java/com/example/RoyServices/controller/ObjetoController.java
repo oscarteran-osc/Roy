@@ -103,4 +103,77 @@ public class ObjetoController {
                 .descripcion(aux.getDescripcion())
                 .build());
     }
+
+    //Algunos nuevos metodos para el home
+
+        //Buscar por nombre o descripción
+        @GetMapping("/buscar")
+        public ResponseEntity<List<ObjetoDto>> buscar(@RequestParam("q") String texto) {
+            List<Objeto> objetos = objetoService.buscarPorTexto(texto);
+            if ( objetos.isEmpty() ) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(
+                    objetos.stream()
+                            .map(this::toDto)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        //Por categoría
+        @GetMapping("/categoria")
+        public ResponseEntity<List<ObjetoDto>> porCategoria(@RequestParam("nombre") String categoria) {
+            List<Objeto> objetos = objetoService.buscarPorCategoria(categoria);
+            if ( objetos.isEmpty() ) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(
+                    objetos.stream()
+                            .map(this::toDto)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        //Recomendados (últimos 10)
+        @GetMapping("/recomendados")
+        public ResponseEntity<List<ObjetoDto>> recomendados() {
+            List<Objeto> objetos = objetoService.obtenerRecomendados();
+            if ( objetos.isEmpty() ) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(
+                    objetos.stream()
+                            .map(this::toDto)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        //Destacado (uno solo)
+        @GetMapping("/destacado")
+        public ResponseEntity<ObjetoDto> destacado() {
+            Objeto o = objetoService.obtenerDestacado();
+            if (o == null) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(toDto(o));
+        }
+
+    // ---------- helpers para mapear DTO <-> Entidad ----------
+
+    private ObjetoDto toDto(Objeto o) {
+        return ObjetoDto.builder()
+                .idObjeto(o.getIdObjeto())
+                .idUsArrendador(o.getIdUsArrendador())
+                .nombreObjeto(o.getNombreObjeto())
+                .precio(o.getPrecio())
+                .estado(o.getEstado())
+                .categoria(o.getCategoria())
+                .descripcion(o.getDescripcion())
+                .build();
+    }
+
+    private Objeto fromDto(ObjetoDto dto) {
+        return Objeto.builder()
+                .idObjeto(dto.getIdObjeto())  // opcional
+                .idUsArrendador(dto.getIdUsArrendador())
+                .nombreObjeto(dto.getNombreObjeto())
+                .precio(dto.getPrecio())
+                .estado(dto.getEstado())
+                .categoria(dto.getCategoria())
+                .descripcion(dto.getDescripcion())
+                .build();
+    }
+
 }

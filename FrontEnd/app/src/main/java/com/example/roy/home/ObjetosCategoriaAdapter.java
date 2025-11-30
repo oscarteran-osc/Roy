@@ -1,0 +1,120 @@
+package com.example.roy.home;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.roy.R;
+import com.example.roy.models.Objeto;
+
+import java.util.ArrayList;
+import java.util.List;
+import android.widget.LinearLayout;
+
+public class ObjetosCategoriaAdapter extends BaseAdapter {
+
+    public interface OnItemActionListener {
+        void onVerDetallesClicked(Objeto objeto);
+        // si luego quieres otra acción, aquí la agregas
+    }
+
+    private final Context context;
+    private final LayoutInflater inflater;
+    private List<Objeto> objetos;
+    private final OnItemActionListener listener;
+
+    public ObjetosCategoriaAdapter(Context context,
+                                   List<Objeto> objetos,
+                                   OnItemActionListener listener) {
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
+        this.objetos = objetos != null ? objetos : new ArrayList<>();
+        this.listener = listener;
+    }
+
+    @Override
+    public int getCount() {
+        return objetos.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return objetos.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return objetos.get(position).getIdObjeto();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_objeto_categoria, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        Objeto objeto = objetos.get(position);
+
+        // 🔹 Texto principal
+        holder.tvNombre.setText(objeto.getNombreObjeto());
+        holder.tvCategoria.setText(objeto.getCategoria());
+        holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
+
+        // 🔹 Imagen (placeholder por ahora)
+        holder.ivImagen.setImageResource(R.drawable.camara);
+
+        // En la vista de categorías normalmente NO borras ni ves solicitudes,
+        // así que los podemos ocultar:
+        holder.btnDelete.setVisibility(View.GONE);
+        holder.btnSolicitudes.setVisibility(View.GONE);
+
+        // El botón "Ver detalles" (o toda la card) abre detalles
+        View.OnClickListener detallesClick = v -> {
+            if (listener != null) listener.onVerDetallesClicked(objeto);
+        };
+
+        holder.btnVerDetalles.setOnClickListener(detallesClick);
+        holder.cardRoot.setOnClickListener(detallesClick);
+
+        return convertView;
+    }
+
+    public void updateData(List<Objeto> nuevos) {
+        this.objetos = nuevos != null ? nuevos : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    static class ViewHolder {
+        View cardRoot;
+        ImageView ivImagen;
+        ImageView btnDelete;
+        TextView tvNombre;
+        TextView tvCategoria;
+        TextView tvPrecio;
+        TextView btnVerDetalles;
+        TextView btnSolicitudes;
+        LinearLayout accionesContainer;
+
+        ViewHolder(View view) {
+            cardRoot         = view;
+            ivImagen         = view.findViewById(R.id.imgObjeto);
+            btnDelete        = view.findViewById(R.id.btnDelete);
+            tvNombre         = view.findViewById(R.id.tvNombreObjeto);
+            tvCategoria      = view.findViewById(R.id.tvCategoriaObjeto);
+            tvPrecio         = view.findViewById(R.id.tvPrecioObjeto);
+            btnVerDetalles   = view.findViewById(R.id.btnVerDetalles);
+            btnSolicitudes   = view.findViewById(R.id.btnSolicitudes);
+            accionesContainer= view.findViewById(R.id.accionesContainer);
+        }
+    }
+}
