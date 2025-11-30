@@ -10,34 +10,38 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    // 1. Define la cadena de filtros de seguridad.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Deshabilita CSRF (necesario para APIs REST)
+                // ❌ CSRF fuera para API REST
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Define las reglas de autorización de peticiones HTTP
                 .authorizeHttpRequests(authorize -> authorize
-                        // Permitir el acceso sin autenticación a /api/auth/** (Registro y Login)
+                        // ✅ Abrimos login/registro sin autenticación
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Las demás peticiones requieren autenticación
-                        .anyRequest().authenticated()
+                        // ✅ Endpoints de objetos sin auth mientras desarrollas
+                        .requestMatchers("/api/objeto/**").permitAll()
+                        .requestMatchers("/Roy/api/**").permitAll()
+
+                        // ✅ Por ahora TODO lo demás también lo permitimos
+                        //    (más adelante se puede cambiar a .authenticated())
+                        .anyRequest().permitAll()
                 )
 
-                // Hacemos la aplicación stateless (sin sesiones)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                // API stateless (sin sesiones de servidor)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
 
         return http.build();
     }
 
-    // 2. Crea el Bean para el cifrador de contraseñas (BCryptPasswordEncoder)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

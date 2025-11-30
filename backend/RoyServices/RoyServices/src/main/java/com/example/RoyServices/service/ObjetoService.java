@@ -10,4 +10,10 @@ public interface ObjetoService {
     Objeto save(Objeto objeto);
     void delete(Integer id);
     Objeto update(Integer id, Objeto objeto);
+
+    //Funciones para el home
+    List<Objeto> buscarPorTexto(String texto);
+    List<Objeto> buscarPorCategoria(String categoria);
+    List<Objeto> obtenerRecomendados();
+    Objeto obtenerDestacado();
 }
