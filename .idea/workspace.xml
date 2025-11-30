@@ -5,32 +5,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/color/chip_background_selector.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/color/chip_text_selector.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_banner_categoria.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_orange.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_outline_blue.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_button_solid_orange.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_circle_white.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_gradient_blue_primary.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_pill_white.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/bg_rounded_corners.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/ic_delete.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/item_objeto_categoria.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/Home.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_category.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ObjetoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ObjetoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ObjetoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ObjetoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ObjetoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ObjetoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ObjetoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ObjetoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/AndroidProjectSystem.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/migrations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/androidTest/java/com/example/roy/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/java/com/example/roy/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/values-night/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/xml/backup_rules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/app/src/test/java/com/example/roy/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradle/libs.versions.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roy/settings.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roybd.mwb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/roymodel.mwb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
