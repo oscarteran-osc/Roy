@@ -29,6 +29,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/objeto/**").permitAll()
                         .requestMatchers("/Roy/api/**").permitAll()
 
+                        // ➕ NUEVO: permitir imágenes y uploads
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/imagenes/**").permitAll()
+
                         // ✅ Por ahora TODO lo demás también lo permitimos
                         //    (más adelante se puede cambiar a .authenticated())
                         .anyRequest().permitAll()
