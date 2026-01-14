@@ -3,138 +3,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="8dp"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="2dp"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="3dp">
 
-    android:foreground="?attr/selectableItemBackground">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="12dp"
+        android:gravity="center_vertical">
 
-        android:background="@color/white">
-
-        <!-- Imagen -->
         <ImageView
             android:id="@+id/imgObjeto"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/camara"
-            android:background="@drawable/bg_rounded_corners"
-            android:contentDescription="Imagen del objeto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:background="@color/white" />
 
-        <!-- Botón borrar, discreto -->
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:src="@drawable/ic_delete"
-            android:padding="2dp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            app:tint="@color/gray_light"
 
-            android:contentDescription="Eliminar objeto"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Nombre -->
-        <TextView
-            android:id="@+id/tvNombreObjeto"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Mesa Plegable para Eventos"
-            android:textColor="@color/blue_dark"
-            android:textSize="15sp"
-            android:fontFamily="@font/poppins_semibold"
-            android:maxLines="2"
-            android:ellipsize="end"
-            app:layout_constraintStart_toEndOf="@id/imgObjeto"
-            app:layout_constraintEnd_toStartOf="@id/btnDelete"
-            app:layout_constraintTop_toTopOf="@id/imgObjeto"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp" />
-
-        <!-- Categoría, pequeña y gris -->
-        <TextView
-            android:id="@+id/tvCategoriaObjeto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eventos"
-            android:textColor="@color/gray_text"
-            android:textSize="11sp"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@id/tvNombreObjeto"
-            app:layout_constraintTop_toBottomOf="@id/tvNombreObjeto" />
-
-        <!-- Precio, protagonista pero sin exagerar -->
-        <TextView
-            android:id="@+id/tvPrecioObjeto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$60.00"
-            android:textColor="@color/orange_primary"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_semibold"
-            app:layout_constraintTop_toBottomOf="@id/tvNombreObjeto"
-            android:layout_marginTop="8dp" />
-
-        <!-- Fila de acciones -->
         <LinearLayout
-            android:id="@+id/accionesContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="@id/tvNombreObjeto"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCategoriaObjeto"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- Detalles como "link" -->
             <TextView
-                android:id="@+id/btnVerDetalles"
+                android:id="@+id/tvNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre objeto"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/blue_dark"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tvPrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ver detalles"
-                android:textColor="@color/gray_text"
-                android:textSize="12sp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingHorizontal="4dp"
-                android:paddingVertical="6dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:text="$150 / día"
+                android:textSize="14sp"
+                android:textColor="@color/blue_primary"
+                android:layout_marginTop="2dp"/>
 
-            <Space
-                android:layout_width="12dp"
-                android:layout_height="match_parent" />
-
-            <!-- Botón principal: Solicitudes -->
-            <TextView
-                android:id="@+id/btnSolicitudes"
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:minWidth="0dp"
-                android:gravity="center"
-                android:paddingHorizontal="20dp"
-                android:text="Solicitudes"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_medium"
-                android:radius="6dp"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:isIndicator="true"
+                android:layout_marginTop="4dp"/>
 
-                android:background="@drawable/bg_button_solid_orange" />
+            <TextView
+                android:id="@+id/tvExtra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entrega hoy • Disponible"
+                android:textSize="12sp"
+                android:textColor="@color/gray_text"
+                android:layout_marginTop="2dp"/>
+
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

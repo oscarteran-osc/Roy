@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.roy.R;
@@ -18,129 +21,132 @@ import java.util.List;
 
 public class ObjetosCategoriaAdapter extends BaseAdapter {
 
-    public interface OnItemActionListener {
-        void onVerDetallesClicked(Objeto objeto);
+    public interface OnObjetoClickListener {
+        void onClick(Objeto objeto);
     }
 
     private final Context context;
     private final LayoutInflater inflater;
-    private List<Objeto> objetos;
-    private final OnItemActionListener listener;
 
-    // 🔧 cambia el puerto si usas otro, pero en emulador normalmente es 10.0.2.2:8080
-    private static final String BASE_URL = "http://10.0.2.2:8080";
+    private final List<Objeto> lista = new ArrayList<>();
+    @Nullable private final OnObjetoClickListener listener;
 
-    public ObjetosCategoriaAdapter(Context context,
-                                   List<Objeto> objetos,
-                                   OnItemActionListener listener) {
+    public ObjetosCategoriaAdapter(@NonNull Context context, @Nullable List<Objeto> lista) {
+        this(context, lista, null);
+    }
+
+    public ObjetosCategoriaAdapter(@NonNull Context context,
+                                   @Nullable List<Objeto> lista,
+                                   @Nullable OnObjetoClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.objetos = objetos != null ? objetos : new ArrayList<>();
         this.listener = listener;
+        if (lista != null) this.lista.addAll(lista);
+    }
+
+    public void updateData(@Nullable List<Objeto> nuevaLista) {
+        lista.clear();
+        if (nuevaLista != null) lista.addAll(nuevaLista);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return objetos.size();
+        return lista.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return objetos.get(position);
+    public Objeto getItem(int position) {
+        return lista.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return objetos.get(position).getIdObjeto();
+        Integer id = lista.get(position).getIdObjeto();
+        return (id != null) ? id : position;
+    }
+
+    static class ViewHolder {
+        ImageView imgObjeto;
+        TextView tvNombre, tvPrecio, tvExtra;
+        RatingBar ratingBar;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+
+        ViewHolder h;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_objeto_categoria, parent, false);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
+
+            h = new ViewHolder();
+            h.imgObjeto  = convertView.findViewById(R.id.imgObjeto);
+            h.tvNombre   = convertView.findViewById(R.id.tvNombre);
+            h.tvPrecio   = convertView.findViewById(R.id.tvPrecio);
+            h.tvExtra    = convertView.findViewById(R.id.tvExtra);
+            h.ratingBar  = convertView.findViewById(R.id.ratingBar);
+
+            convertView.setTag(h);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            h = (ViewHolder) convertView.getTag();
         }
 
-        Objeto objeto = objetos.get(position);
+        Objeto o = getItem(position);
 
-        holder.tvNombre.setText(objeto.getNombreObjeto());
-        holder.tvCategoria.setText(objeto.getCategoria());
-        holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
+        // null-safety
+        String nombre = (o.getNombreObjeto() != null && !o.getNombreObjeto().trim().isEmpty())
+                ? o.getNombreObjeto()
+                : "Objeto";
 
-        // ✅ CARGAR IMAGEN REAL
-        String url = objeto.getImagenUrl();
+        String estado = (o.getEstado() != null && !o.getEstado().trim().isEmpty())
+                ? o.getEstado()
+                : "Disponible";
 
-        if (url != null) {
-            url = url.trim();
+        Double precioObj = o.getPrecio(); // en tu CategoryFragment lo estás tratando como Double
+        double precio = (precioObj != null) ? precioObj : 0.0;
+
+        if (h.tvNombre != null) h.tvNombre.setText(nombre);
+        if (h.tvPrecio != null) h.tvPrecio.setText(String.format("$%.0f / día", precio));
+
+        if (h.ratingBar != null) {
+            h.ratingBar.setStepSize(0.1f);
+            h.ratingBar.setRating(generarRatingPorPrecio(precio));
         }
 
-        if (url != null && !url.isEmpty()) {
-            // Si viene como "/uploads/xxx.jpg" o "uploads/xxx.jpg", lo hacemos completo
-            if (url.startsWith("/")) {
-                url = BASE_URL + url;
-            } else if (!url.startsWith("http")) {
-                url = BASE_URL + "/" + url;
+        String entrega = (precio <= 120) ? "Entrega hoy" : "Entrega 24h";
+        if (h.tvExtra != null) h.tvExtra.setText(entrega + " • " + estado);
+
+        // Glide
+        String url = o.getImagenUrl();
+
+        if (h.imgObjeto != null) {
+            if (url == null || url.trim().isEmpty()) {
+                h.imgObjeto.setImageResource(R.drawable.banner_image);
+            } else {
+                Glide.with(context)
+                        .load(url)
+                        .centerCrop()
+                        .placeholder(R.drawable.banner_image)
+                        .error(R.drawable.banner_image)
+                        .into(h.imgObjeto);
             }
-
-            Glide.with(context)
-                    .load(url)
-                    .placeholder(R.drawable.camara)
-                    .error(R.drawable.camara)
-                    .into(holder.ivImagen);
-        } else {
-
-            com.bumptech.glide.Glide.with(context)
-                    .load(url)
-                    .placeholder(R.drawable.camara)
-                    .error(R.drawable.camara)
-                    .into(holder.ivImagen);
-
         }
 
-        holder.btnDelete.setVisibility(View.GONE);
-        holder.btnSolicitudes.setVisibility(View.GONE);
-
-        View.OnClickListener detallesClick = v -> {
-            if (listener != null) listener.onVerDetallesClicked(objeto);
-        };
-
-        holder.btnVerDetalles.setOnClickListener(detallesClick);
-        holder.cardRoot.setOnClickListener(detallesClick);
+        if (listener != null) {
+            convertView.setOnClickListener(v -> listener.onClick(o));
+        } else {
+            convertView.setOnClickListener(null);
+        }
 
         return convertView;
     }
 
-    public void updateData(List<Objeto> nuevos) {
-        this.objetos = nuevos != null ? nuevos : new ArrayList<>();
-        notifyDataSetChanged();
-    }
-
-    static class ViewHolder {
-        View cardRoot;
-        ImageView ivImagen;
-        ImageView btnDelete;
-        TextView tvNombre;
-        TextView tvCategoria;
-        TextView tvPrecio;
-        TextView btnVerDetalles;
-        TextView btnSolicitudes;
-        LinearLayout accionesContainer;
-
-        ViewHolder(View view) {
-            cardRoot         = view;
-            ivImagen         = view.findViewById(R.id.imgObjeto);
-            btnDelete        = view.findViewById(R.id.btnDelete);
-            tvNombre         = view.findViewById(R.id.tvNombreObjeto);
-            tvCategoria      = view.findViewById(R.id.tvCategoriaObjeto);
-            tvPrecio         = view.findViewById(R.id.tvPrecioObjeto);
-            btnVerDetalles   = view.findViewById(R.id.btnVerDetalles);
-            btnSolicitudes   = view.findViewById(R.id.btnSolicitudes);
-            accionesContainer= view.findViewById(R.id.accionesContainer);
-        }
+    private float generarRatingPorPrecio(double precio) {
+        if (precio <= 60)  return 4.9f;
+        if (precio <= 100) return 4.7f;
+        if (precio <= 160) return 4.5f;
+        if (precio <= 230) return 4.3f;
+        return 4.1f;
     }
 }

@@ -32,6 +32,7 @@ public class ObjetoController {
                                 .estado(o.getEstado())
                                 .categoria(o.getCategoria())
                                 .descripcion(o.getDescripcion())
+                                .imagenUrl(o.getImagenUrl())
                                 .build())
                         .collect(Collectors.toList())
         );
@@ -51,6 +52,7 @@ public class ObjetoController {
                 .estado(o.getEstado())
                 .categoria(o.getCategoria())
                 .descripcion(o.getDescripcion())
+                .imagenUrl(o.getImagenUrl())
                 .build());
     }
 
@@ -63,6 +65,7 @@ public class ObjetoController {
                 .estado(dto.getEstado())
                 .categoria(dto.getCategoria())
                 .descripcion(dto.getDescripcion())
+                .imagenUrl(dto.getImagenUrl())
                 .build();
         objetoService.save(o);
         return ResponseEntity.ok(ObjetoDto.builder()
@@ -73,6 +76,7 @@ public class ObjetoController {
                 .estado(o.getEstado())
                 .categoria(o.getCategoria())
                 .descripcion(o.getDescripcion())
+                .imagenUrl(o.getImagenUrl())
                 .build());
     }
 
@@ -91,6 +95,7 @@ public class ObjetoController {
                 .estado(dto.getEstado())
                 .categoria(dto.getCategoria())
                 .descripcion(dto.getDescripcion())
+                .imagenUrl(dto.getImagenUrl())
                 .build();
         Objeto aux = objetoService.update(id, o);
         return ResponseEntity.ok(ObjetoDto.builder()
@@ -101,6 +106,7 @@ public class ObjetoController {
                 .estado(aux.getEstado())
                 .categoria(aux.getCategoria())
                 .descripcion(aux.getDescripcion())
+                .imagenUrl(aux.getImagenUrl())
                 .build());
     }
 
@@ -161,6 +167,7 @@ public class ObjetoController {
                 .estado(o.getEstado())
                 .categoria(o.getCategoria())
                 .descripcion(o.getDescripcion())
+                .imagenUrl(o.getImagenUrl())
                 .build();
     }
 
@@ -173,6 +180,7 @@ public class ObjetoController {
                 .estado(dto.getEstado())
                 .categoria(dto.getCategoria())
                 .descripcion(dto.getDescripcion())
+                .imagenUrl(dto.getImagenUrl())
                 .build();
     }
 

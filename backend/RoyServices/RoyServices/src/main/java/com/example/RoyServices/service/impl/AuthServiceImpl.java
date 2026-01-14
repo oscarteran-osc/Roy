@@ -45,6 +45,8 @@ public class AuthServiceImpl implements AuthService {
                 .telefono(request.getTelefono())
                 .domicilio(request.getDomicilio())  // ✅ Asegúrate que sea getDomicilio()
                 .password(passwordEncoder.encode(request.getPassword()))
+                .zona(request.getZona()) // o "Sin zona" o lo que uses
+                .fotoUrl(null)
                 .fechaDeRegistro(LocalDate.now())
                 .build();
 
