@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(goregister);
         }
         else if (id == R.id.btniniciosesion) {
-            Intent gologin = new Intent(this, LoginActivity.class);
-            startActivity(gologin);
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
 }

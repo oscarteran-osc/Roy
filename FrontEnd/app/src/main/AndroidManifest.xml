@@ -34,12 +34,6 @@
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".login.Registro3"
-            android:exported="false" />
-        <activity
-            android:name=".login.Registro2"
-            android:exported="false" />
-        <activity
             android:name=".login.Registro"
             android:exported="false" />
         <activity

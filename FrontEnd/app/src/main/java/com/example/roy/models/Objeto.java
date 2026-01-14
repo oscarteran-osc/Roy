@@ -3,6 +3,7 @@ package com.example.roy.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Objeto {
+
     @SerializedName("idObjeto")
     private Integer idObjeto;
 
@@ -16,7 +17,7 @@ public class Objeto {
     private Double precio;
 
     @SerializedName("estado")
-    private String estado; // DISPONIBLE, RENTADO, MANTENIMIENTO
+    private String estado;
 
     @SerializedName("categoria")
     private String categoria;
@@ -24,12 +25,21 @@ public class Objeto {
     @SerializedName("descripcion")
     private String descripcion;
 
-    // Constructor vacío
-    public Objeto() {}
+    @SerializedName("imagenUrl")
+    private String imagenUrl;
 
-    // Constructor
-    public Objeto(Integer idObjeto, Integer idUsArrendador, String nombreObjeto,
-                  Double precio, String estado, String categoria, String descripcion) {
+    // ✅ Constructor vacío (OBLIGATORIO para Gson/Retrofit)
+    public Objeto() { }
+
+    // ✅ Constructor con params (opcional, para cuando tú creas objetos a mano)
+    public Objeto(Integer idObjeto,
+                  Integer idUsArrendador,
+                  String nombreObjeto,
+                  Double precio,
+                  String estado,
+                  String categoria,
+                  String descripcion,
+                  String imagenUrl) {
         this.idObjeto = idObjeto;
         this.idUsArrendador = idUsArrendador;
         this.nombreObjeto = nombreObjeto;
@@ -37,9 +47,9 @@ public class Objeto {
         this.estado = estado;
         this.categoria = categoria;
         this.descripcion = descripcion;
+        this.imagenUrl = imagenUrl;
     }
 
-    // Getters y Setters
     public Integer getIdObjeto() { return idObjeto; }
     public void setIdObjeto(Integer idObjeto) { this.idObjeto = idObjeto; }
 
@@ -60,4 +70,7 @@ public class Objeto {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getImagenUrl() { return imagenUrl; }
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

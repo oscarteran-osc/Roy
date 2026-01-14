@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,19 +18,17 @@ import androidx.fragment.app.Fragment;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
-import com.example.roy.misobjetos.objetosAdapter;
 import com.example.roy.models.Objeto;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.widget.ImageView;
-import com.google.android.material.chip.Chip;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class CategoryFragment extends Fragment {
 
@@ -43,7 +42,10 @@ public class CategoryFragment extends Fragment {
         return fragment;
     }
 
-    private String category;
+    private String category;           // "Eventos" o "buscar:taladro"
+    private String queryBusqueda = ""; // si viene buscar:
+
+    private View rootView;
 
     private ListView listView;
     private TextView emptyText;
@@ -59,9 +61,10 @@ public class CategoryFragment extends Fragment {
     private final List<Objeto> listaOriginal = new ArrayList<>();
     private final List<Objeto> listaFiltrada = new ArrayList<>();
 
-    // para saber qué filtro extra está activo
     private enum ExtraFilter { NONE, MAS_BARATO }
     private ExtraFilter extraFilter = ExtraFilter.NONE;
+
+    private TextWatcher searchWatcher;
 
     @Nullable
     @Override
@@ -69,81 +72,98 @@ public class CategoryFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_category, container, false);
+        rootView = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // === FIND VIEWS ===
-        tvTituloCategoria  = view.findViewById(R.id.tvTituloCategoria);
-        tvPillCategoria    = view.findViewById(R.id.tvPillCategoria);
-        tvResultadosCount  = view.findViewById(R.id.tvResultadosCount);
-        listView           = view.findViewById(R.id.lvObjetosCategoria);
-        emptyText          = view.findViewById(R.id.empty_text);
-        searchBar          = view.findViewById(R.id.etBuscarObjeto);
+        tvTituloCategoria  = rootView.findViewById(R.id.tvTituloCategoria);
+        tvPillCategoria    = rootView.findViewById(R.id.tvPillCategoria);
+        tvResultadosCount  = rootView.findViewById(R.id.tvResultadosCount);
+        listView           = rootView.findViewById(R.id.lvObjetosCategoria);
+        emptyText          = rootView.findViewById(R.id.empty_text);
+        searchBar          = rootView.findViewById(R.id.etBuscarObjeto);
 
-        chipTodo   = view.findViewById(R.id.chipTodo);
-        chipCerca  = view.findViewById(R.id.chipCerca);
-        chipBarato = view.findViewById(R.id.chipBarato);
-        chipPopular= view.findViewById(R.id.chipPopular);
+        chipTodo   = rootView.findViewById(R.id.chipTodo);
+        chipCerca  = rootView.findViewById(R.id.chipCerca);
+        chipBarato = rootView.findViewById(R.id.chipBarato);
+        chipPopular= rootView.findViewById(R.id.chipPopular);
 
-        ImageView btnBack   = view.findViewById(R.id.btnBack);
-        ImageView btnFiltros= view.findViewById(R.id.btnFiltros);
+        ImageView btnBack   = rootView.findViewById(R.id.btnBack);
+        ImageView btnFiltros= rootView.findViewById(R.id.btnFiltros);
 
-        // === CATEGORÍA ACTUAL ===
         category = (getArguments() != null)
                 ? getArguments().getString(ARG_CATEGORY, "Todo")
                 : "Todo";
 
-        tvTituloCategoria.setText(category);
-        tvPillCategoria.setText(category);
+        // ====== SI VIENE DESDE INICIO CON buscar: ======
+        if (category != null && category.toLowerCase().startsWith("buscar:")) {
+            queryBusqueda = category.substring("buscar:".length()).trim();
+            tvTituloCategoria.setText("Resultados");
+            tvPillCategoria.setText("Búsqueda");
+        } else {
+            tvTituloCategoria.setText(category);
+            tvPillCategoria.setText(category);
+        }
 
-        // DESPUÉS
-        configurarTextoBanner(view, category);
+        // Banner SOLO aquí (con rootView válido)
+        configurarTextoBanner(rootView, category);
 
         adapter = new ObjetosCategoriaAdapter(
                 requireContext(),
                 listaFiltrada,
                 objeto -> {
-                    // TODO: abrir pantalla de detalles del objeto
-                    // aquí puedes lanzar un fragmento o activity
+                    // TODO: abrir detalles
                 }
         );
 
         listView.setAdapter(adapter);
         listView.setEmptyView(emptyText);
 
-
-        listView.setAdapter(adapter);
-        listView.setEmptyView(emptyText);
-
-        // === EVENTOS UI ===
         btnBack.setOnClickListener(v ->
                 requireActivity().getOnBackPressedDispatcher().onBackPressed()
         );
 
         btnFiltros.setOnClickListener(v -> {
-            // TODO: future bottom sheet de filtros avanzados
+            // TODO
         });
 
-        configurarBuscador();
         configurarChips();
+        configurarBuscador(); // ✅ primero watcher
 
-        // === CARGA DEL BACKEND ===
+        // ✅ Si viene búsqueda: ponemos el texto SIN disparar el watcher raro
+        if (!queryBusqueda.isEmpty()) {
+            // quitamos watcher para no ejecutar filtros cuando aún no hay datos
+            searchBar.removeTextChangedListener(searchWatcher);
+            searchBar.setText(queryBusqueda);
+            searchBar.setSelection(queryBusqueda.length());
+            searchBar.addTextChangedListener(searchWatcher);
+        }
+
         cargarObjetos();
 
-        return view;
+        return rootView;
     }
 
     private void configurarTextoBanner(View root, String category) {
+        if (root == null) return;
+
         TextView tvBannerTitulo = root.findViewById(R.id.tvBannerTitulo);
         TextView tvBannerSub = root.findViewById(R.id.tvBannerSub);
-
         if (tvBannerTitulo == null || tvBannerSub == null) return;
 
-        switch (category.toLowerCase()) {
+        if (category != null && category.toLowerCase().startsWith("buscar:")) {
+            tvBannerTitulo.setText("Resultados de tu búsqueda");
+            tvBannerSub.setText("Explora lo que encontramos para ti.");
+            return;
+        }
+
+        String cat = category != null ? category.toLowerCase() : "todo";
+
+        switch (cat) {
             case "eventos":
                 tvBannerTitulo.setText("Todo para tu próximo evento");
                 tvBannerSub.setText("Renta carpas, bocinas, mesas y más sin complicarte.");
                 break;
             case "tecnología":
+            case "tecnologia":
                 tvBannerTitulo.setText("Tech sin tener que comprar");
                 tvBannerSub.setText("Cámaras, laptops, proyectores y más cuando los necesites.");
                 break;
@@ -158,22 +178,20 @@ public class CategoryFragment extends Fragment {
         }
     }
 
-
     private void configurarBuscador() {
-        searchBar.addTextChangedListener(new TextWatcher() {
+        searchWatcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void afterTextChanged(Editable s) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 aplicarFiltros(s.toString(), extraFilter);
             }
-
-            @Override public void afterTextChanged(Editable s) { }
-        });
+        };
+        searchBar.addTextChangedListener(searchWatcher);
     }
 
     private void configurarChips() {
-        // por defecto: Todo seleccionado
         seleccionarChip(chipTodo);
         extraFilter = ExtraFilter.NONE;
 
@@ -190,14 +208,12 @@ public class CategoryFragment extends Fragment {
         });
 
         chipCerca.setOnClickListener(v -> {
-            // A futuro: filtro por ubicación
             extraFilter = ExtraFilter.NONE;
             seleccionarChip(chipCerca);
             aplicarFiltros(searchBar.getText().toString(), extraFilter);
         });
 
         chipPopular.setOnClickListener(v -> {
-            // A futuro: ordenar por popularidad
             extraFilter = ExtraFilter.NONE;
             seleccionarChip(chipPopular);
             aplicarFiltros(searchBar.getText().toString(), extraFilter);
@@ -205,71 +221,77 @@ public class CategoryFragment extends Fragment {
     }
 
     private void seleccionarChip(Chip seleccionado) {
-        // solo marca visualmente uno
         Chip[] chips = new Chip[]{chipTodo, chipCerca, chipBarato, chipPopular};
-        for (Chip chip : chips) {
-            chip.setChecked(chip == seleccionado);
-        }
+        for (Chip chip : chips) chip.setChecked(chip == seleccionado);
     }
 
     private void cargarObjetos() {
         ApiService api = RetrofitClient.getClient().create(ApiService.class);
-        Call<List<Objeto>> call = api.getObjetos(); // mismo endpoint que en Postman
+        Call<List<Objeto>> call = api.getObjetos();
 
         call.enqueue(new Callback<List<Objeto>>() {
             @Override
             public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful() && response.body() != null) {
                     listaOriginal.clear();
                     listaOriginal.addAll(response.body());
+
+                    // ✅ Aplica filtros con lo que esté en searchBar
                     aplicarFiltros(searchBar.getText().toString(), extraFilter);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Objeto>> call, Throwable t) {
-                // podrías mostrar un Toast aquí si quieres
+                // Toast opcional
             }
         });
     }
 
-    /**
-     * Aplica categoría + texto + filtro extra (chips)
-     */
     private void aplicarFiltros(String texto, ExtraFilter extra) {
-        texto = texto.toLowerCase().trim();
+        if (!isAdded() || adapter == null) return;
+
+        String textoBusqueda = (texto == null) ? "" : texto.toLowerCase().trim();
 
         listaFiltrada.clear();
 
-        for (Objeto obj : listaOriginal) {
-            boolean coincideCategoria;
+        boolean esBusquedaGlobal = (category != null && category.toLowerCase().startsWith("buscar:"));
+        if (esBusquedaGlobal) {
+            textoBusqueda = queryBusqueda.toLowerCase().trim();
+        }
 
-            if ("Todo".equalsIgnoreCase(category)) {
+        for (Objeto obj : listaOriginal) {
+
+            // 1) categoría
+            boolean coincideCategoria;
+            if (esBusquedaGlobal || "Todo".equalsIgnoreCase(category)) {
                 coincideCategoria = true;
             } else {
-                coincideCategoria = category.equalsIgnoreCase(obj.getCategoria());
+                String catObj = (obj.getCategoria() != null) ? obj.getCategoria() : "";
+                coincideCategoria = category.equalsIgnoreCase(catObj);
             }
-
             if (!coincideCategoria) continue;
 
-            if (!texto.isEmpty()) {
-                String nombre = obj.getNombreObjeto() != null ? obj.getNombreObjeto().toLowerCase() : "";
-                String desc   = obj.getDescripcion() != null ? obj.getDescripcion().toLowerCase() : "";
-
-                if (!nombre.contains(texto) && !desc.contains(texto)) {
-                    continue;
-                }
+            // 2) texto
+            if (!textoBusqueda.isEmpty()) {
+                String nombre = (obj.getNombreObjeto() != null) ? obj.getNombreObjeto().toLowerCase() : "";
+                String desc   = (obj.getDescripcion() != null) ? obj.getDescripcion().toLowerCase() : "";
+                if (!nombre.contains(textoBusqueda) && !desc.contains(textoBusqueda)) continue;
             }
 
+            // ✅ agregar sí o sí
             listaFiltrada.add(obj);
         }
 
-        // Extra filter: ordenar por precio
         if (extra == ExtraFilter.MAS_BARATO) {
             Collections.sort(listaFiltrada, new Comparator<Objeto>() {
                 @Override
                 public int compare(Objeto o1, Objeto o2) {
-                    return Double.compare(o1.getPrecio(), o2.getPrecio());
+                    double p1 = (o1.getPrecio() != null) ? o1.getPrecio() : 0.0;
+                    double p2 = (o2.getPrecio() != null) ? o2.getPrecio() : 0.0;
+                    return Double.compare(p1, p2);
                 }
             });
         }
@@ -279,8 +301,8 @@ public class CategoryFragment extends Fragment {
     }
 
     private void actualizarContador() {
+        if (tvResultadosCount == null) return;
         int n = listaFiltrada.size();
-        String texto = n + (n == 1 ? " objeto" : " objetos");
-        tvResultadosCount.setText(texto);
+        tvResultadosCount.setText(n + (n == 1 ? " objeto" : " objetos"));
     }
 }

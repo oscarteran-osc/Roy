@@ -10,6 +10,8 @@ import com.example.roy.models.Objeto;
 import com.example.roy.models.Usuario;
 
 import java.util.List;
+
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -65,6 +67,9 @@ public interface ApiService {
     @GET("api/objeto/destacado")
     Call<Objeto> getDestacado();
 
+    @Multipart
+    @POST("Roy/api/usuario/{id}/foto")
+    Call<String> subirFoto(@Path("id") int id, @Part MultipartBody.Part file);
 
 
 }
