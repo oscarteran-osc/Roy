@@ -5,7 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/AndroidProjectSystem.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/.kotlin/errors/errors-1768368846033.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PagoExitosoActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PagoSimuladoActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PayPalPaymentActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/ofertante.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solis.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/ui/theme/Color.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/ui/theme/Theme.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/ui/theme/Type.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/ic_check_circle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/drawable/ic_logout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/activity_pago_simulado.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/item_solicitud_arrendatario.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/pagoexitoso.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/paypalpayment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/models/SolicitudRenta.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/models/SolicitudRenta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/profile/perfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/profile/perfil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/Ofertante.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/Rentador.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/activity_metododepago.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/activity_metododepago.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_ofertante.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_ofertante.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_perfil.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_perfil.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_rentador.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +72,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -66,35 +106,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.RoyServicesApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;homefuncional&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.RoyServicesApplication.executor": "Run",
+    "git-widget-placeholder": "Merging agregarzonaobjeto",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.RoyServices.model" />
@@ -131,6 +171,8 @@
       <workItem from="1763100412342" duration="307000" />
       <workItem from="1763132022095" duration="19524000" />
       <workItem from="1765037971670" duration="1636000" />
+      <workItem from="1768396647983" duration="631000" />
+      <workItem from="1768399326832" duration="689000" />
     </task>
     <task id="LOCAL-00001" summary="Reseña y solicitud de renta">
       <option name="closed" value="true" />

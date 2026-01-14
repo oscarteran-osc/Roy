@@ -28,7 +28,11 @@ public class Objeto {
     @SerializedName("imagenUrl")
     private String imagenUrl;
 
-    // ✅ Constructor vacío (OBLIGATORIO para Gson/Retrofit)
+    private String zona;
+
+    public String getZona() { return zona; }
+    public void setZona(String zona) { this.zona = zona; }
+
     public Objeto() { }
 
     // ✅ Constructor con params (opcional, para cuando tú creas objetos a mano)

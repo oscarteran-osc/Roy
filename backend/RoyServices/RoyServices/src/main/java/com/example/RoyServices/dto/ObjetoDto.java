@@ -15,5 +15,5 @@ public class ObjetoDto {
     private String categoria;
     private String descripcion;
     private String imagenUrl;
-    // private String zona; // si lo usas
+    private String zona;
 }
