@@ -19,7 +19,7 @@ public class solicitudes extends Fragment {
     private Button btnOfertante;
 
     // Almacena el fragmento activo actualmente para la lógica de doble clic
-    private String currentFragmentTag = "RENTADOR_TAG";
+    private String currentFragmentTag = "OFERTANTE_TAG";
 
     public solicitudes() {
         // Constructor vacío requerido
@@ -45,17 +45,17 @@ public class solicitudes extends Fragment {
 
         // 1. Cargar el Fragmento inicial (Rentador)
         if (savedInstanceState == null) {
-            loadChildFragment(new Rentador(), "RENTADOR_TAG");
+            loadChildFragment(new ofertante(), "OFERTANTE_TAG");
             updateButtonState(btnRentador, btnOfertante);
         }
 
         // 2. Listeners de los botones
         btnRentador.setOnClickListener(v -> {
-            handleTabClick(new Rentador(), "RENTADOR_TAG", btnRentador, btnOfertante);
+            handleTabClick(new SolicitudesArrendatarioFragment(), "RENTADOR_TAG", btnRentador, btnOfertante);
         });
 
         btnOfertante.setOnClickListener(v -> {
-            handleTabClick(new Ofertante(), "OFERTANTE_TAG", btnOfertante, btnRentador);
+            handleTabClick(new ofertante(), "OFERTANTE_TAG", btnOfertante, btnRentador);
         });
     }
 

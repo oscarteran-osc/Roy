@@ -16,8 +16,7 @@
         android:gravity="center"
         android:fontFamily="@font/poppins_bold"
         android:layout_marginTop="20dp"
-        android:textSize="28dp"
-        />
+        android:textSize="28sp"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgAvatar"
@@ -28,8 +27,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="12dp"/>
 
-
-
     <TextView
         android:id="@+id/tvNombre"
         android:layout_width="wrap_content"
@@ -39,9 +36,8 @@
         android:textSize="22sp"
         android:textColor="#1D1D1F"
         android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
 
-    <!-- Email -->
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
@@ -50,11 +46,8 @@
         android:textSize="14sp"
         android:textColor="#6B6B6B"
         android:layout_marginTop="2dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
 
-
-
-    <!-- Fila de reputación -->
     <LinearLayout
         android:id="@+id/lyReputacion"
         android:layout_width="match_parent"
@@ -79,7 +72,7 @@
             android:text="  Reputación"
             android:textStyle="bold"
             android:textColor="#1D1D1F"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tvReputacionValor"
@@ -87,10 +80,9 @@
             android:layout_height="wrap_content"
             android:text="4.5"
             android:textStyle="bold"
-            android:textColor="#1D1D1F" />
+            android:textColor="#1D1D1F"/>
     </LinearLayout>
 
-    <!-- Título de la sección -->
     <TextView
         android:id="@+id/tvTituloHistorial"
         android:layout_width="match_parent"
@@ -99,7 +91,7 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="#1D1D1F"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="12dp"/>
 
     <ListView
         android:id="@+id/lvHistorial"
@@ -109,6 +101,20 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"/>
+
+    <!-- ✅ BOTÓN DE LOGOUT -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cerrar sesión"
+        android:textColor="@color/white"
+        android:backgroundTint="#E91E1E"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_logout"
+        app:iconGravity="textStart"
+        android:fontFamily="@font/poppins_medium"/>
 
 </LinearLayout>
