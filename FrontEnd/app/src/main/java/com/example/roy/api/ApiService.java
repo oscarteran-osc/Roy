@@ -72,4 +72,6 @@ public interface ApiService {
     Call<String> subirFoto(@Path("id") int id, @Part MultipartBody.Part file);
 
 
+
+
 }

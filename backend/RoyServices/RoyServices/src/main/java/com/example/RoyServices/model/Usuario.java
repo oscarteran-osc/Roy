@@ -37,5 +37,12 @@ public class Usuario {
 
     @Column(name = "fecha_registro")
     private LocalDate fechaDeRegistro;
+
+    @Column(name = "zona", nullable = false)
+    private String zona;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
 }
 

@@ -42,10 +42,15 @@ public class ObjetoServiceImpl implements com.example.RoyServices.service.Objeto
             aux.setEstado(objeto.getEstado());
             aux.setCategoria(objeto.getCategoria());
             aux.setDescripcion(objeto.getDescripcion());
+
+            // ✅ AGREGA ESTO
+            aux.setImagenUrl(objeto.getImagenUrl());
+
             return objetoRepository.save(aux);
         }
         return null;
     }
+
 
 
     //buscador por texto
