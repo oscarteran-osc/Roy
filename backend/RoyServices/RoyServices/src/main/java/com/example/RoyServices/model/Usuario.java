@@ -1,21 +1,17 @@
 package com.example.RoyServices.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "usuario")
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
@@ -27,17 +23,17 @@ public class Usuario {
     @Column(name = "apellido_us")
     private String apellido;
 
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true, nullable = false)
     private String correo;
 
     @Column(name = "telefono")
     private String telefono;
 
-    @Column(name = "contrasena")
-    private String password;
-
     @Column(name = "domicilio")
     private String domicilio;
+
+    @Column(name = "contrasena")  // ✅ Este es el campo que contiene la contraseña cifrada
+    private String password;       // ✅ Nombre de la variable en Java
 
     @Column(name = "fecha_registro")
     private LocalDate fechaDeRegistro;

@@ -135,6 +135,78 @@
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"/>
 
+                    <TextView
+                        android:id="@+id/category_hogar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hogar y Muebles"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/category_deportes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deportes y Aire Libre"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/category_electrodomesticos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Electrodomesticos"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/category_ropa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ropa Y Accesorios"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/category_juegos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Juegos y Entretenimiento"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/category_mascotas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mascotas"
+                        android:textColor="@android:color/white"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"/>
+
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -235,6 +307,7 @@
                 android:padding="12dp">
 
                 <ImageView
+                    android:id="@+id/imagen_destacado"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/tent_image"
@@ -248,7 +321,9 @@
                     android:orientation="vertical"
                     android:layout_marginStart="16dp">
 
+                    <!-- TÍTULO DEL DESTACADO -->
                     <TextView
+                        android:id="@+id/titulo_destacado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="La carpa perfecta para un fin de semana..."
@@ -256,7 +331,9 @@
                         android:textStyle="bold"
                         android:textSize="14sp"/>
 
+                    <!-- DESCRIPCIÓN DEL DESTACADO -->
                     <TextView
+                        android:id="@+id/desc_destacado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Carpas disponibles desde | $80.\nEncuentra la ideal según la ocasión."
@@ -433,54 +510,6 @@
             </LinearLayout>
 
         </HorizontalScrollView>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@drawable/page_indicator_active"
-                android:layout_marginEnd="8dp"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@drawable/page_indicator_inactive"
-                android:layout_marginEnd="8dp"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@drawable/page_indicator_inactive"
-                android:layout_marginEnd="8dp"/>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@drawable/page_indicator_inactive"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/ver_mas_final_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ver más ›"
-            android:textColor="@color/blue_primary"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:padding="12dp"/>
 
     </LinearLayout>
 

@@ -46,4 +46,32 @@ public class ObjetoServiceImpl implements com.example.RoyServices.service.Objeto
         }
         return null;
     }
+
+
+    //buscador por texto
+    @Override
+    public List<Objeto> buscarPorTexto(String texto) {
+        return objetoRepository
+                .findByNombreObjetoContainingIgnoreCaseOrDescripcionContainingIgnoreCase(texto, texto);
+    }
+
+    //por categoría
+    @Override
+    public List<Objeto> buscarPorCategoria(String categoria) {
+        return objetoRepository.findByCategoriaIgnoreCase(categoria);
+    }
+
+    //recomendados (losultimos 10)
+    @Override
+    public List<Objeto> obtenerRecomendados() {
+        return objetoRepository.findTop10ByOrderByIdObjetoDesc();
+    }
+
+    //destacado
+    @Override
+    public Objeto obtenerDestacado() {
+        List<Objeto> lista = objetoRepository.findTop10ByOrderByIdObjetoDesc();
+        return lista.isEmpty() ? null : lista.get(0);
+    }
+
 }

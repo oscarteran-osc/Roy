@@ -21,11 +21,6 @@ public class SolicitudRentaController {
 
     private final SolicitudRentaService solicitudService;
 
-    // ============================================
-    // CRUD BÁSICO
-    // ============================================
-
-    // GET todas las solicitudes
     @GetMapping
     public ResponseEntity<List<SolicitudRentaDto>> getAll() {
         List<SolicitudRenta> solicitudes = solicitudService.getAll();
@@ -36,8 +31,6 @@ public class SolicitudRentaController {
                 .map(this::convertirADto)
                 .collect(Collectors.toList()));
     }
-
-    // GET solicitud por ID
     @GetMapping("/{id}")
     public ResponseEntity<SolicitudRentaDto> getById(@PathVariable Integer id) {
         SolicitudRenta solicitud = solicitudService.getById(id);
@@ -47,7 +40,6 @@ public class SolicitudRentaController {
         return ResponseEntity.ok(convertirADto(solicitud));
     }
 
-    // POST crear solicitud
     @PostMapping
     public ResponseEntity<?> save(@RequestBody SolicitudRentaDto dto) {
         try {
@@ -68,7 +60,6 @@ public class SolicitudRentaController {
         }
     }
 
-    // PUT actualizar solicitud
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody SolicitudRentaDto dto) {
         try {
@@ -91,18 +82,13 @@ public class SolicitudRentaController {
         }
     }
 
-    // DELETE eliminar solicitud
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         solicitudService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    // ============================================
-    // ENDPOINTS ESPECÍFICOS
-    // ============================================
 
-    // GET solicitudes por estado
     @GetMapping("/estado/{estado}")
     public ResponseEntity<List<SolicitudRentaDto>> getPorEstado(@PathVariable String estado) {
         List<SolicitudRenta> solicitudes = solicitudService.getSolicitudesPorEstado(estado);
