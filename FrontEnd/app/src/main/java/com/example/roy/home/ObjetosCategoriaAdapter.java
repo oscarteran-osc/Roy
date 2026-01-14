@@ -6,26 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.roy.R;
 import com.example.roy.models.Objeto;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.LinearLayout;
 
 public class ObjetosCategoriaAdapter extends BaseAdapter {
 
     public interface OnItemActionListener {
         void onVerDetallesClicked(Objeto objeto);
-        // si luego quieres otra acción, aquí la agregas
     }
 
     private final Context context;
     private final LayoutInflater inflater;
     private List<Objeto> objetos;
     private final OnItemActionListener listener;
+
+    // 🔧 cambia el puerto si usas otro, pero en emulador normalmente es 10.0.2.2:8080
+    private static final String BASE_URL = "http://10.0.2.2:8080";
 
     public ObjetosCategoriaAdapter(Context context,
                                    List<Objeto> objetos,
@@ -65,20 +68,43 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
 
         Objeto objeto = objetos.get(position);
 
-        // 🔹 Texto principal
         holder.tvNombre.setText(objeto.getNombreObjeto());
         holder.tvCategoria.setText(objeto.getCategoria());
         holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
 
-        // 🔹 Imagen (placeholder por ahora)
-        holder.ivImagen.setImageResource(R.drawable.camara);
+        // ✅ CARGAR IMAGEN REAL
+        String url = objeto.getImagenUrl();
 
-        // En la vista de categorías normalmente NO borras ni ves solicitudes,
-        // así que los podemos ocultar:
+        if (url != null) {
+            url = url.trim();
+        }
+
+        if (url != null && !url.isEmpty()) {
+            // Si viene como "/uploads/xxx.jpg" o "uploads/xxx.jpg", lo hacemos completo
+            if (url.startsWith("/")) {
+                url = BASE_URL + url;
+            } else if (!url.startsWith("http")) {
+                url = BASE_URL + "/" + url;
+            }
+
+            Glide.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.camara)
+                    .error(R.drawable.camara)
+                    .into(holder.ivImagen);
+        } else {
+
+            com.bumptech.glide.Glide.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.camara)
+                    .error(R.drawable.camara)
+                    .into(holder.ivImagen);
+
+        }
+
         holder.btnDelete.setVisibility(View.GONE);
         holder.btnSolicitudes.setVisibility(View.GONE);
 
-        // El botón "Ver detalles" (o toda la card) abre detalles
         View.OnClickListener detallesClick = v -> {
             if (listener != null) listener.onVerDetallesClicked(objeto);
         };

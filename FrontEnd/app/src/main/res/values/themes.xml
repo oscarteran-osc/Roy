@@ -23,6 +23,12 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
     <style name="RoyChip.Outline" parent="RoyChip.Base">
         <item name="chipStrokeColor">@color/blue_primary</item>
         <item name="chipStrokeWidth">1dp</item>

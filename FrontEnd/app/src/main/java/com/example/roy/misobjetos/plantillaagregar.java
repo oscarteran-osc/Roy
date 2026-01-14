@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roy.R;
-import com.example.roy.api.ApiService; // Importar ApiService
-import com.example.roy.api.RetrofitClient; // Importar RetrofitClient
+import com.example.roy.api.ApiService;
+import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
 
 import retrofit2.Call;
@@ -25,7 +25,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
     private EditText etNombre, etPrecio, etDescripcion;
     private Spinner spinnerCategoria;
     private Button btnAgregar, btnCancelar;
-    private ApiService apiService; // ✅ Reemplaza a MockDataManager
+    private ApiService apiService;
     private int currentUserId;
 
     @Override
@@ -33,14 +33,11 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plantillaagregar);
 
-        // Inicializar Retrofit
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Obtener usuario actual
         SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
-        currentUserId = prefs.getInt("userId", -1); // Usar -1 o un valor seguro si no está logueado
+        currentUserId = prefs.getInt("userId", -1);
 
-        // Inicializar vistas
         etNombre = findViewById(R.id.nomobj);
         etPrecio = findViewById(R.id.precioobj);
         etDescripcion = findViewById(R.id.descobj);
@@ -48,9 +45,9 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         btnAgregar = findViewById(R.id.agregarobj);
         btnCancelar = findViewById(R.id.cancelar);
 
-        // CONFIGURAR SPINNER DE CATEGORÍAS
         String[] categorias = {"Seleccionar categoría", "Tecnología", "Deportes", "Camping",
                 "Herramientas", "Eventos", "Transporte", "Otros"};
+
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, categorias
         );
@@ -67,14 +64,12 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
 
         if (id == R.id.cancelar) {
             finish();
-        }
-        else if (id == R.id.agregarobj) {
+        } else if (id == R.id.agregarobj) {
             agregarObjeto();
         }
     }
 
     private void agregarObjeto() {
-        // VALIDACIONES
         String nombre = etNombre.getText().toString().trim();
         String precioStr = etPrecio.getText().toString().trim();
         String descripcion = etDescripcion.getText().toString().trim();
@@ -84,8 +79,6 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "Error: Debes iniciar sesión para agregar objetos.", Toast.LENGTH_LONG).show();
             return;
         }
-
-        // ... (otras validaciones de campos como ya las tenías) ...
 
         if (nombre.isEmpty()) {
             etNombre.setError("Ingresa un nombre");
@@ -99,7 +92,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (categoria.equals("Seleccionar categoría")) {
+        if ("Seleccionar categoría".equals(categoria)) {
             Toast.makeText(this, "Selecciona una categoría", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -110,22 +103,25 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        // CREAR OBJETO
         try {
             double precio = Double.parseDouble(precioStr);
 
-            Objeto nuevoObjeto = new Objeto(
-                    null, // ID nulo, el servidor lo asigna
-                    currentUserId, // ID del usuario autenticado
+            // ✅ Si aún no manejas imagen, manda null o "" y listo.
+            String imagenUrl = null;
+
+            Objeto nuevo = new Objeto(
+                    null,
+                    currentUserId,
                     nombre,
                     precio,
-                    "DISPONIBLE", // Estado inicial
+                    "Disponible",
                     categoria,
-                    descripcion
+                    descripcion,
+                    imagenUrl
             );
 
-            // ✅ LLAMADA A RETROFIT
-            enviarObjetoAServidor(nuevoObjeto);
+            // ✅ aquí era el error: estabas usando "nuevoObjeto" que no existe
+            enviarObjetoAServidor(nuevo);
 
         } catch (NumberFormatException e) {
             etPrecio.setError("Precio inválido");
@@ -134,7 +130,6 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
     }
 
     private void enviarObjetoAServidor(Objeto objeto) {
-        // Puedes agregar aquí una ProgressBar o deshabilitar el botón de Agregar
         btnAgregar.setEnabled(false);
         btnAgregar.setText("Enviando...");
 
@@ -146,7 +141,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
 
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(plantillaagregar.this, "¡Objeto agregado exitosamente!", Toast.LENGTH_SHORT).show();
-                    finish(); // Cerrar activity y volver a la lista (que se recargará en onResume)
+                    finish();
                 } else {
                     Toast.makeText(plantillaagregar.this, "Error al guardar el objeto: " + response.code(), Toast.LENGTH_LONG).show();
                 }

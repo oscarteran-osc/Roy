@@ -1,5 +1,4 @@
 package com.example.roy.login;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,16 +9,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.roy.Inicio;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.AuthResponse; // Importar AuthResponse
 import com.example.roy.models.LoginRequest; // Importar LoginRequest
-// Importar la Activity principal después del login (Ajusta el nombre de tu Activity principal)
-import com.example.roy.login.MainActivity;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

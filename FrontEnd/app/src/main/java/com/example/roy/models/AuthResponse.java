@@ -53,4 +53,15 @@ public class AuthResponse {
     public void setToken(String token) {
         this.token = token;
     }
+
+    // 👇 ESTE ES EL IMPORTANTE
+    private String errorMessage;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }
