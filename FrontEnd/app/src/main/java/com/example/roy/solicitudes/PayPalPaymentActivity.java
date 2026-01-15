@@ -72,21 +72,5 @@ public class PayPalPaymentActivity extends AppCompatActivity {
         });
     }
 
-    // Método para actualizar el backend cuando implementes tu API
-    /*
-    private void actualizarEstadoEnBackend(int idSolicitud, String orderId) {
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
-        api.confirmarPago(idSolicitud, orderId).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d("PayPal", "Estado actualizado en backend");
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("PayPal", "Error al actualizar backend: " + t.getMessage());
-            }
-        });
-    }
-    */
+   
 }

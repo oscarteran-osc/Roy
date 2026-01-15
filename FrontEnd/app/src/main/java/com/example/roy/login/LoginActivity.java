@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         apiService = RetrofitClient.getClient().create(ApiService.class);
         prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
 
+
         // Inicializar vistas
         etMail = findViewById(R.id.loginmail); // Asegúrate que el ID sea correcto
         etContra = findViewById(R.id.logincontra); // Asegúrate que el ID sea correcto
@@ -57,6 +58,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (id == R.id.backregister) {
             Intent goRegister = new Intent(this, Registro.class);
             startActivity(goRegister);
+        }
+        else if (id == R.id.rowlogin){
+            Intent intentito = new Intent(this, MainActivity.class);
+            startActivity(intentito);
+            finish();
+
         }
     }
 
@@ -84,6 +91,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 btnIniciar.setEnabled(true);
                 btnIniciar.setText("Iniciar Sesión");
                 progressBar.setVisibility(View.GONE);
+
+                prefs.edit()
+                        .putString("TOKEN", response.body().getToken())
+                        .putInt("ID_USUARIO", response.body().getIdUsuario())
+                        .apply();
 
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();

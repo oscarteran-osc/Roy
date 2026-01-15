@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,20 +28,20 @@ import retrofit2.Response;
 public class ofertante extends Fragment implements SolicitudesArrendatarioAdapter.OnSolicitudActionListener {
 
     private ListView listView;
-    private TextView emptyText;
     private SolicitudesArrendatarioAdapter adapter;
-    private List<SolicitudRenta> solicitudes;
+    private final List<SolicitudRenta> solicitudes = new ArrayList<>();
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ofertante, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        listView = view.findViewById(R.id.listViewSolicitudes);
-        emptyText = view.findViewById(R.id.emptyText);
+        View view = inflater.inflate(R.layout.fragment_solis, container, false);
 
-        solicitudes = new ArrayList<>();
-        adapter = new SolicitudesArrendatarioAdapter(getContext(), solicitudes, this);
+        listView = view.findViewById(R.id.listSolicitudes);
+
+        adapter = new SolicitudesArrendatarioAdapter(requireContext(), solicitudes, this);
         listView.setAdapter(adapter);
 
         cargarSolicitudes();
@@ -51,7 +50,8 @@ public class ofertante extends Fragment implements SolicitudesArrendatarioAdapte
     }
 
     private void cargarSolicitudes() {
-        int userId = requireContext().getSharedPreferences("UserPrefs", 0)
+        int userId = requireContext()
+                .getSharedPreferences("UserPrefs", 0)
                 .getInt("userId", -1);
 
         if (userId == -1) {
@@ -60,26 +60,24 @@ public class ofertante extends Fragment implements SolicitudesArrendatarioAdapte
         }
 
         ApiService api = RetrofitClient.getClient().create(ApiService.class);
+
         api.getSolicitudesArrendatario(userId).enqueue(new Callback<List<SolicitudRenta>>() {
             @Override
             public void onResponse(Call<List<SolicitudRenta>> call, Response<List<SolicitudRenta>> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful() && response.body() != null) {
                     solicitudes.clear();
                     solicitudes.addAll(response.body());
                     adapter.notifyDataSetChanged();
-
-                    if (solicitudes.isEmpty()) {
-                        emptyText.setVisibility(View.VISIBLE);
-                        listView.setVisibility(View.GONE);
-                    } else {
-                        emptyText.setVisibility(View.GONE);
-                        listView.setVisibility(View.VISIBLE);
-                    }
+                } else {
+                    Toast.makeText(getContext(), "No se pudieron cargar las solicitudes", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<SolicitudRenta>> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(getContext(), "Error al cargar solicitudes", Toast.LENGTH_SHORT).show();
             }
         });
@@ -87,7 +85,6 @@ public class ofertante extends Fragment implements SolicitudesArrendatarioAdapte
 
     @Override
     public void onPagarClicked(SolicitudRenta solicitud) {
-        // Ir a la pantalla de método de pago
         Intent intent = new Intent(getActivity(), metododepago.class);
         intent.putExtra("idSolicitud", solicitud.getIdSolicitud());
         intent.putExtra("monto", solicitud.getMonto());
@@ -117,17 +114,23 @@ public class ofertante extends Fragment implements SolicitudesArrendatarioAdapte
 
     private void cancelarSolicitud(SolicitudRenta solicitud) {
         ApiService api = RetrofitClient.getClient().create(ApiService.class);
+
         api.cancelarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Solicitud cancelada", Toast.LENGTH_SHORT).show();
                     cargarSolicitudes();
+                } else {
+                    Toast.makeText(getContext(), "No se pudo cancelar", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(getContext(), "Error al cancelar", Toast.LENGTH_SHORT).show();
             }
         });
@@ -135,17 +138,23 @@ public class ofertante extends Fragment implements SolicitudesArrendatarioAdapte
 
     private void eliminarSolicitud(SolicitudRenta solicitud) {
         ApiService api = RetrofitClient.getClient().create(ApiService.class);
+
         api.eliminarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Solicitud eliminada", Toast.LENGTH_SHORT).show();
                     cargarSolicitudes();
+                } else {
+                    Toast.makeText(getContext(), "No se pudo eliminar", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(getContext(), "Error al eliminar", Toast.LENGTH_SHORT).show();
             }
         });

@@ -55,6 +55,7 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
+        // 1) Inicializa holder SIEMPRE primero
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_solicitud_arrendatario, parent, false);
             holder = new ViewHolder(convertView);
@@ -63,18 +64,26 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        // 2) Ya puedes usar holder sin que truene
         SolicitudRenta solicitud = solicitudes.get(position);
 
         // Cargar datos
         holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
         holder.tvNombreArrendador.setText("De: Usuario #" + solicitud.getIdUsArrendador());
-        holder.tvFechaSolicitud.setText("Fecha: " + solicitud.getFechaInicio());
 
-        // Estado
+        String fechaInicio = solicitud.getFechaInicio();
+        holder.tvFechaSolicitud.setText("Fecha: " + (fechaInicio != null ? fechaInicio : "-"));
+
+        String fechaFin = solicitud.getFechaFin();
+        holder.tvFechaRespuesta.setText("Respuesta: " + (fechaFin != null ? fechaFin : "-"));
+
+        // Estado (protegido contra null)
         String estado = solicitud.getEstado();
+        if (estado == null) estado = "PENDIENTE";
+        estado = estado.trim().toUpperCase();
+
         holder.tvEstado.setText(estado);
 
-        // Configurar botón según estado
         switch (estado) {
             case "APROBADA":
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.holo_green_dark));
@@ -106,11 +115,9 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
             default:
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.darker_gray));
                 holder.btnAccion.setText("Ver");
+                holder.btnAccion.setOnClickListener(null);
                 break;
         }
-
-        holder.tvFechaRespuesta.setText("Respuesta: " +
-                (solicitud.getFechaFin() != null ? solicitud.getFechaFin() : "-"));
 
         return convertView;
     }

@@ -16,6 +16,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -57,22 +58,34 @@ public interface ApiService {
     @GET("api/objeto/destacado")
     Call<Objeto> getDestacado();
 
-    // SOLICITUDES - ENDPOINTS QUE NECESITAS
-    @GET("api/solicitudes/arrendatario/{userId}")
-    Call<List<SolicitudRenta>> getSolicitudesArrendatario(@Path("userId") int userId);
+    // SOLICITUDES (reales según tu controller)
 
-    @POST("api/solicitudes/{idSolicitud}/cancelar")
-    Call<Void> cancelarSolicitud(@Path("idSolicitud") int idSolicitud);
+    @GET("api/solicitudes/arrendatario/{idArrendatario}")
+    Call<List<SolicitudRenta>> getSolicitudesArrendatario(@Path("idArrendatario") int idArrendatario);
 
     @DELETE("api/solicitudes/{idSolicitud}")
-    Call<Void> eliminarSolicitud(@Path("idSolicitud") int idSolicitud);
+    Call<Void> cancelarSolicitud(@Path("idSolicitud") int idSolicitud);
 
-    @POST("api/solicitudes/{idSolicitud}/confirmar-pago")
-    Call<Void> confirmarPago(@Path("idSolicitud") int idSolicitud, @Query("orderId") String orderId);
+    // Estado (si te sirve)
+    @PUT("api/solicitudes/{id}/aprobar")
+    Call<SolicitudRenta> aprobarSolicitud(@Path("id") int idSolicitud);
+
+    @DELETE("api/solicitudes/{id}")
+    Call<Void> eliminarSolicitud(@Path("id") int id);
+
+
+    @PUT("api/solicitudes/{id}/rechazar")
+    Call<SolicitudRenta> rechazarSolicitud(@Path("id") int idSolicitud);
+
+    @PUT("api/solicitudes/{id}/completar")
+    Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
+
+
+
+
 
     // FOTO PERFIL
     @Multipart
     @POST("Roy/api/usuario/{id}/foto")
     Call<String> subirFoto(@Path("id") int id, @Part MultipartBody.Part file);
- Oscar
 }

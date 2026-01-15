@@ -39,15 +39,19 @@ public class solicitudes extends Fragment {
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        android.widget.Toast.makeText(requireContext(), "ENTRÉ A SOLICITUDES", android.widget.Toast.LENGTH_LONG).show();
+
 
         btnRentador = view.findViewById(R.id.btn_rentador);
         btnOfertante = view.findViewById(R.id.btn_ofertante);
 
         // 1. Cargar el Fragmento inicial (Rentador)
         if (savedInstanceState == null) {
-            loadChildFragment(new ofertante(), "OFERTANTE_TAG");
+            loadChildFragment(new SolicitudesArrendatarioFragment(), "RENTADOR_TAG");
             updateButtonState(btnRentador, btnOfertante);
         }
+
+
 
         // 2. Listeners de los botones
         btnRentador.setOnClickListener(v -> {
