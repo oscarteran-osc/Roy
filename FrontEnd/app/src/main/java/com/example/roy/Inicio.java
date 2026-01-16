@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.roy.home.Home;
 import com.example.roy.misobjetos.MisObjetos;
-import com.example.roy.profile.perfil;
+import com.example.roy.profile.PerfilFragment;
 import com.example.roy.solicitudes.solicitudes;
 import com.example.roy.login.LoginActivity; // ✅ Agregar este import
 
@@ -68,7 +68,7 @@ public class Inicio extends AppCompatActivity {
         profile.setOnClickListener(v -> {
             limpiarSeleccion();
             profile.setSelected(true);
-            loadFragment(new perfil());
+            loadFragment(new PerfilFragment());
         });
     }
 

@@ -9,4 +9,7 @@
     <color name="gray_light">#E0E0E0</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="colorPrimary">#FF7B00</color>
+    <color name="disponible">#7C8E34</color>
+    <color name="no_disponible">#D32F2F</color>
 </resources>

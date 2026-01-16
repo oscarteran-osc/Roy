@@ -5,158 +5,163 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home.objetito">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="15dp">
+            android:orientation="vertical">
+
             <ImageView
+                android:id="@+id/mainimg"
                 android:layout_width="380dp"
-                android:src="@drawable/casacampania"
-                android:layout_marginVertical="15dp"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
                 android:layout_height="250dp"
-                android:id="@+id/mainimg"/>
+                android:layout_marginVertical="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/casacampania" />
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="80dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/mini1"
-                    android:clickable="true"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="15dp"
+                    android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/casacampania"
-                    android:layout_marginRight="15dp"/>
+                    android:src="@drawable/casacampania" />
 
                 <ImageView
                     android:id="@+id/mini2"
-                    android:clickable="true"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
                     android:layout_marginRight="15dp"
-                    android:src="@drawable/tienda2"/>
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tienda2" />
 
                 <ImageView
                     android:id="@+id/mini3"
-                    android:clickable="true"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
+                    android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tienda3"/>
+                    android:src="@drawable/tienda3" />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/nombreobj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:text="Tienda de campaña grande para 4-5 personas"
                 android:fontFamily="@font/poppins_semibold"
-                android:textSize="19dp"
+                android:text="Tienda de campaña grande para 4-5 personas"
                 android:textColor="@color/black"
-                android:id="@+id/nombreobj"
-                />
+                android:textSize="19dp" />
+
             <TextView
+                android:id="@+id/nomrentador"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:text="José Alberto"
-                android:textColor="#7A6D6D"
-                android:id="@+id/nomrentador"
-                />
+                android:textColor="#7A6D6D" />
+
             <RatingBar
+                android:id="@+id/rating"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:rating="4"
-                android:progressTint="#FFEB3B"
-                android:progressBackgroundTint="#737171"
-                android:secondaryProgressTint="#9B9898"
-                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_gravity="center_vertical"
-                android:id="@+id/rating"
-                />
+                android:adjustViewBounds="true"
+                android:progressBackgroundTint="#737171"
+                android:progressTint="#FFEB3B"
+                android:rating="4"
+                android:scaleType="fitCenter"
+                android:secondaryProgressTint="#9B9898" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$350"
-                    android:layout_marginVertical="10dp"
-                    android:textSize="22dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textColor="#FF7B00"
                     android:id="@+id/precio"
-                    />
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disponible"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="end"
-                    android:textSize="18dp"
-                    android:textColor="#7C8E34"
+                    android:layout_marginVertical="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="$350"
+                    android:textColor="#FF7B00"
+                    android:textSize="22dp" />
+
+                <TextView
                     android:id="@+id/disponibilidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    />
+                    android:gravity="end"
+                    android:text="Disponible"
+                    android:textColor="#7C8E34"
+                    android:textSize="18dp" />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/categoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/categoria"
-                android:text="Camping"
-                android:textColor="@color/black"
                 android:background="@drawable/equinita"
-                />
+                android:text="Camping"
+                android:textColor="@color/black" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="20dp"
                 android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Descripción"
                 android:textColor="#505050"
-                />
+                android:textSize="20dp" />
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
+
             <TextView
+                android:id="@+id/descrip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                android:textColor="@color/black"
-                android:text="@string/desc"
-                android:textSize="15dp"
                 android:justificationMode="inter_word"
-                android:id="@+id/descrip"
-                />
+                android:text="@string/desc"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="20dp"
                 android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Reseñas"
                 android:textColor="#505050"
-                />
+                android:textSize="20dp" />
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
+
             <FrameLayout
                 android:id="@+id/resenas"
                 android:layout_width="match_parent"

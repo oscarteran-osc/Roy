@@ -1,120 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/lyPerfil"
+    android:id="@+id/scrollPerfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@android:color/white">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#134299"
-        android:text="Mi Perfil"
-        android:gravity="center"
-        android:fontFamily="@font/poppins_bold"
-        android:layout_marginTop="20dp"
-        android:textSize="28sp"/>
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:src="@drawable/imgperfil"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"/>
-
-    <TextView
-        android:id="@+id/tvNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Julie Godoy"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:textColor="#1D1D1F"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal"/>
-
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="julieG@gmail.com"
-        android:textSize="14sp"
-        android:textColor="#6B6B6B"
-        android:layout_marginTop="2dp"
-        android:layout_gravity="center_horizontal"/>
+    android:fillViewport="true"
+    android:background="@drawable/bg_perfil_azul">
 
     <LinearLayout
-        android:id="@+id/lyReputacion"
+        android:id="@+id/lyPerfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <ImageView
-            android:id="@+id/icStar"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/estrellita"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:layout_gravity="center_vertical"/>
-
+        <!-- Título -->
         <TextView
-            android:id="@+id/tvReputacionLbl"
-            android:layout_width="0dp"
+            android:id="@+id/tvTitulo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="  Reputación"
-            android:textStyle="bold"
-            android:textColor="#1D1D1F"
-            android:layout_weight="1"/>
+            android:text="Mi Perfil"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="28sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
 
-        <TextView
-            android:id="@+id/tvReputacionValor"
-            android:layout_width="wrap_content"
+        <!-- HEADER centrado -->
+
+        <!-- TARJETA: Información personal -->
+
+        <LinearLayout
+            android:id="@+id/lyHeader"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="4.5"
-            android:textStyle="bold"
-            android:textColor="#1D1D1F"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="6dp"
+            android:paddingBottom="12dp">
+
+            <!-- Foto con marco circular -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/imgperfil"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge" />
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Julie Godoy"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Región -->
+            <TextView
+                android:id="@+id/tvRegion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:alpha="0.9"
+                android:fontFamily="@font/poppins_regular"
+                android:text="CDMX"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <!-- Reputación estilo chip -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipReputacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="⭐ 4.5"
+                android:textColor="#1D1D1F"
+                app:chipBackgroundColor="@android:color/white"
+                app:chipCornerRadius="18dp"
+                app:chipStrokeColor="#E0E0E0"
+                app:chipStrokeWidth="1dp" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardInfoPersonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Información personal"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#1D1D1F"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <!-- Teléfono -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfono"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="#6B6B6B"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <TextView
+                    android:id="@+id/tvTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="55 0000 0000"
+                    android:textSize="14sp"
+                    android:textColor="#1D1D1F"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="10dp"/>
+
+                <!-- Email -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="#6B6B6B"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="julieG@gmail.com"
+                    android:textSize="14sp"
+                    android:textColor="#1D1D1F"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="10dp"/>
+
+                <!-- Contraseña -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contraseña"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="#6B6B6B"
+                    android:fontFamily="@font/poppins_medium"/>
+
+                <TextView
+                    android:id="@+id/tvPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="********"
+                    android:textSize="14sp"
+                    android:textColor="#1D1D1F"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="14dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEditarPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Editar perfil"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_bold"
+                    app:cornerRadius="14dp"
+                    app:backgroundTint="#1E88E5"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TARJETA: Historial + lista horizontal -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvTituloHistorial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Historial de objetos"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#1D1D1F"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Últimos rentados"
+                    android:textSize="12sp"
+                    android:textColor="#6B6B6B"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHistorial"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:overScrollMode="never"
+                    android:clipToPadding="false"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvTituloHistorial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Historial de objetos rentados"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="#1D1D1F"
-        android:layout_marginTop="12dp"/>
-
-    <ListView
-        android:id="@+id/lvHistorial"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"/>
-
-    <!-- ✅ BOTÓN DE LOGOUT -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Cerrar sesión"
-        android:textColor="@color/white"
-        android:backgroundTint="#E91E1E"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_logout"
-        app:iconGravity="textStart"
-        android:fontFamily="@font/poppins_medium"/>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

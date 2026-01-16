@@ -1,80 +1,163 @@
 package com.example.roy.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 public class Objeto {
 
-    @SerializedName("idObjeto")
-    private Integer idObjeto;
+    @SerializedName("id")
+    private int id;
 
-    @SerializedName("idUsArrendador")
-    private Integer idUsArrendador;
-
-    @SerializedName("nombreObjeto")
-    private String nombreObjeto;
-
-    @SerializedName("precio")
-    private Double precio;
-
-    @SerializedName("estado")
-    private String estado;
-
-    @SerializedName("categoria")
-    private String categoria;
+    @SerializedName("nombre")
+    private String nombre;
 
     @SerializedName("descripcion")
     private String descripcion;
 
-    @SerializedName("imagenUrl")
-    private String imagenUrl;
+    @SerializedName("precio")
+    private double precio;
 
-    private String zona;
+    @SerializedName("categoria")
+    private String categoria;
 
-    public String getZona() { return zona; }
-    public void setZona(String zona) { this.zona = zona; }
+    @SerializedName("disponible")
+    private boolean disponible;
 
-    public Objeto() { }
+    @SerializedName("arrendadorId")
+    private int arrendadorId;
 
-    // ✅ Constructor con params (opcional, para cuando tú creas objetos a mano)
-    public Objeto(Integer idObjeto,
-                  Integer idUsArrendador,
-                  String nombreObjeto,
-                  Double precio,
-                  String estado,
-                  String categoria,
-                  String descripcion,
-                  String imagenUrl) {
-        this.idObjeto = idObjeto;
-        this.idUsArrendador = idUsArrendador;
-        this.nombreObjeto = nombreObjeto;
-        this.precio = precio;
-        this.estado = estado;
-        this.categoria = categoria;
-        this.descripcion = descripcion;
-        this.imagenUrl = imagenUrl;
+    @SerializedName("nombreArrendador")
+    private String nombreArrendador;
+
+    @SerializedName("imagenPrincipal")
+    private String imagenPrincipal;
+
+    @SerializedName("imagenes")
+    private List<String> imagenes;
+
+    @SerializedName("calificacionPromedio")
+    private float calificacionPromedio;
+
+    @SerializedName("totalResenas")
+    private int totalResenas;
+
+    // Constructor vacío
+    public Objeto() {
     }
 
-    public Integer getIdObjeto() { return idObjeto; }
-    public void setIdObjeto(Integer idObjeto) { this.idObjeto = idObjeto; }
+    // Constructor completo
+    public Objeto(int id, String nombre, String descripcion, double precio,
+                  String categoria, boolean disponible, int arrendadorId,
+                  String nombreArrendador, String imagenPrincipal,
+                  List<String> imagenes, float calificacionPromedio, int totalResenas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.categoria = categoria;
+        this.disponible = disponible;
+        this.arrendadorId = arrendadorId;
+        this.nombreArrendador = nombreArrendador;
+        this.imagenPrincipal = imagenPrincipal;
+        this.imagenes = imagenes;
+        this.calificacionPromedio = calificacionPromedio;
+        this.totalResenas = totalResenas;
+    }
 
-    public Integer getIdUsArrendador() { return idUsArrendador; }
-    public void setIdUsArrendador(Integer idUsArrendador) { this.idUsArrendador = idUsArrendador; }
+    // Getters y Setters
+    public int getId() {
+        return id;
+    }
 
-    public String getNombreObjeto() { return nombreObjeto; }
-    public void setNombreObjeto(String nombreObjeto) { this.nombreObjeto = nombreObjeto; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-    public String getImagenUrl() { return imagenUrl; }
-    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public int getArrendadorId() {
+        return arrendadorId;
+    }
+
+    public void setArrendadorId(int arrendadorId) {
+        this.arrendadorId = arrendadorId;
+    }
+
+    public String getNombreArrendador() {
+        return nombreArrendador;
+    }
+
+    public void setNombreArrendador(String nombreArrendador) {
+        this.nombreArrendador = nombreArrendador;
+    }
+
+    public String getImagenPrincipal() {
+        return imagenPrincipal;
+    }
+
+    public void setImagenPrincipal(String imagenPrincipal) {
+        this.imagenPrincipal = imagenPrincipal;
+    }
+
+    public List<String> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<String> imagenes) {
+        this.imagenes = imagenes;
+    }
+
+    public float getCalificacionPromedio() {
+        return calificacionPromedio;
+    }
+
+    public void setCalificacionPromedio(float calificacionPromedio) {
+        this.calificacionPromedio = calificacionPromedio;
+    }
+
+    public int getTotalResenas() {
+        return totalResenas;
+    }
+
+    public void setTotalResenas(int totalResenas) {
+        this.totalResenas = totalResenas;
+    }
 }

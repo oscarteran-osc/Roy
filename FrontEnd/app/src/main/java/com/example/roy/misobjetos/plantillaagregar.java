@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
+import com.example.roy.home.Objetoo;
 import com.example.roy.models.Objeto;
 
 import retrofit2.Call;
@@ -109,19 +110,19 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             // ✅ Si aún no manejas imagen, manda null o "" y listo.
             String imagenUrl = null;
 
-            Objeto nuevo = new Objeto(
-                    null,
-                    currentUserId,
-                    nombre,
-                    precio,
-                    "Disponible",
-                    categoria,
-                    descripcion,
-                    imagenUrl
-            );
+           // Objetoo nuevo = new Objetoo(
+           //         null,
+          ///         currentUserId,
+          //          nombre,
+          //          precio,
+         //           "Disponible",
+          //          categoria,
+          //          descripcion,
+          //          imagenUrl
+           // );
 
             // ✅ aquí era el error: estabas usando "nuevoObjeto" que no existe
-            enviarObjetoAServidor(nuevo);
+          //  enviarObjetoAServidor(nuevo);
 
         } catch (NumberFormatException e) {
             etPrecio.setError("Precio inválido");

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roy.R;
 
-public class Objeto extends AppCompatActivity implements View.OnClickListener {
+public class Objetoo extends AppCompatActivity implements View.OnClickListener {
 
     ImageButton atrasito;
     Button solicitud;
