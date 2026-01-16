@@ -8,8 +8,6 @@ import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
-import com.example.roy.models.Usuario;
-import com.example.roy.profile.perfilArrendador;
 
 import java.util.List;
 
@@ -28,28 +26,42 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    // AUTH
+    // ---------------- AUTH ----------------
     @POST("auth/login")
     Call<AuthResponse> loginUser(@Body LoginRequest loginCredentials);
 
     @POST("auth/register")
     Call<AuthResponse> registrarUsuario(@Body RegisterRequest nuevoUsuario);
 
-    // OBJETOS
-    @GET("objetos/arrendador/{userId}")
-    Call<List<Objeto>> getObjetosPorUsuario(@Path("userId") int userId);
+    // ---------------- OBJETOS (según tu controller ObjetoController) ----------------
+    // Base: /api/objeto
 
-    @DELETE("objetos/{objetoId}")
-    Call<Void> eliminarObjeto(@Path("objetoId") int objetoId);
-
-    @POST("objetos")
-    Call<Objeto> agregarObjeto(@Body Objeto nuevoObjeto);
-
-    @GET("/api/objeto/objeto")
+    // LISTA (con zona)
+    @GET("api/objeto/objeto")
     Call<List<Objeto>> getObjetos();
 
+    // GET BY ID (con zona)
     @GET("api/objeto/objeto/{id}")
     Call<Objeto> getObjetoPorId(@Path("id") int id);
+
+    // SAVE
+    @POST("api/objeto/objeto")
+    Call<Objeto> agregarObjeto(@Body Objeto nuevoObjeto);
+
+    // DELETE
+    @DELETE("api/objeto/objeto/{id}")
+    Call<Void> eliminarObjeto(@Path("id") int objetoId);
+
+    // UPDATE
+    @PUT("api/objeto/objeto/{id}")
+    Call<Objeto> actualizarObjeto(@Path("id") int objetoId, @Body Objeto objeto);
+
+    // HOME endpoints
+    @GET("api/objeto/recomendados")
+    Call<List<Objeto>> getRecomendados();
+
+    @GET("api/objeto/destacado")
+    Call<Objeto> getDestacado();
 
     @GET("api/objeto/buscar")
     Call<List<Objeto>> buscarObjetos(@Query("q") String texto);
@@ -57,27 +69,16 @@ public interface ApiService {
     @GET("api/objeto/categoria")
     Call<List<Objeto>> objetosPorCategoria(@Query("nombre") String categoria);
 
-    @GET("api/objeto/recomendados")
-    Call<List<Objeto>> getRecomendados();
 
-    @GET("api/objeto/destacado")
-    Call<Objeto> getDestacado();
-
-    // SOLICITUDES (reales según tu controller)
-
+    // ---------------- SOLICITUDES ----------------
     @GET("api/solicitudes/arrendatario/{idArrendatario}")
     Call<List<SolicitudRenta>> getSolicitudesArrendatario(@Path("idArrendatario") int idArrendatario);
 
     @DELETE("api/solicitudes/{idSolicitud}")
     Call<Void> cancelarSolicitud(@Path("idSolicitud") int idSolicitud);
 
-    // Estado (si te sirve)
     @PUT("api/solicitudes/{id}/aprobar")
     Call<SolicitudRenta> aprobarSolicitud(@Path("id") int idSolicitud);
-
-    @DELETE("api/solicitudes/{id}")
-    Call<Void> eliminarSolicitud(@Path("id") int id);
-
 
     @PUT("api/solicitudes/{id}/rechazar")
     Call<SolicitudRenta> rechazarSolicitud(@Path("id") int idSolicitud);
@@ -85,8 +86,10 @@ public interface ApiService {
     @PUT("api/solicitudes/{id}/completar")
     Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
 
+    @DELETE("api/solicitudes/{id}")
+    Call<Void> eliminarSolicitud(@Path("id") int id);
 
-    // ---------- RESEÑAS ----------
+    // ---------------- RESEÑAS ----------------
     @GET("api/resenas/objeto/{objetoId}")
     Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
@@ -96,7 +99,7 @@ public interface ApiService {
     @DELETE("api/resenas/{resenaId}")
     Call<Void> eliminarResena(@Path("resenaId") int resenaId, @Header("Authorization") String token);
 
-    // ---------- PERFIL (Roy/api/usuario/...) ----------
+    // ---------------- PERFIL ----------------
     @GET("Roy/api/usuario/{id}")
     Call<UserProfileResponse> getPerfil(
             @Path("id") int userId,
@@ -123,15 +126,5 @@ public interface ApiService {
     Call<String> subirFoto(
             @Path("id") int id,
             @Part MultipartBody.Part file
-          //  @Header("Authorization") String token
     );
-
-
-    //@POST("Roy/api/usuario/{id}/calificar")
-   // Call<perfilArrendador.CalificacionResponse> calificarUsuario(
-    //        @Path("id") int arrendadorId,
-    //        @Header("Authorization") String token,
-   //         @Body perfilArrendador.CalificarUsuarioRequest request
-   // );
-
 }

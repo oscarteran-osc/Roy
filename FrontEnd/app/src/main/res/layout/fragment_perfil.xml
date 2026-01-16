@@ -47,7 +47,7 @@
                 android:layout_height="110dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
-                android:src="@drawable/imgperfil"
+                android:src="@drawable/profileuser"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge" />
 
             <!-- Nombre -->
@@ -58,7 +58,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Julie Godoy"
                 android:textColor="@android:color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -72,7 +71,6 @@
                 android:layout_marginTop="2dp"
                 android:alpha="0.9"
                 android:fontFamily="@font/poppins_regular"
-                android:text="CDMX"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 

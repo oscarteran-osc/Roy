@@ -1,96 +1,60 @@
 package com.example.roy.models;
 
-import com.google.gson.annotations.SerializedName;
+import java.time.LocalDate;
 
 public class Resena {
 
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("objetoId")
-    private int objetoId;
-
-    @SerializedName("usuarioId")
-    private int usuarioId;
-
-    @SerializedName("nombreUsuario")
-    private String nombreUsuario;
-
-    @SerializedName("avatarUrl")
-    private String avatarUrl;
-
-    @SerializedName("calificacion")
-    private float calificacion;
-
-    @SerializedName("comentario")
+    private int idResena;
+    private int idUsAutor;
+    private int idUsReceptor;
+    private int calificacion;
     private String comentario;
+    private LocalDate fechaResena;
 
-    @SerializedName("fecha")
-    private String fecha; // Formato: "dd/MM/yy" o timestamp
+    private String nombreAutor;
+    private String nombreReceptor;
 
-    // Constructor vacío
-    public Resena() {
-    }
-
-    // Constructor completo
-    public Resena(int id, int objetoId, int usuarioId, String nombreUsuario,
-                  String avatarUrl, float calificacion, String comentario, String fecha) {
-        this.id = id;
-        this.objetoId = objetoId;
-        this.usuarioId = usuarioId;
-        this.nombreUsuario = nombreUsuario;
-        this.avatarUrl = avatarUrl;
+    public Resena(int idResena, int idUsAutor, int idUsReceptor, int calificacion,
+                  String comentario, LocalDate fechaResena, String nombreAutor, String nombreReceptor) {
+        this.idResena = idResena;
+        this.idUsAutor = idUsAutor;
+        this.idUsReceptor = idUsReceptor;
         this.calificacion = calificacion;
         this.comentario = comentario;
-        this.fecha = fecha;
+        this.fechaResena = fechaResena;
+        this.nombreAutor = nombreAutor;
+        this.nombreReceptor = nombreReceptor;
     }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
+    public int getIdResena() {
+        return idResena;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdResena(int idResena) {
+        this.idResena = idResena;
     }
 
-    public int getObjetoId() {
-        return objetoId;
+    public int getIdUsAutor() {
+        return idUsAutor;
     }
 
-    public void setObjetoId(int objetoId) {
-        this.objetoId = objetoId;
+    public void setIdUsAutor(int idUsAutor) {
+        this.idUsAutor = idUsAutor;
     }
 
-    public int getUsuarioId() {
-        return usuarioId;
+    public int getIdUsReceptor() {
+        return idUsReceptor;
     }
 
-    public void setUsuarioId(int usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setIdUsReceptor(int idUsReceptor) {
+        this.idUsReceptor = idUsReceptor;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public float getCalificacion() {
+    public int getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(float calificacion) {
+    public void setCalificacion(int calificacion) {
         this.calificacion = calificacion;
     }
 
@@ -102,11 +66,27 @@ public class Resena {
         this.comentario = comentario;
     }
 
-    public String getFecha() {
-        return fecha;
+    public LocalDate getFechaResena() {
+        return fechaResena;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaResena(LocalDate fechaResena) {
+        this.fechaResena = fechaResena;
+    }
+
+    public String getNombreAutor() {
+        return nombreAutor;
+    }
+
+    public void setNombreAutor(String nombreAutor) {
+        this.nombreAutor = nombreAutor;
+    }
+
+    public String getNombreReceptor() {
+        return nombreReceptor;
+    }
+
+    public void setNombreReceptor(String nombreReceptor) {
+        this.nombreReceptor = nombreReceptor;
     }
 }

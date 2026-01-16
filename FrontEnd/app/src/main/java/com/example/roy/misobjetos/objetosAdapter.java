@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,97 +24,43 @@ public class objetosAdapter extends BaseAdapter {
     }
 
     private Context context;
-    private LayoutInflater inflater;
-    private List<Objeto> objetos; // ✅ AHORA USA LA LISTA DE OBJETOS
+    private List<Objeto> objetos;
     private OnItemActionListener listener;
 
-    // ✅ NUEVO CONSTRUCTOR que recibe List<Objeto>
     public objetosAdapter(Context context, List<Objeto> objetos, OnItemActionListener listener) {
         this.context = context;
         this.objetos = objetos != null ? objetos : new ArrayList<>();
         this.listener = listener;
-        this.inflater = LayoutInflater.from(context);
     }
+
+    @Override public int getCount() { return objetos.size(); }
+    @Override public Object getItem(int pos) { return objetos.get(pos); }
+    @Override public long getItemId(int pos) { return objetos.get(pos).getIdObjeto(); }
 
     @Override
-    public int getCount() {
-        return objetos.size();
+    public View getView(int pos, View v, ViewGroup parent) {
+        if (v == null) v = LayoutInflater.from(context).inflate(R.layout.objeto, parent, false);
+
+        Objeto obj = objetos.get(pos);
+
+        ((TextView) v.findViewById(R.id.nomobj)).setText(obj.getNombreObjeto());
+        ((TextView) v.findViewById(R.id.catobj)).setText(obj.getCategoria());
+        ((TextView) v.findViewById(R.id.precioobj)).setText("$" + obj.getPrecio());
+
+       // ((ImageButton) v.findViewById(R.id.delete))
+         //       .setOnClickListener(b -> listener.onEliminarClicked(obj, pos));
+
+        v.findViewById(R.id.btndetalles)
+                .setOnClickListener(b -> listener.onVerDetallesClicked(obj));
+
+        v.findViewById(R.id.btnsolis)
+                .setOnClickListener(b -> listener.onVerSolicitudesClicked(obj, b));
+
+        return v;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return objetos.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return objetos.get(position).getId();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.objeto, parent, false);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        // ✅ OBTENER EL OBJETO EN ESTA POSICIÓN
-        Objeto objeto = objetos.get(position);
-
-        // ✅ LLENAR LOS DATOS
-        holder.tvNombre.setText(objeto.getNombre());
-        holder.tvCategoria.setText(objeto.getCategoria());
-        holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
-
-        // TODO: Cargar imagen real con Glide cuando tengas URLs
-        // Por ahora usa placeholder
-        holder.ivImagen.setImageResource(R.drawable.camara);
-
-        // ✅ LISTENERS
-        holder.btnDetalles.setOnClickListener(v -> {
-            if (listener != null) listener.onVerDetallesClicked(objeto);
-        });
-
-        holder.btnSolicitudes.setOnClickListener(v -> {
-            if (listener != null) listener.onVerSolicitudesClicked(objeto, v);
-        });
-
-        holder.btnEliminar.setOnClickListener(v -> {
-            if (listener != null) listener.onEliminarClicked(objeto, position);
-        });
-
-        return convertView;
-    }
-
-    // ✅ MÉTODO PARA ACTUALIZAR LA LISTA
-    public void updateData(List<Objeto> nuevosObjetos) {
-        this.objetos = nuevosObjetos != null ? nuevosObjetos : new ArrayList<>();
+    public void updateData(List<Objeto> nuevos) {
+        objetos = nuevos;
         notifyDataSetChanged();
-    }
-
-    // ViewHolder pattern para mejor performance
-    static class ViewHolder {
-        ImageView ivImagen;
-        TextView tvNombre;
-        TextView tvCategoria;
-        TextView tvPrecio;
-        Button btnDetalles;
-        Button btnSolicitudes;
-        ImageButton btnEliminar;
-
-        ViewHolder(View view) {
-            ivImagen = view.findViewById(R.id.imgobj);
-            tvNombre = view.findViewById(R.id.nomobj);
-            tvCategoria = view.findViewById(R.id.catobj);
-            tvPrecio = view.findViewById(R.id.precioobj);
-            btnDetalles = view.findViewById(R.id.btndetalles);
-            btnSolicitudes = view.findViewById(R.id.btnsolis);
-            btnEliminar = view.findViewById(R.id.delete);
-        }
     }
 }

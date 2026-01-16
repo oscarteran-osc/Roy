@@ -195,17 +195,17 @@ public class objetito extends Fragment {
 
     private void mostrarDatosObjeto(Objeto objeto) {
         // Datos básicos
-        nombreObj.setText(objeto.getNombre());
-        nomRentador.setText(objeto.getNombreArrendador());
+        nombreObj.setText(objeto.getNombreObjeto());
+        nomRentador.setText(objeto.getNomArrendador());
         precio.setText("$" + objeto.getPrecio());
         descrip.setText(objeto.getDescripcion());
         categoria.setText(objeto.getCategoria());
 
         // ID del arrendador para navegación
-        arrendadorId = objeto.getArrendadorId();
+        arrendadorId = objeto.getIdUsArrendador();
 
         // Disponibilidad
-        if (objeto.getDisponible()) {
+        if (Boolean.parseBoolean(objeto.getEstado())) {
             disponibilidad.setText("Disponible");
             disponibilidad.setTextColor(getResources().getColor(R.color.disponible, null));
         } else {
@@ -214,13 +214,13 @@ public class objetito extends Fragment {
         }
 
         // Rating (calculado desde las reseñas)
-        rating.setRating(objeto.getCalificacionPromedio());
-        rating.setIsIndicator(true); // Solo lectura
+       // rating.setRating(objeto.getCalificacionPromedio());
+        //rating.setIsIndicator(true); // Solo lectura
 
         // Cargar imágenes con Glide
-        if (objeto.getImagenPrincipal() != null && !objeto.getImagenPrincipal().isEmpty()) {
+        if (objeto.getImagenUrl() != null && !objeto.getImagenUrl().isEmpty()) {
             Glide.with(this)
-                    .load(objeto.getImagenPrincipal())
+                    .load(objeto.getImagenUrl())
                     .placeholder(R.drawable.casacampania)
                     .error(R.drawable.casacampania)
                     .into(imgmain);

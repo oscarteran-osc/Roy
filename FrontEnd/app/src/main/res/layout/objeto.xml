@@ -1,105 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="12dp"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardElevation="4dp"
-    app:strokeColor="@color/black"
-    app:cardBackgroundColor="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="8dp"
-    app:strokeWidth="1dp">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E5E7EB"
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
+
+        <!-- TOP: imagen + info + menu -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgobj"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="12dp"
+                tools:src="@drawable/casacampania" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nomobj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111827"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Casa de campaña" />
+
+                <!-- Chip categoría -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/catChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Exteriores"
+                    android:textSize="12sp"
+                    app:chipCornerRadius="999dp"
+                    app:chipBackgroundColor="#EEF2FF"
+                    app:chipStrokeColor="#C7D2FE"
+                    app:chipStrokeWidth="1dp" />
+
+                <TextView
+                    android:id="@+id/precioobj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="#E06C00"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_bold"
+                    tools:text="$350 / día" />
+
+            </LinearLayout>
+
+            <!-- Menú (⋮) -->
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/dot_indicator"
+
+                app:tint="#111827" />
+
+        </LinearLayout>
+
+        <!-- BOTONES -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="12dp">
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:id="@+id/imgobj"
-                android:layout_marginRight="12dp"
-                android:layout_gravity="center"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/nomobj"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="16dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/catobj"
-                    android:fontFamily="@font/poppins_mediumitalic"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_black"
-                    android:id="@+id/precioobj"
-                    android:textSize="15dp"
-                    android:textColor="#E06C00"
-                    />
-            </LinearLayout>
+            android:layout_marginTop="12dp">
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver Detalles"
-                android:fontFamily="@font/poppins_medium"
-                android:textColor="@color/black"
-                android:textSize="15dp"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btndetalles"
-                android:backgroundTint="#CCCCCC"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Detalles"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                app:iconPadding="6dp"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
 
-                />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Solicitudes"
-                android:fontFamily="@font/poppins_medium"
-                android:textColor="@color/black"
-                android:textSize="15dp"
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnsolis"
-                android:backgroundTint="#CCCCCC"
-                android:layout_marginRight="40dp"
-                />
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Solicitudes"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                app:iconPadding="6dp"
+                style="@style/Widget.Material3.Button.TonalButton" />
 
-            <ImageButton
-                android:id="@+id/delete"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/delete"
-                android:background="@android:color/transparent"
-                />
         </LinearLayout>
 
     </LinearLayout>
-
 
 </com.google.android.material.card.MaterialCardView>

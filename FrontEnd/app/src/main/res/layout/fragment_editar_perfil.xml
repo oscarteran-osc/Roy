@@ -57,7 +57,7 @@
                 android:id="@+id/imgAvatarEditar"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:src="@drawable/imgperfil"
+                android:src="@drawable/profileuser"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge" />
 
             <com.google.android.material.button.MaterialButton

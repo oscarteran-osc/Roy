@@ -43,12 +43,12 @@ public class RecomendadosAdapter extends RecyclerView.Adapter<RecomendadosAdapte
         Objeto objeto = objetos.get(position);
 
         // Ejemplo de binding (ajusta a tu modelo / ids)
-        holder.tvNombre.setText(objeto.getNombre());
+        holder.tvNombre.setText(objeto.getNombreObjeto());
         holder.tvPrecio.setText("$" + objeto.getPrecio()); // si tienes precio
 
         // Imagen (ajusta getUrlImagen o lo que uses)
         Glide.with(holder.itemView.getContext())
-                .load(objeto.getImagenPrincipal()) // <-- ajusta esto
+                .load(objeto.getImagenUrl()) // <-- ajusta esto
                 .placeholder(R.drawable.ic_box_placeholder)
                 .into(holder.ivFoto);
 
