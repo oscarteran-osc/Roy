@@ -1,13 +1,13 @@
 package com.example.roy.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +29,7 @@ import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,21 +39,34 @@ import retrofit2.Response;
 public class Home extends Fragment {
 
     private static final String TAG = "HomeFragment";
+
+    // Categorías
     private TextView categoryTodo, categoryEventos, categoryTecnologia, categoryTransporte, categoryHerramientas;
     private TextView categoryHogar, categoryDeportes, categoryElectro, categoryRopa, categoryJuegos, categoryMascotas;
+
     private TextView explorarMasBtn;
     private LinearLayout serviceItem1, serviceItem2, serviceItem3, serviceItem4;
     private ImageView menuIcon;
     private EditText searchBar;
+
+    // Destacado
     private CardView featuredCard;
     private TextView tituloDestacado, descDestacado;
     private ImageView imagenDestacado;
+    private Objeto objetoDestacado;
+
+    // Recyclers
     private RecyclerView recomendadosRecycler, cercaRecycler;
     private RecomendadosAdapter recomendadosAdapter, cercaAdapter;
-    private final List<com.example.roy.models.Objeto> recomendadosList = new ArrayList<>();
-    private final List<com.example.roy.models.Objeto> cercaList = new ArrayList<>();
+
+    private final List<Objeto> recomendadosList = new ArrayList<>();
+    private final List<Objeto> cercaList = new ArrayList<>();
+
+    // UI estados
     private View recomendadosLoading;
     private TextView recomendadosEmpty;
+
+    private ApiService api;
 
     @Nullable
     @Override
@@ -62,30 +76,26 @@ public class Home extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        api = RetrofitClient.getClient().create(ApiService.class);
+
         bindViews(view);
         setupClicks();
         setupSearch();
-        setupRecomendadosRecycler();
-
-        cargarDestacadoAleatorio();
-        cargarRecomendados();
-
         setupRecyclers();
-        cargarCercaDeTi();
+
+        cargarDestacado();
+        cargarRecomendadosYCerca();
 
         return view;
     }
-    private Objeto objetoDestacado;
-
 
     private void bindViews(View view) {
-        // Categorías (las que ya tenías)
+        // Categorías
         categoryTodo = view.findViewById(R.id.category_todo);
         categoryEventos = view.findViewById(R.id.category_eventos);
         categoryTecnologia = view.findViewById(R.id.category_tecnologia);
         categoryHerramientas = view.findViewById(R.id.category_herramientas);
 
-        // ✅ Categorías nuevas (ya están en el XML pero antes no las estabas usando)
         categoryHogar = view.findViewById(R.id.category_hogar);
         categoryDeportes = view.findViewById(R.id.category_deportes);
         categoryElectro = view.findViewById(R.id.category_electrodomesticos);
@@ -98,6 +108,7 @@ public class Home extends Fragment {
         serviceItem2 = view.findViewById(R.id.service_item_2);
         serviceItem3 = view.findViewById(R.id.service_item_3);
         serviceItem4 = view.findViewById(R.id.service_item_4);
+
         searchBar = view.findViewById(R.id.search_bar);
 
         featuredCard = view.findViewById(R.id.featured_card);
@@ -107,24 +118,20 @@ public class Home extends Fragment {
             imagenDestacado = featuredCard.findViewById(R.id.imagen_destacado);
         }
 
-        // ✅ Recomendados (si agregaste el Recycler)
-
         recomendadosRecycler = view.findViewById(R.id.recomendados_recycler);
         cercaRecycler = view.findViewById(R.id.cerca_recycler);
+
         recomendadosLoading = view.findViewById(R.id.recomendados_loading);
         recomendadosEmpty = view.findViewById(R.id.recomendados_empty);
-
     }
 
     private void setupClicks() {
-        // Categorías
         safeClick(categoryTodo, () -> loadCategoryFragment("Todo"));
         safeClick(categoryEventos, () -> loadCategoryFragment("Eventos"));
         safeClick(categoryTecnologia, () -> loadCategoryFragment("Tecnología"));
         safeClick(categoryTransporte, () -> loadCategoryFragment("Transporte"));
         safeClick(categoryHerramientas, () -> loadCategoryFragment("Herramientas"));
 
-        // ✅ nuevas
         safeClick(categoryHogar, () -> loadCategoryFragment("Hogar y Muebles"));
         safeClick(categoryDeportes, () -> loadCategoryFragment("Deportes y Aire Libre"));
         safeClick(categoryElectro, () -> loadCategoryFragment("Electrodomesticos"));
@@ -132,16 +139,13 @@ public class Home extends Fragment {
         safeClick(categoryJuegos, () -> loadCategoryFragment("Juegos y Entretenimiento"));
         safeClick(categoryMascotas, () -> loadCategoryFragment("Mascotas"));
 
-        // Explorar
         safeClick(explorarMasBtn, () -> loadDetailFragment("Explorar"));
 
-        // Cards “Te puede servir para...”
         safeClick(serviceItem1, () -> loadDetailFragment("Proyecto"));
         safeClick(serviceItem2, () -> loadDetailFragment("Escapada"));
         safeClick(serviceItem3, () -> loadDetailFragment("Reparar"));
         safeClick(serviceItem4, () -> loadDetailFragment("Evento"));
 
-        // Menú (placeholder)
         if (menuIcon != null) {
             menuIcon.setOnClickListener(v ->
                     Toast.makeText(requireContext(), "Menú (pendiente)", Toast.LENGTH_SHORT).show()
@@ -151,20 +155,16 @@ public class Home extends Fragment {
         if (featuredCard != null) {
             featuredCard.setOnClickListener(v -> {
                 if (objetoDestacado != null) {
-                    openObjetoActivity(objetoDestacado.getId());
+                    openObjetoActivity(objetoDestacado.getIdObjeto());
                 }
             });
         }
     }
 
-    private void safeClick(View v, Runnable r) {
-        if (v != null) v.setOnClickListener(view -> r.run());
-    }
-
     private void setupSearch() {
         if (searchBar == null) return;
-        searchBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
+        searchBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchBar.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 String texto = searchBar.getText().toString().trim();
@@ -175,18 +175,30 @@ public class Home extends Fragment {
         });
     }
 
-    private void setupRecomendadosRecycler() {
-        if (recomendadosRecycler == null) return;
+    private void setupRecyclers() {
+        if (recomendadosRecycler != null) {
+            recomendadosAdapter = new RecomendadosAdapter(recomendadosList, objeto ->
+                    openObjetoActivity(objeto.getIdObjeto())
+            );
+            recomendadosRecycler.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            );
+            recomendadosRecycler.setAdapter(recomendadosAdapter);
+        }
 
-        recomendadosAdapter = new RecomendadosAdapter(recomendadosList, objeto -> {
-            // ✅ Pasar el ID del objeto al abrir la Activity
-            openObjetoActivity(objeto.getId());
-        });
+        if (cercaRecycler != null) {
+            cercaAdapter = new RecomendadosAdapter(cercaList, objeto ->
+                    openObjetoActivity(objeto.getIdObjeto())
+            );
+            cercaRecycler.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            );
+            cercaRecycler.setAdapter(cercaAdapter);
+        }
+    }
 
-        recomendadosRecycler.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        );
-        recomendadosRecycler.setAdapter(recomendadosAdapter);
+    private void safeClick(View v, Runnable r) {
+        if (v != null) v.setOnClickListener(view -> r.run());
     }
 
     private void loadCategoryFragment(String category) {
@@ -213,33 +225,40 @@ public class Home extends Fragment {
         transaction.commit();
     }
 
-    // ✅ Modificar el método openObjetoActivity para recibir el ID
     private void openObjetoActivity(int objetoId) {
         Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
-        intent.putExtra("objetoId", objetoId); // Pasar el ID como extra
+        intent.putExtra("objetoId", objetoId);
         startActivity(intent);
     }
 
-    // ✅ Para el featuredCard, necesitas guardar el objeto destacado
+    // ------------------ DATA LOADERS ------------------
 
-    private void cargarDestacadoAleatorio() {
+    private void setLoading(boolean loading) {
+        if (recomendadosLoading != null) recomendadosLoading.setVisibility(loading ? View.VISIBLE : View.GONE);
+        if (recomendadosRecycler != null) recomendadosRecycler.setVisibility(loading ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    private void setEmptyState(boolean empty) {
+        if (recomendadosEmpty != null) recomendadosEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
+    }
+
+    private void cargarDestacado() {
         if (tituloDestacado == null || descDestacado == null || imagenDestacado == null) return;
 
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
-
-        api.getDestacado().enqueue(new Callback<com.example.roy.models.Objeto>() {
+        api.getDestacado().enqueue(new Callback<Objeto>() {
             @Override
-            public void onResponse(Call<com.example.roy.models.Objeto> call,
-                                   Response<com.example.roy.models.Objeto> response) {
+            public void onResponse(Call<Objeto> call, Response<Objeto> response) {
                 if (!isAdded()) return;
 
-                if (response.isSuccessful() && response.body() != null) {
-                    objetoDestacado = response.body(); // ✅ Guardar el objeto
+                Log.d(TAG, "destacado code=" + response.code());
 
-                    tituloDestacado.setText(objetoDestacado.getNombre());
+                if (response.isSuccessful() && response.body() != null) {
+                    objetoDestacado = response.body();
+
+                    tituloDestacado.setText(objetoDestacado.getNombreObjeto());
                     descDestacado.setText(objetoDestacado.getDescripcion());
 
-                    String url = objetoDestacado.getImagenPrincipal();
+                    String url = objetoDestacado.getImagenUrl();
                     if (url != null) url = url.trim();
 
                     if (url != null && !url.isEmpty()) {
@@ -252,74 +271,73 @@ public class Home extends Fragment {
                         imagenDestacado.setImageResource(R.drawable.tent_image);
                     }
 
-                    Log.d(TAG, "Destacado cargado: " + objetoDestacado.getNombre());
                 } else {
-                    Log.w(TAG, "Destacado falló: code=" + response.code());
+                    Log.w(TAG, "destacado falló code=" + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<com.example.roy.models.Objeto> call, Throwable t) {
-                Log.e(TAG, "Destacado onFailure: " + t.getMessage(), t);
+            public void onFailure(Call<Objeto> call, Throwable t) {
+                Log.e(TAG, "destacado failure: " + t.getMessage(), t);
             }
         });
     }
 
-    private void setupRecyclers() {
-        if (recomendadosRecycler != null) {
-            recomendadosAdapter = new RecomendadosAdapter(recomendadosList, objeto -> {
-                // ✅ Pasar el ID correcto
-                openObjetoActivity(objeto.getId());
-            });
-            recomendadosRecycler.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            );
-            recomendadosRecycler.setAdapter(recomendadosAdapter);
-        }
+    private void cargarRecomendadosYCerca() {
+        setLoading(true);
+        setEmptyState(false);
 
-        if (cercaRecycler != null) {
-            cercaAdapter = new RecomendadosAdapter(cercaList, objeto -> {
-                // ✅ Pasar el ID correcto
-                openObjetoActivity(objeto.getId());
-            });
-            cercaRecycler.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            );
-            cercaRecycler.setAdapter(cercaAdapter);
-        }
-    }
-
-    private final List<com.example.roy.models.Objeto> allObjetos = new ArrayList<>();
-
-    private void cargarRecomendados() {
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
-
-        api.getRecomendados().enqueue(new Callback<List<com.example.roy.models.Objeto>>() {
+        api.getRecomendados().enqueue(new Callback<List<Objeto>>() {
             @Override
-            public void onResponse(Call<List<com.example.roy.models.Objeto>> call,
-                                   Response<List<com.example.roy.models.Objeto>> response) {
-
+            public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
                 if (!isAdded()) return;
 
-                allObjetos.clear();
-                if (response.isSuccessful() && response.body() != null) {
-                    allObjetos.addAll(response.body());
+                Log.d(TAG, "recomendados code=" + response.code());
+
+                setLoading(false);
+
+                if (!response.isSuccessful() || response.body() == null) {
+                    setEmptyState(true);
+                    Log.e(TAG, "recomendados error code=" + response.code());
+                    return;
                 }
 
-                // Mezcla para variedad
-                java.util.Collections.shuffle(allObjetos);
+                List<Objeto> all = response.body();
+                Log.d(TAG, "recomendados size=" + all.size());
 
+                if (all.isEmpty()) {
+                    setEmptyState(true);
+                    return;
+                }
+
+                // Mezclar para que se vea variado
+                Collections.shuffle(all);
+
+                // Recomendados
                 recomendadosList.clear();
-                cercaList.clear();
-
-                // Recomendados: primeros 10
-                for (int i = 0; i < Math.min(10, allObjetos.size()); i++) {
-                    recomendadosList.add(allObjetos.get(i));
+                for (int i = 0; i < Math.min(10, all.size()); i++) {
+                    recomendadosList.add(all.get(i));
                 }
 
-                // Cerca de ti: siguientes 6 (diferentes)
-                for (int i = 10; i < Math.min(16, allObjetos.size()); i++) {
-                    cercaList.add(allObjetos.get(i));
+                // Cerca de ti (si hay zona guardada)
+                cercaList.clear();
+                String miZona = getZonaUsuario();
+
+                if (miZona != null && !miZona.trim().isEmpty()) {
+                    String zonaNorm = miZona.trim().toLowerCase();
+                    for (Objeto o : all) {
+                        if (o.getZona() != null && o.getZona().toLowerCase().contains(zonaNorm)) {
+                            cercaList.add(o);
+                        }
+                        if (cercaList.size() >= 6) break;
+                    }
+                }
+
+                // Si no había zona o no hubo matches, fallback: siguientes 6 distintos
+                if (cercaList.isEmpty()) {
+                    for (int i = 10; i < Math.min(16, all.size()); i++) {
+                        cercaList.add(all.get(i));
+                    }
                 }
 
                 if (recomendadosAdapter != null) recomendadosAdapter.notifyDataSetChanged();
@@ -327,34 +345,26 @@ public class Home extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<com.example.roy.models.Objeto>> call, Throwable t) { }
-        });
-    }
-
-    private void cargarCercaDeTi() {
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
-
-        api.getRecomendados().enqueue(new Callback<List<com.example.roy.models.Objeto>>() {
-            @Override
-            public void onResponse(Call<List<com.example.roy.models.Objeto>> call, Response<List<com.example.roy.models.Objeto>> response) {
+            public void onFailure(Call<List<Objeto>> call, Throwable t) {
                 if (!isAdded()) return;
 
-                cercaList.clear();
-                if (response.isSuccessful() && response.body() != null) {
-                    // ✅ para que se sienta distinto: tomamos los primeros 6
-                    List<com.example.roy.models.Objeto> all = response.body();
-                    for (int i = 0; i < Math.min(6, all.size()); i++) {
-                        cercaList.add(all.get(i));
-                    }
-                    if (cercaAdapter != null) cercaAdapter.notifyDataSetChanged();
-                }
-            }
+                setLoading(false);
+                setEmptyState(true);
 
-            @Override
-            public void onFailure(Call<List<com.example.roy.models.Objeto>> call, Throwable t) {
-                // opcional: no mostramos error acá para no ensuciar el home
+                Log.e(TAG, "recomendados failure: " + t.getMessage(), t);
+                Toast.makeText(requireContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private String getZonaUsuario() {
+        // Ajusta el nombre del sharedprefs a tu app (ej: "ROY_PREFS")
+        try {
+            SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
+            // Ajusta la key a la que tú uses (ej: "zona", "userZona", etc.)
+            return prefs.getString("zona", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

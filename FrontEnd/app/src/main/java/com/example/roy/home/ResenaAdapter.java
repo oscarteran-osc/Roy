@@ -43,7 +43,7 @@ public class ResenaAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return resenas.get(position).getId();
+        return resenas.get(position).getIdResena();
     }
 
     @Override
@@ -67,22 +67,22 @@ public class ResenaAdapter extends BaseAdapter {
         Resena resena = resenas.get(position);
 
         // Setear datos
-        holder.txtNombre.setText(resena.getNombreUsuario());
-        holder.txtFecha.setText(resena.getFecha());
+        holder.txtNombre.setText(resena.getNombreAutor());
+        holder.txtFecha.setText(resena.getFechaResena().toString());
         holder.txtComentario.setText(resena.getComentario());
         holder.rating.setRating(resena.getCalificacion());
 
         // Cargar avatar con Glide
-        if (resena.getAvatarUrl() != null && !resena.getAvatarUrl().isEmpty()) {
-            Glide.with(context)
-                    .load(resena.getAvatarUrl())
-                    .placeholder(R.drawable.img)
-                    .error(R.drawable.img)
-                    .circleCrop()
-                    .into(holder.avatar);
-        } else {
-            holder.avatar.setImageResource(R.drawable.img);
-        }
+      //  if (resena.getAvatarUrl() != null && !resena.getAvatarUrl().isEmpty()) {
+      //      Glide.with(context)
+     //               .load(resena.getAvatarUrl())
+      //              .placeholder(R.drawable.img)
+     //               .error(R.drawable.img)
+      //              .circleCrop()
+      //              .into(holder.avatar);
+       // } else {
+       //     holder.avatar.setImageResource(R.drawable.img);
+      //  }
 
         // Forzar estrellas amarillas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

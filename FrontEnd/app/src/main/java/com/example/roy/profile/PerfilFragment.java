@@ -193,12 +193,12 @@ public class PerfilFragment extends Fragment {
         if (fotoUrl != null && !fotoUrl.isEmpty()) {
             Glide.with(requireContext())
                     .load(fotoUrl)
-                    .placeholder(R.drawable.imgperfil)
-                    .error(R.drawable.imgperfil)
+                    .placeholder(R.drawable.profile)
+                    .error(R.drawable.profile)
                     .circleCrop()
                     .into(imgAvatar);
         } else {
-            imgAvatar.setImageResource(R.drawable.imgperfil);
+            imgAvatar.setImageResource(R.drawable.profile);
         }
     }
 

@@ -211,7 +211,7 @@ public class EditarPerfil extends Fragment {
         if (perfil.getFotoUrl() != null && !perfil.getFotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(perfil.getFotoUrl())
-                    .placeholder(R.drawable.imgperfil)
+                    .placeholder(R.drawable.profileuser)
                     .circleCrop()
                     .into(imgAvatarEditar);
         }

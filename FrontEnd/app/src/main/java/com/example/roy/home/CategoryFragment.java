@@ -422,7 +422,7 @@ public class CategoryFragment extends Fragment {
 
             // 2) texto
             if (!textoBusqueda.isEmpty()) {
-                String nombre = (obj.getNombre() != null) ? obj.getNombre().toLowerCase() : "";
+                String nombre = (obj.getNombreObjeto() != null) ? obj.getNombreObjeto().toLowerCase() : "";
                 String desc   = (obj.getDescripcion() != null) ? obj.getDescripcion().toLowerCase() : "";
                 if (!nombre.contains(textoBusqueda) && !desc.contains(textoBusqueda)) continue;
             }
