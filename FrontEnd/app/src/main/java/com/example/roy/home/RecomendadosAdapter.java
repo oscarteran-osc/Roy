@@ -39,10 +39,10 @@ public class RecomendadosAdapter extends RecyclerView.Adapter<RecomendadosAdapte
     public void onBindViewHolder(@NonNull VH h, int position) {
         com.example.roy.models.Objeto o = list.get(position);
 
-        h.titulo.setText(o.getNombreObjeto());
+        h.titulo.setText(o.getNombre());
         h.precio.setText("$ " + o.getPrecio());
 
-        String url = o.getImagenUrl();
+        String url = o.getImagenPrincipal();
         if (url != null) url = url.trim();
 
         if (url != null && !url.isEmpty()) {

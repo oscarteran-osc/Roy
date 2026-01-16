@@ -4,8 +4,12 @@ import com.example.roy.models.AuthResponse;
 import com.example.roy.models.LoginRequest;
 import com.example.roy.models.RegisterRequest;
 import com.example.roy.models.Objeto;
+import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
+import com.example.roy.models.UpdateProfileRequest;
+import com.example.roy.models.UserProfileResponse;
 import com.example.roy.models.Usuario;
+import com.example.roy.profile.perfilArrendador;
 
 import java.util.List;
 
@@ -14,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -81,11 +86,51 @@ public interface ApiService {
     Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
 
 
+    // ---------- RESEÑAS ----------
+    @GET("api/resenas/objeto/{objetoId}")
+    Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
+    @POST("api/resenas")
+    Call<Resena> crearResena(@Body Resena resena, @Header("Authorization") String token);
 
+    @DELETE("api/resenas/{resenaId}")
+    Call<Void> eliminarResena(@Path("resenaId") int resenaId, @Header("Authorization") String token);
 
-    // FOTO PERFIL
+    // ---------- PERFIL (Roy/api/usuario/...) ----------
+    @GET("Roy/api/usuario/{id}")
+    Call<UserProfileResponse> getPerfil(
+            @Path("id") int userId,
+            @Header("Authorization") String token
+    );
+
+    @PUT("Roy/api/usuario/{id}")
+    Call<UserProfileResponse> actualizarPerfil(
+            @Path("id") int userId,
+            @Body UpdateProfileRequest request,
+            @Header("Authorization") String token
+    );
+
+    @Multipart
+    @PUT("Roy/api/usuario/{id}/foto")
+    Call<String> actualizarFotoPerfil(
+            @Path("id") int userId,
+            @Part MultipartBody.Part file,
+            @Header("Authorization") String token
+    );
+
     @Multipart
     @POST("Roy/api/usuario/{id}/foto")
-    Call<String> subirFoto(@Path("id") int id, @Part MultipartBody.Part file);
+    Call<String> subirFoto(
+            @Path("id") int id,
+            @Part MultipartBody.Part file
+          //  @Header("Authorization") String token
+    );
+
+    //@POST("Roy/api/usuario/{id}/calificar")
+   // Call<perfilArrendador.CalificacionResponse> calificarUsuario(
+    //        @Path("id") int arrendadorId,
+    //        @Header("Authorization") String token,
+   //         @Body perfilArrendador.CalificarUsuarioRequest request
+   // );
+
 }

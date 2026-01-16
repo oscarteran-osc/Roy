@@ -422,7 +422,7 @@ public class CategoryFragment extends Fragment {
 
             // 2) texto
             if (!textoBusqueda.isEmpty()) {
-                String nombre = (obj.getNombreObjeto() != null) ? obj.getNombreObjeto().toLowerCase() : "";
+                String nombre = (obj.getNombre() != null) ? obj.getNombre().toLowerCase() : "";
                 String desc   = (obj.getDescripcion() != null) ? obj.getDescripcion().toLowerCase() : "";
                 if (!nombre.contains(textoBusqueda) && !desc.contains(textoBusqueda)) continue;
             }
@@ -430,14 +430,15 @@ public class CategoryFragment extends Fragment {
             listaFiltrada.add(obj);
         }
 
-        if (extra == ExtraFilter.MAS_BARATO) {
+       if (extra == ExtraFilter.MAS_BARATO) {
             Collections.sort(listaFiltrada, new Comparator<Objeto>() {
                 @Override
                 public int compare(Objeto o1, Objeto o2) {
-                    double p1 = (o1.getPrecio() != null) ? o1.getPrecio() : 0.0;
-                    double p2 = (o2.getPrecio() != null) ? o2.getPrecio() : 0.0;
+                    double p1 = o1.getPrecio();
+                    double p2 = o2.getPrecio();
                     return Double.compare(p1, p2);
                 }
+
             });
         }
         adapter.updateData(new ArrayList<>(listaFiltrada));
@@ -489,3 +490,4 @@ public class CategoryFragment extends Fragment {
         return s;
     }
 }
+

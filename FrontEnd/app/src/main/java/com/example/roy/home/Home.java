@@ -205,7 +205,7 @@ public class Home extends Fragment {
     }
 
     private void openObjetoActivity() {
-        Intent intent = new Intent(requireContext(), com.example.roy.home.Objeto.class);
+        Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
         startActivity(intent);
     }
 
@@ -222,10 +222,10 @@ public class Home extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     com.example.roy.models.Objeto o = response.body();
 
-                    tituloDestacado.setText(o.getNombreObjeto());
+                    tituloDestacado.setText(o.getNombre());
                     descDestacado.setText(o.getDescripcion());
 
-                    String url = o.getImagenUrl();
+                    String url = o.getImagenPrincipal();
                     if (url != null) url = url.trim();
 
                     // ✅ Si viene https:// ya no armamos nada
@@ -240,7 +240,7 @@ public class Home extends Fragment {
                         imagenDestacado.setImageResource(R.drawable.tent_image);
                     }
 
-                    Log.d(TAG, "Destacado cargado: " + o.getNombreObjeto() + " | " + url);
+                    Log.d(TAG, "Destacado cargado: " + o.getNombre() + " | " + url);
                 } else {
                     Log.w(TAG, "Destacado falló: code=" + response.code());
                 }
