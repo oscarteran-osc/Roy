@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
+import com.example.roy.models.Objeto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,8 @@ public class Home extends Fragment {
 
         return view;
     }
+    private Objeto objetoDestacado;
+
 
     private void bindViews(View view) {
         // Categorías (las que ya tenías)
@@ -145,7 +148,13 @@ public class Home extends Fragment {
             );
         }
 
-        if (featuredCard != null) featuredCard.setOnClickListener(v -> openObjetoActivity());
+        if (featuredCard != null) {
+            featuredCard.setOnClickListener(v -> {
+                if (objetoDestacado != null) {
+                    openObjetoActivity(objetoDestacado.getId());
+                }
+            });
+        }
     }
 
     private void safeClick(View v, Runnable r) {
@@ -170,8 +179,8 @@ public class Home extends Fragment {
         if (recomendadosRecycler == null) return;
 
         recomendadosAdapter = new RecomendadosAdapter(recomendadosList, objeto -> {
-            // Aquí puedes abrir detalle si tienes Activity/Fragment
-            openObjetoActivity();
+            // ✅ Pasar el ID del objeto al abrir la Activity
+            openObjetoActivity(objeto.getId());
         });
 
         recomendadosRecycler.setLayoutManager(
@@ -204,10 +213,14 @@ public class Home extends Fragment {
         transaction.commit();
     }
 
-    private void openObjetoActivity() {
+    // ✅ Modificar el método openObjetoActivity para recibir el ID
+    private void openObjetoActivity(int objetoId) {
         Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+        intent.putExtra("objetoId", objetoId); // Pasar el ID como extra
         startActivity(intent);
     }
+
+    // ✅ Para el featuredCard, necesitas guardar el objeto destacado
 
     private void cargarDestacadoAleatorio() {
         if (tituloDestacado == null || descDestacado == null || imagenDestacado == null) return;
@@ -216,20 +229,19 @@ public class Home extends Fragment {
 
         api.getDestacado().enqueue(new Callback<com.example.roy.models.Objeto>() {
             @Override
-            public void onResponse(Call<com.example.roy.models.Objeto> call, Response<com.example.roy.models.Objeto> response) {
+            public void onResponse(Call<com.example.roy.models.Objeto> call,
+                                   Response<com.example.roy.models.Objeto> response) {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    com.example.roy.models.Objeto o = response.body();
+                    objetoDestacado = response.body(); // ✅ Guardar el objeto
 
-                    tituloDestacado.setText(o.getNombre());
-                    descDestacado.setText(o.getDescripcion());
+                    tituloDestacado.setText(objetoDestacado.getNombre());
+                    descDestacado.setText(objetoDestacado.getDescripcion());
 
-                    String url = o.getImagenPrincipal();
+                    String url = objetoDestacado.getImagenPrincipal();
                     if (url != null) url = url.trim();
 
-                    // ✅ Si viene https:// ya no armamos nada
-                    // ✅ Si viene vacío, usamos placeholder
                     if (url != null && !url.isEmpty()) {
                         Glide.with(requireContext())
                                 .load(url)
@@ -240,7 +252,7 @@ public class Home extends Fragment {
                         imagenDestacado.setImageResource(R.drawable.tent_image);
                     }
 
-                    Log.d(TAG, "Destacado cargado: " + o.getNombre() + " | " + url);
+                    Log.d(TAG, "Destacado cargado: " + objetoDestacado.getNombre());
                 } else {
                     Log.w(TAG, "Destacado falló: code=" + response.code());
                 }
@@ -253,17 +265,26 @@ public class Home extends Fragment {
         });
     }
 
-
     private void setupRecyclers() {
         if (recomendadosRecycler != null) {
-            recomendadosAdapter = new RecomendadosAdapter(recomendadosList, o -> openObjetoActivity());
-            recomendadosRecycler.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            recomendadosAdapter = new RecomendadosAdapter(recomendadosList, objeto -> {
+                // ✅ Pasar el ID correcto
+                openObjetoActivity(objeto.getId());
+            });
+            recomendadosRecycler.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            );
             recomendadosRecycler.setAdapter(recomendadosAdapter);
         }
 
         if (cercaRecycler != null) {
-            cercaAdapter = new RecomendadosAdapter(cercaList, o -> openObjetoActivity());
-            cercaRecycler.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            cercaAdapter = new RecomendadosAdapter(cercaList, objeto -> {
+                // ✅ Pasar el ID correcto
+                openObjetoActivity(objeto.getId());
+            });
+            cercaRecycler.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            );
             cercaRecycler.setAdapter(cercaAdapter);
         }
     }

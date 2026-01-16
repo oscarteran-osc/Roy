@@ -14,11 +14,12 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
 
     ImageButton atrasito;
     Button solicitud;
+    private int objetoId = -1; // ✅ Guardar el ID del objeto
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_objeto); // Renombra este archivo a activity_objeto.xml si quieres
+        setContentView(R.layout.fragment_objeto);
 
         atrasito = findViewById(R.id.back);
         solicitud = findViewById(R.id.enviosoli);
@@ -26,11 +27,19 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
         atrasito.setOnClickListener(this);
         solicitud.setOnClickListener(this);
 
-        // Cargar el fragment objetito
+        // ✅ Obtener el ID del objeto del Intent
+        if (getIntent() != null) {
+            objetoId = getIntent().getIntExtra("objetoId", -1);
+        }
+
+        // ✅ Cargar el fragment objetito con el ID
         if (savedInstanceState == null) {
+            // Crear el fragment con el ID del objeto
+            objetito fragment = objetito.newInstance(objetoId);
+
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.contenedorfragmentos, new objetito())
+                    .replace(R.id.contenedorfragmentos, fragment)
                     .commit();
         }
     }
@@ -42,7 +51,15 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             finish(); // Cierra la activity y regresa a la anterior
         }
         else if(id == R.id.enviosoli){
-            Toast.makeText(this, "Solicitud enviada", Toast.LENGTH_SHORT).show();
+            // ✅ Opcional: pasar el objetoId a la siguiente pantalla si es necesario
+            if (objetoId != -1) {
+                Toast.makeText(this, "Solicitud enviada para objeto #" + objetoId,
+                        Toast.LENGTH_SHORT).show();
+                // Aquí podrías abrir otra Activity/Fragment para la solicitud
+                // y pasarle el objetoId
+            } else {
+                Toast.makeText(this, "Error: Objeto no válido", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

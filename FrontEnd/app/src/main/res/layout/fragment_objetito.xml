@@ -25,7 +25,7 @@
                 android:layout_marginVertical="15dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/casacampania" />
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/casacampania" />
+                     />
 
                 <ImageView
                     android:id="@+id/mini2"
@@ -48,7 +48,7 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tienda2" />
+                     />
 
                 <ImageView
                     android:id="@+id/mini3"
@@ -56,7 +56,7 @@
                     android:layout_height="match_parent"
                     android:clickable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tienda3" />
+                     />
             </LinearLayout>
 
             <TextView
@@ -65,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Tienda de campaña grande para 4-5 personas"
                 android:textColor="@color/black"
                 android:textSize="19dp" />
 
@@ -74,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:text="José Alberto"
                 android:textColor="#7A6D6D" />
 
             <RatingBar
@@ -86,7 +84,6 @@
                 android:adjustViewBounds="true"
                 android:progressBackgroundTint="#737171"
                 android:progressTint="#FFEB3B"
-                android:rating="4"
                 android:scaleType="fitCenter"
                 android:secondaryProgressTint="#9B9898" />
 
@@ -101,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="$350"
                     android:textColor="#FF7B00"
                     android:textSize="22dp" />
 
@@ -113,7 +109,6 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="end"
-                    android:text="Disponible"
                     android:textColor="#7C8E34"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -123,7 +118,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/equinita"
-                android:text="Camping"
                 android:textColor="@color/black" />
 
             <TextView
@@ -145,7 +139,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:justificationMode="inter_word"
-                android:text="@string/desc"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 
