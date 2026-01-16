@@ -62,7 +62,7 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        Integer id = lista.get(position).getIdObjeto();
+        Integer id = lista.get(position).getId();
         return (id != null) ? id : position;
     }
 
@@ -95,13 +95,11 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
         Objeto o = getItem(position);
 
         // null-safety
-        String nombre = (o.getNombreObjeto() != null && !o.getNombreObjeto().trim().isEmpty())
-                ? o.getNombreObjeto()
+        String nombre = (o.getNombre() != null && !o.getNombre().trim().isEmpty())
+                ? o.getNombre()
                 : "Objeto";
 
-        String estado = (o.getEstado() != null && !o.getEstado().trim().isEmpty())
-                ? o.getEstado()
-                : "Disponible";
+        String estado = o.getDisponible() ? "Disponible" : "No disponible";
 
         Double precioObj = o.getPrecio(); // en tu CategoryFragment lo estás tratando como Double
         double precio = (precioObj != null) ? precioObj : 0.0;
@@ -118,7 +116,7 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
         if (h.tvExtra != null) h.tvExtra.setText(entrega + " • " + estado);
 
         // Glide
-        String url = o.getImagenUrl();
+        String url = o.getImagenPrincipal();
 
         if (h.imgObjeto != null) {
             if (url == null || url.trim().isEmpty()) {

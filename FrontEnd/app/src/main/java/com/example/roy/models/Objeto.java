@@ -105,7 +105,7 @@ public class Objeto {
         this.categoria = categoria;
     }
 
-    public boolean isDisponible() {
+    public boolean getDisponible() {
         return disponible;
     }
 

@@ -205,7 +205,7 @@ public class objetito extends Fragment {
         arrendadorId = objeto.getArrendadorId();
 
         // Disponibilidad
-        if (objeto.isDisponible()) {
+        if (objeto.getDisponible()) {
             disponibilidad.setText("Disponible");
             disponibilidad.setTextColor(getResources().getColor(R.color.disponible, null));
         } else {
