@@ -1,14 +1,17 @@
 package com.example.roy.profile;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.content.Context.MODE_PRIVATE;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.login.LoginActivity;
+import com.example.roy.login.MainActivity;
 import com.example.roy.models.UserProfileResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -47,6 +51,7 @@ public class PerfilFragment extends Fragment {
 
     // API
     private ApiService apiService;
+    private Button btnLogout;
 
     // Datos de sesión
     private int userId;
@@ -77,7 +82,7 @@ public class PerfilFragment extends Fragment {
 
         // Configurar RecyclerView de historial (dummy por ahora)
         setupHistorialRecyclerView();
-
+        btnLogout.setOnClickListener(v -> mostrarDialogoLogout());
         // Cargar datos del perfil desde el servidor
         cargarPerfil();
 
@@ -91,6 +96,7 @@ public class PerfilFragment extends Fragment {
         chipReputacion = view.findViewById(R.id.chipReputacion);
         tvTelefono = view.findViewById(R.id.tvTelefono);
         tvEmail = view.findViewById(R.id.tvEmail);
+        btnLogout = view.findViewById(R.id.btnLogout);
         tvPassword = view.findViewById(R.id.tvPassword);
         btnEditarPerfil = view.findViewById(R.id.btnEditarPerfil);
         rvHistorial = view.findViewById(R.id.rvHistorial);
@@ -286,5 +292,29 @@ public class PerfilFragment extends Fragment {
     // Listener para clicks en el historial
     public interface OnHistorialClickListener {
         void onClick(ItemHistorial item);
+    }
+
+
+    private void mostrarDialogoLogout() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Cerrar sesión")
+                .setMessage("¿Estás seguro de que quieres cerrar sesión?")
+                .setPositiveButton("Sí, cerrar", (dialog, which) -> realizarLogout())
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void realizarLogout() {
+        // Limpiar SharedPreferences
+        SharedPreferences prefs = requireContext().getSharedPreferences("RoyPrefs", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+
+        Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
+
+        // Redirigir al MainActivity
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 }
