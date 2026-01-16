@@ -3,6 +3,7 @@ package com.example.roy.misobjetos;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.roy.R;
-import com.example.roy.api.ApiService; // Importar ApiService
-import com.example.roy.api.RetrofitClient; // Importar RetrofitClient
+import com.example.roy.api.ApiService;
+import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
 
-import java.util.ArrayList; // Necesario para inicializar la lista
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,26 +29,25 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class listaobjetos extends Fragment {
 
+    private static final String TAG = "ListaObjetos";
     private ListView listView;
     private objetosAdapter adapter;
-    private ApiService apiService; // ✅ Reemplaza a MockDataManager
+    private ApiService apiService;
     private int currentUserId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Inicializar Retrofit
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Obtener ID del usuario actual
         SharedPreferences prefs = requireContext().getSharedPreferences("RoyPrefs", MODE_PRIVATE);
-        currentUserId = prefs.getInt("userId", -1); // Usar -1 o un valor seguro si no está logueado
+        currentUserId = prefs.getInt("userId", -1);
 
-        // Verificar si el ID es válido
+        Log.d(TAG, "onCreate - userId obtenido: " + currentUserId);
+
         if (currentUserId == -1) {
-            Toast.makeText(getContext(), "Error: Usuario no autenticado", Toast.LENGTH_LONG).show();
-            // TODO: Redirigir al login si el ID es -1
+            Log.e(TAG, "ERROR: Usuario no autenticado (userId = -1)");
         }
     }
 
@@ -58,26 +58,24 @@ public class listaobjetos extends Fragment {
 
         listView = view.findViewById(R.id.listaobjeto);
 
-        // ✅ Inicializar Adaptador con lista vacía (los datos se cargarán asíncronamente)
         adapter = new objetosAdapter(
                 getContext(),
-                new ArrayList<>(), // Inicialmente vacía
+                new ArrayList<>(),
                 new objetosAdapter.OnItemActionListener() {
                     @Override
                     public void onVerDetallesClicked(Objeto objeto) {
-                        // Lógica de navegación a detalles
                         Intent intent = new Intent(getContext(), detalles.class);
                         intent.putExtra("objetoId", objeto.getIdObjeto());
-                        // Pasa los demás datos si es necesario (o solo el ID para que la actividad de detalles los cargue)
                         startActivity(intent);
                     }
 
                     @Override
                     public void onVerSolicitudesClicked(Objeto objeto, View view) {
-                        Toast.makeText(getContext(),
-                                "Ver solicitudes de: " + objeto.getNombreObjeto(),
-                                Toast.LENGTH_SHORT).show();
-                        // TODO: Navegar a lista de solicitudes
+                        if (isAdded()) {
+                            Toast.makeText(getContext(),
+                                    "Ver solicitudes de: " + objeto.getNombreObjeto(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -88,70 +86,137 @@ public class listaobjetos extends Fragment {
         );
 
         listView.setAdapter(adapter);
+        Log.d(TAG, "onCreateView - Adapter establecido");
+
         return view;
     }
 
-    // ✅ Reemplaza onResume para cargar datos al iniciar y volver
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume - Iniciando carga de objetos");
         cargarObjetos();
     }
 
-    // =========================================================
-    //                    MÉTODOS RETROFIT
-    // =========================================================
-
-    // ✅ MÉTODO PARA CARGAR LOS DATOS (Llamada GET)
     public void cargarObjetos() {
-        if (currentUserId == -1) return;
+        // ✅ Validación de contexto y userId
+        if (!isAdded()) {
+            Log.w(TAG, "Fragment no está adjunto, no se puede cargar objetos");
+            return;
+        }
+
+        if (currentUserId == -1) {
+            Log.e(TAG, "cargarObjetos - No se puede cargar: userId inválido");
+            Toast.makeText(getContext(), "Error: Inicia sesión para ver tus objetos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d(TAG, "cargarObjetos - Llamando API para userId: " + currentUserId);
 
         apiService.getObjetosPorUsuario(currentUserId).enqueue(new Callback<List<Objeto>>() {
             @Override
             public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
+                // ✅ VERIFICAR QUE EL FRAGMENT SIGA ADJUNTO antes de hacer cualquier cosa
+                if (!isAdded()) {
+                    Log.w(TAG, "Fragment ya no está adjunto, ignorando respuesta");
+                    return;
+                }
+
+                Log.d(TAG, "onResponse - Código: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
-                    // Actualizar el adaptador con los datos del servidor
-                    adapter.updateData(response.body());
+                    List<Objeto> objetos = response.body();
+                    Log.d(TAG, "Objetos recibidos: " + objetos.size());
+
+                    for (int i = 0; i < objetos.size(); i++) {
+                        Objeto obj = objetos.get(i);
+                        Log.d(TAG, "Objeto " + i + ": " + obj.getNombreObjeto() + " - $" + obj.getPrecio());
+                    }
+
+                    adapter.updateData(objetos);
+
+                    if (objetos.isEmpty()) {
+                        Toast.makeText(getContext(), "No tienes objetos registrados", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getContext(), "Error al cargar objetos: " + response.code(), Toast.LENGTH_SHORT).show();
-                    adapter.updateData(new ArrayList<>()); // Limpiar lista en caso de error
+                    Log.e(TAG, "Error en respuesta: " + response.code() + " - " + response.message());
+
+                    // ✅ Mensaje específico para 404
+                    if (response.code() == 404) {
+                        Log.e(TAG, "ENDPOINT NO ENCONTRADO - Verifica tu ApiService");
+                        Toast.makeText(getContext(),
+                                "Error: El servidor no encontró el endpoint. Contacta al desarrollador.",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(),
+                                "Error al cargar objetos: " + response.code(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    adapter.updateData(new ArrayList<>());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Objeto>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de red al cargar objetos.", Toast.LENGTH_LONG).show();
+                // ✅ VERIFICAR QUE EL FRAGMENT SIGA ADJUNTO
+                if (!isAdded()) {
+                    Log.w(TAG, "Fragment ya no está adjunto, ignorando error");
+                    return;
+                }
+
+                Log.e(TAG, "onFailure - Error de red", t);
+                Log.e(TAG, "Mensaje: " + t.getMessage());
+                Log.e(TAG, "Clase: " + t.getClass().getName());
+
+                Toast.makeText(getContext(),
+                        "Error de conexión: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+
+                adapter.updateData(new ArrayList<>());
             }
         });
     }
 
     private void mostrarDialogoEliminar(Objeto objeto, int position) {
+        if (!isAdded()) return;
+
         new AlertDialog.Builder(requireContext())
                 .setTitle("Eliminar objeto")
                 .setMessage("¿Estás seguro de eliminar '" + objeto.getNombreObjeto() + "'?")
                 .setPositiveButton("Eliminar", (dialog, which) -> {
-                    realizarEliminacion(objeto.getIdObjeto()); // Llamada DELETE
+                    realizarEliminacion(objeto.getIdObjeto());
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
 
-    // ✅ MÉTODO PARA ELIMINAR OBJETO (Llamada DELETE)
     private void realizarEliminacion(int objetoId) {
+        if (!isAdded()) return;
+
+        Log.d(TAG, "Eliminando objeto con ID: " + objetoId);
+
         apiService.eliminarObjeto(objetoId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "Objeto eliminado exitosamente");
                     Toast.makeText(getContext(), "Objeto eliminado", Toast.LENGTH_SHORT).show();
-                    cargarObjetos(); // Recargar la lista para que el adaptador refleje el cambio
+                    cargarObjetos();
                 } else {
+                    Log.e(TAG, "Error al eliminar: " + response.code());
                     Toast.makeText(getContext(), "Error al eliminar: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de red al eliminar objeto.", Toast.LENGTH_LONG).show();
+                if (!isAdded()) return;
+
+                Log.e(TAG, "Error de red al eliminar", t);
+                Toast.makeText(getContext(), "Error de conexión al eliminar", Toast.LENGTH_LONG).show();
             }
         });
     }
