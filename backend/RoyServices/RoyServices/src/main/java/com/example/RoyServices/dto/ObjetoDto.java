@@ -2,7 +2,6 @@ package com.example.RoyServices.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
 import java.math.BigDecimal;
 
 @Data
@@ -15,4 +14,6 @@ public class ObjetoDto {
     private String estado;
     private String categoria;
     private String descripcion;
+    private String imagenUrl;
+    private String zona;
 }

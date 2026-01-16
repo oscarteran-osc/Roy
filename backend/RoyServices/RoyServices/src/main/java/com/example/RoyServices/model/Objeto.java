@@ -37,4 +37,8 @@ public class Objeto {
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
+
+    @Column(name = "imagen_url")
+    private String imagenUrl;
+
 }

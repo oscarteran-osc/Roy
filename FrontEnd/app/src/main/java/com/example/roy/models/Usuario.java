@@ -27,10 +27,17 @@ public class Usuario {
     @SerializedName("password")
     private String password;
 
+    // ✅ NUEVOS
+    @SerializedName("zona")
+    private String zona;
+
+    @SerializedName("fotoUrl")
+    private String fotoUrl;
+
     // Constructor vacío
     public Usuario() {}
 
-    // Constructor completo
+    // Constructor completo (viejo)
     public Usuario(Integer idUsuario, String nombre, String apellido, String correo,
                    String telefono, String direccion, String fecharegistro, String password) {
         this.idUsuario = idUsuario;
@@ -41,6 +48,22 @@ public class Usuario {
         this.direccion = direccion;
         this.fecharegistro = fecharegistro;
         this.password = password;
+    }
+
+    // ✅ Constructor completo nuevo (con zona y fotoUrl)
+    public Usuario(Integer idUsuario, String nombre, String apellido, String correo,
+                   String telefono, String direccion, String fecharegistro, String password,
+                   String zona, String fotoUrl) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.fecharegistro = fecharegistro;
+        this.password = password;
+        this.zona = zona;
+        this.fotoUrl = fotoUrl;
     }
 
     // Getters y Setters
@@ -68,4 +91,10 @@ public class Usuario {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
+    // ✅ nuevos getters/setters
+    public String getZona() { return zona; }
+    public void setZona(String zona) { this.zona = zona; }
+
+    public String getFotoUrl() { return fotoUrl; }
+    public void setFotoUrl(String fotoUrl) { this.fotoUrl = fotoUrl; }
 }

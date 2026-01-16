@@ -14,37 +14,63 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ROY"
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
-        <activity
-            android:name=".home.Objetoo"
-            android:exported="false" />
-        <activity
-            android:name=".misobjetos.detalles"
-            android:exported="false" />
-        <activity
-            android:name=".misobjetos.plantillaagregar"
-            android:exported="false" />
-        <activity
-            android:name=".solicitudes.metododepago"
-            android:exported="false" />
-        <activity
-            android:name=".Inicio"
-            android:exported="false" />
-        <activity
-            android:name=".login.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".login.Registro"
-            android:exported="false" />
+
+        <!-- Activity Principal (LAUNCHER) -->
         <activity
             android:name=".login.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Login y Registro -->
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".login.Registro"
+            android:exported="false" />
+
+        <!-- Inicio (pantalla principal) -->
+        <activity
+            android:name=".Inicio"
+            android:exported="false" />
+
+        <!-- Objetos -->
+        <activity
+            android:name=".home.Objeto"
+            android:exported="false" />
+
+        <activity
+            android:name=".misobjetos.detalles"
+            android:exported="false" />
+
+        <activity
+            android:name=".misobjetos.plantillaagregar"
+            android:exported="false" />
+
+        <!-- Solicitudes y Pagos -->
+        <activity
+            android:name=".solicitudes.metododepago"
+            android:exported="false" />
+
+        <activity
+            android:name=".solicitudes.PayPalPaymentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".solicitudes.PagoExitosoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".solicitudes.PagoSimuladoActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
