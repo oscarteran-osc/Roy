@@ -11,67 +11,66 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.roy.R;
+import com.example.roy.models.Objeto;
 
 import java.util.List;
 
-public class RecomendadosAdapter extends RecyclerView.Adapter<RecomendadosAdapter.VH> {
+public class RecomendadosAdapter extends RecyclerView.Adapter<RecomendadosAdapter.ViewHolder> {
 
-    public interface OnItemClick {
-        void onClick(com.example.roy.models.Objeto objeto);
+    private final List<Objeto> objetos;
+    private final OnObjetoClickListener listener;
+
+    // Interfaz para manejar clicks
+    public interface OnObjetoClickListener {
+        void onObjetoClick(Objeto objeto);
     }
 
-    private final List<com.example.roy.models.Objeto> list;
-    private final OnItemClick listener;
-
-    public RecomendadosAdapter(List<com.example.roy.models.Objeto> list, OnItemClick listener) {
-        this.list = list;
+    public RecomendadosAdapter(List<Objeto> objetos, OnObjetoClickListener listener) {
+        this.objetos = objetos;
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recomendado, parent, false);
-        return new VH(v);
+    public RecomendadosAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_recomendado, parent, false); // <-- tu layout item
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH h, int position) {
-        com.example.roy.models.Objeto o = list.get(position);
+    public void onBindViewHolder(@NonNull RecomendadosAdapter.ViewHolder holder, int position) {
+        Objeto objeto = objetos.get(position);
 
-        h.titulo.setText(o.getNombre());
-        h.precio.setText("$ " + o.getPrecio());
+        // Ejemplo de binding (ajusta a tu modelo / ids)
+        holder.tvNombre.setText(objeto.getNombre());
+        holder.tvPrecio.setText("$" + objeto.getPrecio()); // si tienes precio
 
-        String url = o.getImagenPrincipal();
-        if (url != null) url = url.trim();
+        // Imagen (ajusta getUrlImagen o lo que uses)
+        Glide.with(holder.itemView.getContext())
+                .load(objeto.getImagenPrincipal()) // <-- ajusta esto
+                .placeholder(R.drawable.ic_box_placeholder)
+                .into(holder.ivFoto);
 
-        if (url != null && !url.isEmpty()) {
-            Glide.with(h.itemView.getContext())
-                    .load(url)
-                    .placeholder(R.drawable.tent_image)
-                    .error(R.drawable.tent_image)
-                    .into(h.img);
-        } else {
-            h.img.setImageResource(R.drawable.tent_image);
-        }
-
-        h.itemView.setOnClickListener(v -> listener.onClick(o));
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onObjetoClick(objeto);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return objetos != null ? objetos.size() : 0;
     }
 
-    static class VH extends RecyclerView.ViewHolder {
-        ImageView img;
-        TextView titulo, precio;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivFoto;
+        TextView tvNombre, tvPrecio;
 
-        public VH(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.item_img);
-            titulo = itemView.findViewById(R.id.item_title);
-            precio = itemView.findViewById(R.id.item_price);
+            ivFoto = itemView.findViewById(R.id.item_img);     // <-- ids de tu item xml
+            tvNombre = itemView.findViewById(R.id.item_title);
+            tvPrecio = itemView.findViewById(R.id.item_price);
         }
     }
 }
