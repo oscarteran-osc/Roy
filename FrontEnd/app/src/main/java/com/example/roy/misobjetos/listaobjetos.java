@@ -67,7 +67,7 @@ public class listaobjetos extends Fragment {
                     public void onVerDetallesClicked(Objeto objeto) {
                         // Lógica de navegación a detalles
                         Intent intent = new Intent(getContext(), detalles.class);
-                        intent.putExtra("objetoId", objeto.getIdObjeto());
+                        intent.putExtra("objetoId", objeto.getId());
                         // Pasa los demás datos si es necesario (o solo el ID para que la actividad de detalles los cargue)
                         startActivity(intent);
                     }
@@ -75,7 +75,7 @@ public class listaobjetos extends Fragment {
                     @Override
                     public void onVerSolicitudesClicked(Objeto objeto, View view) {
                         Toast.makeText(getContext(),
-                                "Ver solicitudes de: " + objeto.getNombreObjeto(),
+                                "Ver solicitudes de: " + objeto.getNombre(),
                                 Toast.LENGTH_SHORT).show();
                         // TODO: Navegar a lista de solicitudes
                     }
@@ -128,9 +128,9 @@ public class listaobjetos extends Fragment {
     private void mostrarDialogoEliminar(Objeto objeto, int position) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Eliminar objeto")
-                .setMessage("¿Estás seguro de eliminar '" + objeto.getNombreObjeto() + "'?")
+                .setMessage("¿Estás seguro de eliminar '" + objeto.getNombre() + "'?")
                 .setPositiveButton("Eliminar", (dialog, which) -> {
-                    realizarEliminacion(objeto.getIdObjeto()); // Llamada DELETE
+                    realizarEliminacion(objeto.getId()); // Llamada DELETE
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();

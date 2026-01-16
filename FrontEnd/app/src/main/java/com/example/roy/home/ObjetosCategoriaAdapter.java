@@ -51,7 +51,7 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return objetos.get(position).getIdObjeto();
+        return objetos.get(position).getId();
     }
 
     @Override
@@ -68,12 +68,12 @@ public class ObjetosCategoriaAdapter extends BaseAdapter {
 
         Objeto objeto = objetos.get(position);
 
-        holder.tvNombre.setText(objeto.getNombreObjeto());
+        holder.tvNombre.setText(objeto.getNombre());
         holder.tvCategoria.setText(objeto.getCategoria());
         holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
 
         // ✅ CARGAR IMAGEN REAL
-        String url = objeto.getImagenUrl();
+        String url = objeto.getImagenPrincipal();
 
         if (url != null) {
             url = url.trim();

@@ -1,5 +1,5 @@
 USE ROY;
-
+SET FOREIGN_KEY_CHECKS = 0;
 -- Usuarios realistas (MX)
 INSERT INTO USUARIO
 (nombre_us, apellido_us, correo, telefono, contrasena, domicilio, fecha_registro, zona, foto_url)
@@ -186,7 +186,7 @@ FROM objeto;
 INSERT INTO imagen_objeto (id_objeto, url_imagen, es_principal)
 SELECT id_objeto, CONCAT('https://loremflickr.com/640/480/', LOWER(REPLACE(estado,' ','-')), '?lock=', id_objeto + 800), FALSE
 FROM objeto;
-
+SET FOREIGN_KEY_CHECKS = 1;
 UPDATE objeto
 SET estado = 'Disponible';
 

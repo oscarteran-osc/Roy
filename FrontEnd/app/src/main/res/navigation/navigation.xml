@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/objeto"
-        android:name="com.example.roy.home.Objeto"
+        android:name="com.example.roy.home.Objetoo"
         android:label="fragment_objeto"
         tools:layout="@layout/fragment_objeto" >
         <action

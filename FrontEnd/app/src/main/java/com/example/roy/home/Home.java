@@ -181,7 +181,7 @@ public class Home extends Fragment {
         Log.d(TAG, "openObjetoActivity");
 
         // ✅ IMPORTANTE: Activity real, NO el modelo
-        Intent intent = new Intent(requireContext(), com.example.roy.home.Objeto.class);
+        Intent intent = new Intent(requireContext(), Objetoo.class);
         startActivity(intent);
     }
 
@@ -200,9 +200,9 @@ public class Home extends Fragment {
 
                 if (response.isSuccessful() && response.body() != null) {
                     com.example.roy.models.Objeto o = response.body();
-                    tituloDestacado.setText(o.getNombreObjeto());
+                    tituloDestacado.setText(o.getNombre());
                     descDestacado.setText(o.getDescripcion());
-                    String url = o.getImagenUrl(); // OJO: tu modelo Android debe tener imagenUrl
+                    String url = o.getImagenPrincipal(); // OJO: tu modelo Android debe tener imagenUrl
 
                     if (url != null) {
                         url = url.trim();
@@ -218,7 +218,7 @@ public class Home extends Fragment {
                                 .error(R.drawable.tent_image)
                                 .into(imagenDestacado);
                     }
-                    Log.d(TAG, "Destacado cargado: " + o.getNombreObjeto());
+                    Log.d(TAG, "Destacado cargado: " + o.getNombre());
                 } else {
                     Log.w(TAG, "Destacado falló: code=" + response.code());
                 }

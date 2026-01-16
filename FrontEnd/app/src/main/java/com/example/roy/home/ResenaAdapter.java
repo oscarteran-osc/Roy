@@ -12,76 +12,100 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.roy.R;
+import com.example.roy.models.Resena;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResenaAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
+    private List<Resena> resenas;
 
-    // 🔹 Arreglos que TÚ vas a llenar desde la Activity
-    public String[] nombres;
-    public String[] fechas;
-    public String[] comentarios;
-    public float[] estrellas;
-    public int[] avatares;
-
-    public ResenaAdapter(Context context, String[] nombres, String[] fechas, String[] comentarios, float[] estrellas, int[] avatares) {
+    public ResenaAdapter(Context context, List<Resena> resenas) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.nombres = nombres;
-        this.fechas = fechas;
-        this.comentarios = comentarios;
-        this.estrellas = estrellas;
-        this.avatares = avatares;
+        this.resenas = resenas != null ? resenas : new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        if (nombres == null) return 0;
-        return nombres.length;
+        return resenas.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null; // no usamos objeto como tal
+        return resenas.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return resenas.get(position).getId();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View v = convertView;
-        if (v == null) {
-            v = inflater.inflate(R.layout.item_resena, parent, false);
+        ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_resena, parent, false);
+            holder = new ViewHolder();
+            holder.avatar = convertView.findViewById(R.id.imgAvatar);
+            holder.txtNombre = convertView.findViewById(R.id.tvNombre);
+            holder.txtFecha = convertView.findViewById(R.id.tvFecha);
+            holder.txtComentario = convertView.findViewById(R.id.tvContenido);
+            holder.rating = convertView.findViewById(R.id.rating);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        // 🔹 Referencias al layout
-        ImageView avatar = v.findViewById(R.id.imgAvatar);
-        TextView txtNombre = v.findViewById(R.id.tvNombre);
-        TextView txtFecha = v.findViewById(R.id.tvFecha);
-        TextView txtComentario = v.findViewById(R.id.tvContenido);
-        RatingBar rating = v.findViewById(R.id.rating);
+        Resena resena = resenas.get(position);
 
-        // 🔹 Setear datos (asumiendo que todos los arreglos tienen el mismo tamaño)
-        if (avatares != null)   avatar.setImageResource(avatares[position]);
-        if (nombres != null)    txtNombre.setText(nombres[position]);
-        if (fechas != null)     txtFecha.setText(fechas[position]);
-        if (comentarios != null)txtComentario.setText(comentarios[position]);
-        if (estrellas != null)  rating.setRating(estrellas[position]);
+        // Setear datos
+        holder.txtNombre.setText(resena.getNombreUsuario());
+        holder.txtFecha.setText(resena.getFecha());
+        holder.txtComentario.setText(resena.getComentario());
+        holder.rating.setRating(resena.getCalificacion());
 
-        // 🔹 Forzar estrellas amarillas (opcional, como en tu RecyclerView)
+        // Cargar avatar con Glide
+        if (resena.getAvatarUrl() != null && !resena.getAvatarUrl().isEmpty()) {
+            Glide.with(context)
+                    .load(resena.getAvatarUrl())
+                    .placeholder(R.drawable.img)
+                    .error(R.drawable.img)
+                    .circleCrop()
+                    .into(holder.avatar);
+        } else {
+            holder.avatar.setImageResource(R.drawable.img);
+        }
+
+        // Forzar estrellas amarillas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ColorStateList yellow = ColorStateList.valueOf(Color.parseColor("#FFC107"));
-            rating.setProgressTintList(yellow);
-            rating.setSecondaryProgressTintList(yellow);
-            rating.setIndeterminateTintList(yellow);
+            holder.rating.setProgressTintList(yellow);
+            holder.rating.setSecondaryProgressTintList(yellow);
         }
 
-        return v;
+        return convertView;
+    }
+
+    // Método para actualizar la lista de reseñas
+    public void actualizarResenas(List<Resena> nuevasResenas) {
+        this.resenas = nuevasResenas != null ? nuevasResenas : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    // ViewHolder para mejorar el rendimiento
+    static class ViewHolder {
+        ImageView avatar;
+        TextView txtNombre;
+        TextView txtFecha;
+        TextView txtComentario;
+        RatingBar rating;
     }
 }
