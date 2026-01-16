@@ -92,40 +92,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 btnIniciar.setText("Iniciar Sesión");
                 progressBar.setVisibility(View.GONE);
 
-                prefs.edit()
-                        .putString("TOKEN", response.body().getToken())
-                        .putInt("ID_USUARIO", response.body().getIdUsuario())
-                        .apply();
-
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();
 
-                    // ✅ CAMBIO: Obtener directamente del AuthResponse
                     Integer userId = authResponse.getIdUsuario();
                     String token = authResponse.getToken();
 
-                    // ✅ Validar que los datos no sean nulos
-                    if (userId != null && token != null) {
-                        // Guardar ID de usuario y Token
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("userId", userId);
-                        editor.putString("token", token);
-                        editor.apply();
+                    if (userId != null && token != null && !token.trim().isEmpty()) {
 
-                        Toast.makeText(LoginActivity.this, "¡Bienvenido " + authResponse.getNombre() + "!", Toast.LENGTH_SHORT).show();
+                        // ✅ Guarda aquí, ya que sabemos que NO es null
+                        prefs.edit()
+                                .putString("TOKEN", token)
+                                .putInt("ID_USUARIO", userId)
+                                .putInt("userId", userId)   // si quieres conservar tus dos keys, ok
+                                .putString("token", token)
+                                .apply();
 
-                        // Navegar a la pantalla principal
+                        Toast.makeText(LoginActivity.this,
+                                "¡Bienvenido " + authResponse.getNombre() + "!",
+                                Toast.LENGTH_SHORT).show();
+
                         Intent goinicio = new Intent(LoginActivity.this, Inicio.class);
                         startActivity(goinicio);
                         finish();
+
                     } else {
-                        Toast.makeText(LoginActivity.this, "Error al procesar respuesta del servidor.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,
+                                "El servidor no devolvió token/userId válidos.",
+                                Toast.LENGTH_LONG).show();
                     }
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,
+                            "Credenciales incorrectas.",
+                            Toast.LENGTH_LONG).show();
                 }
             }
+
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
