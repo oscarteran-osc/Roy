@@ -244,6 +244,18 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Cerrar sesión"
+            android:textColor="@color/white"
+            android:backgroundTint="#E91E1E"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_logout"
+            app:iconGravity="textStart"
+            android:fontFamily="@font/poppins_medium"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
