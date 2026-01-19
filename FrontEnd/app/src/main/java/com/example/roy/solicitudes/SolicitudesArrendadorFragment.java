@@ -1,10 +1,8 @@
 package com.example.roy.solicitudes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,15 +28,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Fragment para el ARRENDATARIO (Rentador)
- * Muestra solicitudes que EL USUARIO envió para rentar objetos de otros
+ * Fragment para el ARRENDADOR (Ofertante)
+ * Muestra solicitudes que OTROS usuarios le enviaron para rentar SUS objetos
  */
-public class SolicitudesArrendatarioFragment extends Fragment
-        implements SolicitudesArrendatarioAdapter.OnSolicitudActionListener {
+public class SolicitudesArrendadorFragment extends Fragment
+        implements SolicitudesArrendadorAdapter.OnSolicitudArrendadorListener {
 
     private ListView listView;
     private TextView emptyText;
-    private SolicitudesArrendatarioAdapter adapter;
+    private SolicitudesArrendadorAdapter adapter;
     private List<SolicitudRenta> solicitudes;
     private ApiService apiService;
     private SharedPreferences prefs;
@@ -48,14 +46,15 @@ public class SolicitudesArrendatarioFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_solis, container, false);
+        return inflater.inflate(R.layout.fragment_solicitudes_arrendador, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.listSolicitudes);
+        listView = view.findViewById(R.id.listViewSolicitudes);
+        emptyText = view.findViewById(R.id.emptyText);
 
         // Intenta ambos nombres de SharedPreferences por compatibilidad
         prefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
@@ -69,7 +68,7 @@ public class SolicitudesArrendatarioFragment extends Fragment
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         solicitudes = new ArrayList<>();
-        adapter = new SolicitudesArrendatarioAdapter(requireContext(), solicitudes, this);
+        adapter = new SolicitudesArrendadorAdapter(requireContext(), solicitudes, this);
         listView.setAdapter(adapter);
 
         cargarSolicitudes();
@@ -78,100 +77,78 @@ public class SolicitudesArrendatarioFragment extends Fragment
     private void cargarSolicitudes() {
         int userId = prefs.getInt("userId", -1);
 
-        Log.d("SOLICITUDES_DEBUG", "🔍 Buscando solicitudes para userId: " + userId);
-        Toast.makeText(getContext(), "Buscando solicitudes de usuario: " + userId, Toast.LENGTH_LONG).show();
-
         if (userId == -1) {
             Toast.makeText(getContext(), "No hay sesión activa", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        apiService.getSolicitudesArrendatario(userId).enqueue(new Callback<List<SolicitudRenta>>() {
+        // Endpoint diferente: solicitudes que LE ENVIARON al usuario
+        apiService.getSolicitudesArrendador(userId).enqueue(new Callback<List<SolicitudRenta>>() {
             @Override
             public void onResponse(Call<List<SolicitudRenta>> call, Response<List<SolicitudRenta>> response) {
                 if (!isAdded()) return;
-
-                // AGREGA ESTOS LOGS
-                Log.d("SOLICITUDES_DEBUG", "📡 Response code: " + response.code());
-                Log.d("SOLICITUDES_DEBUG", "📦 Body is null: " + (response.body() == null));
-
-                if (response.body() != null) {
-                    Log.d("SOLICITUDES_DEBUG", "📊 Cantidad de solicitudes: " + response.body().size());
-                }
 
                 if (response.isSuccessful() && response.body() != null) {
                     solicitudes.clear();
                     solicitudes.addAll(response.body());
                     adapter.notifyDataSetChanged();
 
-                    Toast.makeText(getContext(),
-                            "✅ Se cargaron " + response.body().size() + " solicitudes",
-                            Toast.LENGTH_LONG).show();
+                    if (solicitudes.isEmpty()) {
+                        listView.setVisibility(View.GONE);
+                        emptyText.setVisibility(View.VISIBLE);
+                    } else {
+                        listView.setVisibility(View.VISIBLE);
+                        emptyText.setVisibility(View.GONE);
+                    }
                 } else if (response.code() == 404) {
                     solicitudes.clear();
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "⚠️ No tienes solicitudes aún (404)", Toast.LENGTH_SHORT).show();
+                    listView.setVisibility(View.GONE);
+                    emptyText.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(getContext(), "❌ Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<SolicitudRenta>> call, Throwable t) {
                 if (!isAdded()) return;
-                Log.e("SOLICITUDES_DEBUG", "💥 Error de conexión: " + t.getMessage());
-                Toast.makeText(getContext(), "💥 Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onPagarClicked(SolicitudRenta solicitud) {
-        Intent intent = new Intent(getContext(), PayPalPaymentActivity.class);
-        intent.putExtra("idSolicitud", solicitud.getIdSolicitud());
-
-        // Obtener monto (si es 0 o no existe, usar valor por defecto)
-        double monto = solicitud.getMonto();
-        if (monto <= 0) {
-            monto = 500.00; // Monto por defecto
-        }
-        intent.putExtra("monto", monto);
-
-        intent.putExtra("nombreObjeto", "Objeto #" + solicitud.getIdObjeto());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onCancelarClicked(SolicitudRenta solicitud) {
+    public void onAceptarClicked(SolicitudRenta solicitud) {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Cancelar solicitud")
-                .setMessage("¿Estás seguro de cancelar esta solicitud?")
-                .setPositiveButton("Sí", (dialog, which) -> cancelarSolicitud(solicitud))
-                .setNegativeButton("No", null)
-                .show();
-    }
-
-    @Override
-    public void onEliminarClicked(SolicitudRenta solicitud) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Eliminar solicitud")
-                .setMessage("¿Deseas eliminar esta solicitud rechazada?")
-                .setPositiveButton("Eliminar", (dialog, which) -> eliminarSolicitud(solicitud))
+                .setTitle("Aprobar solicitud")
+                .setMessage("¿Deseas aprobar esta solicitud de renta?")
+                .setPositiveButton("Aprobar", (dialog, which) -> aprobarSolicitud(solicitud))
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
 
-    private void cancelarSolicitud(SolicitudRenta solicitud) {
-        apiService.cancelarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
+    @Override
+    public void onRechazarClicked(SolicitudRenta solicitud) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Rechazar solicitud")
+                .setMessage("¿Estás seguro de rechazar esta solicitud?")
+                .setPositiveButton("Rechazar", (dialog, which) -> rechazarSolicitud(solicitud))
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void aprobarSolicitud(SolicitudRenta solicitud) {
+        apiService.aprobarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Solicitud cancelada ✅", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Solicitud aprobada ✅", Toast.LENGTH_SHORT).show();
                     cargarSolicitudes();
                 } else {
-                    Toast.makeText(getContext(), "No se pudo cancelar: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No se pudo aprobar: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -183,17 +160,17 @@ public class SolicitudesArrendatarioFragment extends Fragment
         });
     }
 
-    private void eliminarSolicitud(SolicitudRenta solicitud) {
-        apiService.eliminarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
+    private void rechazarSolicitud(SolicitudRenta solicitud) {
+        apiService.rechazarSolicitud(solicitud.getIdSolicitud()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Solicitud eliminada ✅", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Solicitud rechazada", Toast.LENGTH_SHORT).show();
                     cargarSolicitudes();
                 } else {
-                    Toast.makeText(getContext(), "No se pudo eliminar: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No se pudo rechazar: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 

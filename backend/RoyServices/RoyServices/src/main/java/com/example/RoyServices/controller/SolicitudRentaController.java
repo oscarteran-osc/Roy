@@ -214,4 +214,6 @@ public class SolicitudRentaController {
                 .diasRenta((int) diasRenta)
                 .build();
     }
+
+
 }
