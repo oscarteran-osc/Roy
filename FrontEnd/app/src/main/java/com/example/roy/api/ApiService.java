@@ -26,37 +26,29 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    // ---------------- AUTH ----------------
+    // ==================== AUTH ====================
     @POST("auth/login")
     Call<AuthResponse> loginUser(@Body LoginRequest loginCredentials);
 
     @POST("auth/register")
     Call<AuthResponse> registrarUsuario(@Body RegisterRequest nuevoUsuario);
 
-    // ---------------- OBJETOS (según tu controller ObjetoController) ----------------
-    // Base: /api/objeto
-
-    // LISTA (con zona)
+    // ==================== OBJETOS ====================
     @GET("api/objeto/objeto")
     Call<List<Objeto>> getObjetos();
 
-    // GET BY ID (con zona)
     @GET("api/objeto/objeto/{id}")
     Call<Objeto> getObjetoPorId(@Path("id") int id);
 
-    // SAVE
     @POST("api/objeto/objeto")
     Call<Objeto> agregarObjeto(@Body Objeto nuevoObjeto);
 
-    // DELETE
     @DELETE("api/objeto/objeto/{id}")
     Call<Void> eliminarObjeto(@Path("id") int objetoId);
 
-    // UPDATE
     @PUT("api/objeto/objeto/{id}")
     Call<Objeto> actualizarObjeto(@Path("id") int objetoId, @Body Objeto objeto);
 
-    // HOME endpoints
     @GET("api/objeto/recomendados")
     Call<List<Objeto>> getRecomendados();
 
@@ -69,27 +61,58 @@ public interface ApiService {
     @GET("api/objeto/categoria")
     Call<List<Objeto>> objetosPorCategoria(@Query("nombre") String categoria);
 
-
-    // ---------------- SOLICITUDES ----------------
+    // ==================== SOLICITUDES - ARRENDATARIO ====================
+    /**
+     * Obtiene solicitudes que EL USUARIO envió para rentar objetos
+     */
     @GET("api/solicitudes/arrendatario/{idArrendatario}")
     Call<List<SolicitudRenta>> getSolicitudesArrendatario(@Path("idArrendatario") int idArrendatario);
 
+    /**
+     * Cancela una solicitud (solo PENDIENTE)
+     */
     @DELETE("api/solicitudes/{idSolicitud}")
     Call<Void> cancelarSolicitud(@Path("idSolicitud") int idSolicitud);
 
-    @PUT("api/solicitudes/{id}/aprobar")
-    Call<SolicitudRenta> aprobarSolicitud(@Path("id") int idSolicitud);
-
-    @PUT("api/solicitudes/{id}/rechazar")
-    Call<SolicitudRenta> rechazarSolicitud(@Path("id") int idSolicitud);
-
-    @PUT("api/solicitudes/{id}/completar")
-    Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
-
+    /**
+     * Elimina una solicitud (generalmente RECHAZADA)
+     */
     @DELETE("api/solicitudes/{id}")
     Call<Void> eliminarSolicitud(@Path("id") int id);
 
-    // ---------------- RESEÑAS ----------------
+    // ==================== SOLICITUDES - ARRENDADOR ====================
+    /**
+     * Obtiene solicitudes que OTROS le enviaron al usuario (dueño de objetos)
+     */
+    @GET("api/solicitudes/arrendador/{idArrendador}")
+    Call<List<SolicitudRenta>> getSolicitudesArrendador(@Path("idArrendador") int idArrendador);
+
+    /**
+     * Aprueba una solicitud recibida
+     */
+    @PUT("api/solicitudes/{id}/aprobar")
+    Call<Void> aprobarSolicitud(@Path("id") int idSolicitud);
+
+    /**
+     * Rechaza una solicitud recibida
+     */
+    @PUT("api/solicitudes/{id}/rechazar")
+    Call<Void> rechazarSolicitud(@Path("id") int idSolicitud);
+
+    /**
+     * Completa una solicitud
+     */
+    @PUT("api/solicitudes/{id}/completar")
+    Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
+
+    // ==================== PAGOS ====================
+    /**
+     * Confirma el pago de una solicitud aprobada
+     */
+    @POST("api/pagos/confirmar")
+    Call<Void> confirmarPago(@Body ConfirmacionPago confirmacion);
+
+    // ==================== RESEÑAS ====================
     @GET("api/resenas/objeto/{objetoId}")
     Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
@@ -99,7 +122,7 @@ public interface ApiService {
     @DELETE("api/resenas/{resenaId}")
     Call<Void> eliminarResena(@Path("resenaId") int resenaId, @Header("Authorization") String token);
 
-    // ---------------- PERFIL ----------------
+    // ==================== PERFIL ====================
     @GET("Roy/api/usuario/{id}")
     Call<UserProfileResponse> getPerfil(
             @Path("id") int userId,
@@ -127,4 +150,31 @@ public interface ApiService {
             @Path("id") int id,
             @Part MultipartBody.Part file
     );
+
+    // ==================== CLASE INTERNA PARA CONFIRMACIÓN DE PAGO ====================
+    class ConfirmacionPago {
+        private int idSolicitud;
+        private String orderId;
+        private String metodoPago;
+        private double monto;
+
+        public ConfirmacionPago(int idSolicitud, String orderId, String metodoPago, double monto) {
+            this.idSolicitud = idSolicitud;
+            this.orderId = orderId;
+            this.metodoPago = metodoPago;
+            this.monto = monto;
+        }
+
+        public int getIdSolicitud() { return idSolicitud; }
+        public void setIdSolicitud(int idSolicitud) { this.idSolicitud = idSolicitud; }
+
+        public String getOrderId() { return orderId; }
+        public void setOrderId(String orderId) { this.orderId = orderId; }
+
+        public String getMetodoPago() { return metodoPago; }
+        public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+
+        public double getMonto() { return monto; }
+        public void setMonto(double monto) { this.monto = monto; }
+    }
 }

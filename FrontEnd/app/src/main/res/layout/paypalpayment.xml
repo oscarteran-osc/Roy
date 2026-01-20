@@ -3,45 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center">
+        android:padding="20dp"
+        android:gravity="center_horizontal">
 
         <!-- Logo PayPal -->
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="80dp"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
             android:src="@drawable/paypal_logo"
-            android:layout_marginBottom="32dp"
-            android:contentDescription="PayPal Logo"/>
+            android:contentDescription="PayPal Logo"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="32dp"/>
 
-        <!-- Card con información del pago -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Card con resumen del pago -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            android:layout_marginBottom="32dp">
+            app:cardElevation="0dp"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#F5F7FA">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="24dp">
 
+                <!-- Título -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Resumen del pago"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textColor="#1D1D1F"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C2E2F"
                     android:layout_marginBottom="16dp"/>
 
                 <!-- Artículo -->
@@ -49,105 +52,110 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="12dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Artículo:"
-                        android:textColor="#6B6B6B"
-                        android:fontFamily="@font/poppins_regular"/>
+                        android:textSize="14sp"
+                        android:textColor="#6C7378"/>
 
                     <TextView
                         android:id="@+id/tvNombreArticulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Objeto"
-                        android:textColor="#1D1D1F"
-                        android:fontFamily="@font/poppins_medium"
-                        android:maxLines="2"
-                        android:ellipsize="end"/>
+                        android:textSize="14sp"
+                        android:textColor="#2C2E2F"
+                        android:textStyle="bold"/>
                 </LinearLayout>
+
+                <!-- Separador sutil -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E8EBED"
+                    android:layout_marginVertical="8dp"/>
 
                 <!-- Total -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Total:"
-                        android:textSize="18sp"
-                        android:textColor="#1D1D1F"
-                        android:fontFamily="@font/poppins_semibold"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C2E2F"/>
 
                     <TextView
                         android:id="@+id/tvMontoTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$0.00"
-                        android:textSize="24sp"
-                        android:textColor="#0349A5"
-                        android:fontFamily="@font/poppins_bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#0070BA"/>
                 </LinearLayout>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <!-- Botón de pago simulado -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSimularPago"
+        <!-- Botón PayPal - REEMPLAZADO CON BUTTON NORMAL -->
+        <Button
+            android:id="@+id/paypalButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:text="Pagar con PayPal"
-            android:backgroundTint="#0349A5"
-            android:textColor="@color/white"
-            android:fontFamily="@font/poppins_semibold"
-            app:cornerRadius="12dp"
-            android:paddingVertical="16dp"
-            android:layout_marginBottom="16dp"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:backgroundTint="#0070BA"
+            android:drawableLeft="@android:drawable/ic_secure"
+            android:drawablePadding="8dp"/>
 
-        <!-- Información de seguridad -->
+        <!-- Texto de sandbox -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_secure"
-                android:tint="#4CAF50"
-                android:layout_marginEnd="8dp"/>
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_lock"
+                app:tint="#00A651"
+                android:contentDescription="Seguro"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pago simulado con PayPal Sandbox"
-                android:textSize="14sp"
-                android:textColor="#6B6B6B"
-                android:fontFamily="@font/poppins_regular"/>
+                android:textSize="12sp"
+                android:textColor="#00A651"
+                android:layout_marginStart="6dp"/>
         </LinearLayout>
 
-        <!-- Botón cancelar -->
-        <com.google.android.material.button.MaterialButton
+        <!-- Botón Cancelar -->
+        <Button
             android:id="@+id/btnCancelar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:text="Cancelar"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            app:strokeColor="#134299"
-            android:textColor="#134299"
-            android:fontFamily="@font/poppins_medium"
-            app:cornerRadius="12dp"/>
+            android:textSize="16sp"
+            android:textColor="#0070BA"
+            android:textStyle="bold"
+            android:background="@drawable/btn_cancelar_outline"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 </ScrollView>

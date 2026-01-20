@@ -45,9 +45,11 @@ android {
 
 dependencies {
 
-    implementation ("com.airbnb.android:lottie:6.4.1")
+    implementation("com.airbnb.android:lottie:6.4.1")
 
-
+    // ✅ DEPENDENCIAS DE PAYPAL - VERSIÓN CORRECTA 2.0.0
+    implementation("com.paypal.android:paypal-web-payments:2.0.0")
+    implementation("com.paypal.android:card-payments:2.0.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -66,43 +68,31 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Retrofit para API calls (Asegúrate de que 'retrofit' y 'converter-gson' estén definidos en libs.versions.toml)
+    // Retrofit para API calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("com.google.android.material:material:1.11.0")
 
-    // OkHttp para logging (Asegúrate de que 'logging-interceptor' esté definido)
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // OkHttp para logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Glide para cargar imágenes (Asegúrate de que 'glide' esté definido)
+    // Glide para cargar imágenes
     implementation("com.github.bumptech.glide:glide:4.16.0")
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0") // O kapt si usas Kotlin
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // Lifecycle (ViewModel y LiveData)
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime:2.7.0")
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
-
-
     implementation("com.google.code.gson:gson:2.10.1")
+
     // Fragment
     implementation("androidx.fragment:fragment:1.6.2")
-
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
-
-    // Retrofit para API calls
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // 👆 DEPENDENCIAS A AÑADIR 👆
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

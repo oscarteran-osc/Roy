@@ -21,7 +21,12 @@
         android:theme="@style/Theme.ROY"
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        >
+
+
+
+
 
         <!-- Activity Principal (LAUNCHER) -->
         <activity
@@ -32,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
         <!-- Login y Registro -->
         <activity
@@ -67,7 +74,14 @@
 
         <activity
             android:name=".solicitudes.PayPalPaymentActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.example.roy" android:host="paypalpay" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".solicitudes.PagoExitosoActivity"
@@ -76,6 +90,10 @@
         <activity
             android:name=".solicitudes.PagoSimuladoActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.paypal.android.sdk.ClientId"
+            android:value="Ad2Ti-cFyuNpJqkSu9EBQ21TlAjC3jhNtwXaujBU8NBX5t1cZeSIMe03RrTcnQMYzlZZmplVlRAkDxaL" />
 
     </application>
 
