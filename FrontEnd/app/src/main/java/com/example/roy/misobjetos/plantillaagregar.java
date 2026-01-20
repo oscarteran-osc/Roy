@@ -1,12 +1,9 @@
 package com.example.roy.misobjetos;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -17,13 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import androidx.activity.result.PickVisualMediaRequest;
+
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
@@ -38,8 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class plantillaagregar extends AppCompatActivity implements View.OnClickListener {
-
-    private static final int PERMISSION_REQUEST_CODE = 100;
 
     private EditText etNombre, etPrecio, etDescripcion;
     private Spinner spinnerCategoria;
@@ -136,9 +129,8 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
 
     private void seleccionarImagen(int imageIndex) {
         currentImageIndex = imageIndex;
-        abrirGaleria(); // ya no pide permisos
+        abrirGaleria();
     }
-
 
     private void abrirGaleria() {
         photoPickerLauncher.launch(
@@ -201,26 +193,11 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                abrirGaleria();
-            } else {
-                Toast.makeText(this, "Permiso denegado para acceder a las imágenes",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
 
         if (id == R.id.cancelar) {
-            finish();
+            finish(); // ✅ Cierra la Activity y regresa al Fragment
         } else if (id == R.id.agregarobj) {
             agregarObjeto();
         }
@@ -232,29 +209,34 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         String descripcion = etDescripcion.getText().toString().trim();
         String categoria = spinnerCategoria.getSelectedItem().toString();
 
+        // Validación de sesión
         if (currentUserId == -1) {
             Toast.makeText(this, "Error: Debes iniciar sesión para agregar objetos.",
                     Toast.LENGTH_LONG).show();
             return;
         }
 
+        // Validación de nombre
         if (nombre.isEmpty()) {
             etNombre.setError("Ingresa un nombre");
             etNombre.requestFocus();
             return;
         }
 
+        // Validación de precio
         if (precioStr.isEmpty()) {
             etPrecio.setError("Ingresa un precio");
             etPrecio.requestFocus();
             return;
         }
 
+        // Validación de categoría
         if ("Seleccionar categoría".equals(categoria)) {
             Toast.makeText(this, "Selecciona una categoría", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Validación de descripción
         if (descripcion.isEmpty()) {
             etDescripcion.setError("Agrega una descripción");
             etDescripcion.requestFocus();
@@ -264,11 +246,12 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         try {
             double precio = Double.parseDouble(precioStr);
 
+            // Crear objeto
             Objeto nuevoObjeto = new Objeto();
             nuevoObjeto.setIdUsArrendador(currentUserId);
             nuevoObjeto.setNombreObjeto(nombre);
             nuevoObjeto.setPrecio(precio);
-            nuevoObjeto.setEstado(String.valueOf(Boolean.parseBoolean("Disponible")));
+            nuevoObjeto.setEstado("Disponible"); // ✅ Corregido
             nuevoObjeto.setCategoria(categoria);
             nuevoObjeto.setDescripcion(descripcion);
             nuevoObjeto.setImagenUrl(imagenPrincipal);
@@ -296,11 +279,12 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
                             "¡Objeto agregado exitosamente!",
                             Toast.LENGTH_SHORT).show();
 
+                    // Enviar resultado al Fragment
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("objeto_agregado", true);
                     setResult(RESULT_OK, resultIntent);
 
-                    finish();
+                    finish(); // ✅ Cierra Activity y regresa al Fragment MisObjetos
                 } else {
                     Toast.makeText(plantillaagregar.this,
                             "Error al guardar: " + response.code(),

@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +25,7 @@ public class Objeto {
     private String nombreObjeto;
 
     @Column(name = "precio")
-    private BigDecimal precio;
+    private Double precio;
 
     @Column(name = "estado")
     private String estado;
@@ -40,5 +38,4 @@ public class Objeto {
 
     @Column(name = "imagen_url")
     private String imagenUrl;
-
 }
