@@ -9,6 +9,7 @@ import com.example.roy.models.SolicitudRenta;
 import com.example.roy.models.UpdateObjetoRequest;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
+import com.example.roy.network.models.PayPalOrderResponse;
 
 import java.util.List;
 
@@ -22,6 +23,13 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import java.util.Map;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -114,6 +122,8 @@ public interface ApiService {
     Call<Void> confirmarPago(@Body ConfirmacionPago confirmacion);
 
     // ==================== RESEÑAS ====================
+    @GET("api/resenas/objeto/{objetoId}")
+    Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
     @POST("api/resenas")
     Call<Resena> crearResena(@Body Resena resena, @Header("Authorization") String token);
@@ -156,13 +166,6 @@ public interface ApiService {
             @Path("id") int id,
             @Part MultipartBody.Part file
     );
-
-    @GET("/api/resenas/objeto/{idObjeto}")
-    Call<List<Resena>> getResenasPorObjeto(@Path("idObjeto") int idObjeto);
-
-    @POST("/api/resenas")
-    Call<Resena> crearResena(@Body Resena resena);
-
 
     // ==================== CLASE INTERNA PARA CONFIRMACIÓN DE PAGO ====================
     class ConfirmacionPago {
