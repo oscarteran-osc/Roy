@@ -1,6 +1,7 @@
 package com.example.roy.solicitudes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roy.R;
+import com.example.roy.home.Objetoo;
 import com.example.roy.models.SolicitudRenta;
 
 import java.util.ArrayList;
@@ -55,7 +57,6 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        // 1) Inicializa holder SIEMPRE primero
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_solicitud_arrendatario, parent, false);
             holder = new ViewHolder(convertView);
@@ -64,8 +65,17 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        // 2) Ya puedes usar holder sin que truene
         SolicitudRenta solicitud = solicitudes.get(position);
+
+        // ✅ CLICK EN NOMBRE/IMAGEN DEL OBJETO → Abrir página del objeto
+        View.OnClickListener abrirObjeto = v -> {
+            Intent intent = new Intent(context, Objetoo.class);
+            intent.putExtra("objetoId", solicitud.getIdObjeto());
+            context.startActivity(intent);
+        };
+
+        holder.tvNombreObjeto.setOnClickListener(abrirObjeto);
+        holder.ivImagen.setOnClickListener(abrirObjeto);
 
         // Cargar datos
         holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
@@ -84,9 +94,11 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
 
         holder.tvEstado.setText(estado);
 
+        // ✅ Configurar botones según estado
         switch (estado) {
             case "APROBADA":
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.holo_green_dark));
+                holder.btnAccion.setVisibility(View.VISIBLE);
                 holder.btnAccion.setText("Pagar");
                 holder.btnAccion.setBackgroundTintList(context.getColorStateList(R.color.blue_primary));
                 holder.btnAccion.setOnClickListener(v -> {
@@ -96,6 +108,7 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
 
             case "PENDIENTE":
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.holo_orange_dark));
+                holder.btnAccion.setVisibility(View.VISIBLE);
                 holder.btnAccion.setText("Cancelar");
                 holder.btnAccion.setBackgroundTintList(context.getColorStateList(R.color.blue_primary));
                 holder.btnAccion.setOnClickListener(v -> {
@@ -104,9 +117,22 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
                 break;
 
             case "RECHAZADA":
+            case "CANCELADA":
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.holo_red_dark));
-                holder.btnAccion.setText("Eliminar");
-                holder.btnAccion.setBackgroundTintList(context.getColorStateList(R.color.blue_primary));
+                holder.btnAccion.setVisibility(View.VISIBLE);
+                holder.btnAccion.setText("Borrar");
+                holder.btnAccion.setBackgroundTintList(context.getColorStateList(android.R.color.darker_gray));
+                holder.btnAccion.setOnClickListener(v -> {
+                    if (listener != null) listener.onEliminarClicked(solicitud);
+                });
+                break;
+
+            case "PAGADA":
+            case "COMPLETADA":
+                holder.tvEstado.setTextColor(context.getColor(android.R.color.holo_blue_dark));
+                holder.btnAccion.setVisibility(View.VISIBLE);
+                holder.btnAccion.setText("Borrar");
+                holder.btnAccion.setBackgroundTintList(context.getColorStateList(android.R.color.darker_gray));
                 holder.btnAccion.setOnClickListener(v -> {
                     if (listener != null) listener.onEliminarClicked(solicitud);
                 });
@@ -114,7 +140,7 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
 
             default:
                 holder.tvEstado.setTextColor(context.getColor(android.R.color.darker_gray));
-                holder.btnAccion.setText("Ver");
+                holder.btnAccion.setVisibility(View.GONE);
                 holder.btnAccion.setOnClickListener(null);
                 break;
         }
