@@ -1,4 +1,4 @@
-package com.example.roy.api;
+package com.example.roy.network;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -7,21 +7,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://10.0.2.2:8080";
+
+    // ⚠️ Cambia esta IP por la de tu PC
+    private static final String BASE_URL = "http://192.168.0.5:8080/";
 
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
 
+            // Logging para ver las peticiones HTTP
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+            // Cliente HTTP con timeouts largos
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(interceptor)
-                    .connectTimeout(30, TimeUnit.SECONDS)  // Timeout de conexión
-                    .readTimeout(30, TimeUnit.SECONDS)     // Timeout de lectura
-                    .writeTimeout(30, TimeUnit.SECONDS)    // Timeout de escritura
+                    .connectTimeout(30, TimeUnit.SECONDS)  // Aumentar timeout
+                    .readTimeout(30, TimeUnit.SECONDS)     // Aumentar timeout
+                    .writeTimeout(30, TimeUnit.SECONDS)    // Aumentar timeout
                     .build();
 
             retrofit = new Retrofit.Builder()
@@ -30,7 +34,10 @@ public class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-
         return retrofit;
+    }
+
+    public static PayPalApiService getPayPalService() {
+        return getClient().create(PayPalApiService.class);
     }
 }

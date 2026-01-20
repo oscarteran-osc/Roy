@@ -38,6 +38,10 @@ public class SolicitudRenta {
     @Column(name = "id_us_arrendatario", nullable = false)
     private Integer idUsArrendatario;
 
+    // ✅ AGREGAR ESTE CAMPO
+    @Column(name = "monto")
+    private Double monto;
+
     // @ManyToOne
     // @JoinColumn(name = "id_objeto", insertable = false, updatable = false)
     // private Objeto objeto;

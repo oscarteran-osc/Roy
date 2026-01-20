@@ -20,4 +20,5 @@ public class SolicitudRentaDto {
     private String nombreArrendador;
     private String nombreArrendatario;
     private Integer diasRenta; // Calculado
+    private Double monto;
 }
