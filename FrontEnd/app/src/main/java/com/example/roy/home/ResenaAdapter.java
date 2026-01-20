@@ -65,6 +65,9 @@ public class ResenaAdapter extends BaseAdapter {
         }
 
         Resena resena = resenas.get(position);
+        holder.txtFecha.setText(
+                resena.getFechaResena() != null ? resena.getFechaResena() : ""
+        );
 
         // Setear datos
         holder.txtNombre.setText(resena.getNombreAutor());

@@ -18,6 +18,9 @@ public interface ResenaRepository extends JpaRepository<Resena, Integer> {
     // Buscar todas las reseñas RECIBIDAS por un usuario
     List<Resena> findByIdUsReceptor(Integer idUsReceptor);
 
+        List<Resena> findByIdObjeto(Integer idObjeto);
+
+
     // Buscar reseñas por calificación
     List<Resena> findByCalificacion(Integer calificacion);
 

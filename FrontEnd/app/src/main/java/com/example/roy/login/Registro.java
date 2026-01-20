@@ -1,4 +1,5 @@
 package com.example.roy.login;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,22 +10,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.RegisterRequest;
+import com.example.roy.utils.ImageUploadHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,19 +38,24 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
     private TextView tvBackLogin;
 
     private TextInputEditText etNombres, etApellidos, etTelefono, etCorreo, etDomicilio, etPassword, etPassword2;
-    private AutoCompleteTextView actvCiudad; // ESTA será tu "zona" (ciudad/región)
+    private AutoCompleteTextView actvCiudad;
 
     // Foto seleccionada
     private Uri selectedImageUri = null;
+    private String fotoPerfilUrl = null; // ✅ URL de la foto subida
 
     // API
     private ApiService apiService;
+    private ImageUploadHelper imageUploadHelper;
 
     private final ActivityResultLauncher<String> pickImageLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
                     imgProfile.setImageURI(uri);
+
+                    // ✅ Subir imagen inmediatamente al seleccionarla
+                    subirImagenPerfil(uri);
                 }
             });
 
@@ -61,6 +66,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_registro);
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
+        imageUploadHelper = new ImageUploadHelper(this);
 
         bindViews();
         setupCiudadDropdown();
@@ -84,7 +90,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         etApellidos = findViewById(R.id.etApellidos);
         etTelefono = findViewById(R.id.etTelefono);
         etCorreo = findViewById(R.id.etCorreo);
-        actvCiudad = findViewById(R.id.actvCiudad); // zona/cd/region
+        actvCiudad = findViewById(R.id.actvCiudad);
         etDomicilio = findViewById(R.id.etDomicilio);
         etPassword = findViewById(R.id.etPassword);
         etPassword2 = findViewById(R.id.etPassword2);
@@ -132,6 +138,37 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * ✅ Nuevo método: Sube la imagen a ImgBB cuando el usuario la selecciona
+     */
+    private void subirImagenPerfil(Uri imageUri) {
+        setLoading(true);
+        Toast.makeText(this, "Subiendo foto de perfil...", Toast.LENGTH_SHORT).show();
+
+        imageUploadHelper.uploadImage(imageUri, new ImageUploadHelper.OnUploadListener() {
+            @Override
+            public void onSuccess(String imageUrl) {
+                runOnUiThread(() -> {
+                    fotoPerfilUrl = imageUrl;
+                    setLoading(false);
+                    Toast.makeText(Registro.this, "✅ Foto cargada correctamente",
+                            Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    setLoading(false);
+                    Toast.makeText(Registro.this, "❌ Error al subir foto: " + error,
+                            Toast.LENGTH_LONG).show();
+                    // La foto es opcional, así que no bloqueamos el registro
+                    fotoPerfilUrl = null;
+                });
+            }
+        });
+    }
+
     private void realizarRegistro() {
         String nombres = getText(etNombres);
         String apellidos = getText(etApellidos);
@@ -142,6 +179,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         String password = getText(etPassword);
         String password2 = getText(etPassword2);
 
+        // Validaciones
         if (nombres.isEmpty() || apellidos.isEmpty() || telefono.isEmpty() || correo.isEmpty()
                 || zona.isEmpty() || password.isEmpty() || password2.isEmpty()) {
             Toast.makeText(this, "Completa los campos obligatorios.", Toast.LENGTH_SHORT).show();
@@ -163,27 +201,25 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
             Toast.makeText(this, "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (correo.contains(" ")) {
             Toast.makeText(this, "El correo no puede tener espacios.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 1) sin espacios (ya lo tienes, lo dejo aquí)
         if (password.contains(" ")) {
             Toast.makeText(this, "La contraseña no puede tener espacios.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-// 2) longitud mínima
         if (password.length() < 8) {
             Toast.makeText(this, "La contraseña debe tener al menos 8 caracteres.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-// 3) reglas: mayúscula, número, especial
         boolean hasUpper = password.matches(".*[A-Z].*");
         boolean hasDigit = password.matches(".*\\d.*");
-        boolean hasSpecial = password.matches(".*[^A-Za-z0-9].*"); // cualquier símbolo
+        boolean hasSpecial = password.matches(".*[^A-Za-z0-9].*");
 
         if (!hasUpper || !hasDigit || !hasSpecial) {
             Toast.makeText(this,
@@ -191,7 +227,6 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                     Toast.LENGTH_LONG).show();
             return;
         }
-
 
         setLoading(true);
 
@@ -204,6 +239,8 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         req.setZona(zona);
         req.setDomicilio(domicilio.isEmpty() ? null : domicilio);
 
+        // ✅ Si tienes campo para foto en RegisterRequest, agrégala aquí:
+        // req.setFotoPerfil(fotoPerfilUrl);
 
         apiService.registrarUsuario(req).enqueue(new Callback<com.example.roy.models.AuthResponse>() {
             @Override
@@ -225,110 +262,52 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                                 .putString("token", token)
                                 .apply();
 
-                        // ✅ Si seleccionó foto -> subirla, si no -> entrar directo
-                        if (selectedImageUri != null) {
-                            setLoading(true);
-                            subirFotoPerfil(userId); // aquí se maneja éxito/fallo
+                        // ✅ Ahora la foto ya está subida como URL
+                        if (fotoPerfilUrl != null) {
+                            Toast.makeText(Registro.this,
+                                    "¡Cuenta creada con foto! ✅", Toast.LENGTH_LONG).show();
+                            // Aquí podrías actualizar el perfil con la URL si es necesario
+                            // actualizarFotoEnServidor(userId, fotoPerfilUrl);
                         } else {
-                            Toast.makeText(Registro.this, "¡Cuenta creada! ✅", Toast.LENGTH_LONG).show();
-                            Intent goInicio = new Intent(Registro.this, com.example.roy.Inicio.class);
-                            goInicio.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(goInicio);
+                            Toast.makeText(Registro.this,
+                                    "¡Cuenta creada! ✅", Toast.LENGTH_LONG).show();
                         }
 
+                        Intent goInicio = new Intent(Registro.this, com.example.roy.Inicio.class);
+                        goInicio.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(goInicio);
+
                     } else {
-                        Toast.makeText(Registro.this, "Registro OK, pero faltan datos del servidor.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Registro.this,
+                                "Registro OK, pero faltan datos del servidor.", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
-                String msg = "Error al crear cuenta. Código: " + response.code();
+                    String msg = "Error al crear cuenta. Código: " + response.code();
 
-                try {
-                    if (response.errorBody() != null) {
-                        String raw = response.errorBody().string();
-                        com.example.roy.models.AuthResponse err =
-                                new com.google.gson.Gson().fromJson(raw, com.example.roy.models.AuthResponse.class);
+                    try {
+                        if (response.errorBody() != null) {
+                            String raw = response.errorBody().string();
+                            com.example.roy.models.AuthResponse err =
+                                    new com.google.gson.Gson().fromJson(raw, com.example.roy.models.AuthResponse.class);
 
-                        if (err != null && err.getErrorMessage() != null && !err.getErrorMessage().isEmpty()) {
-                            msg = err.getErrorMessage();
+                            if (err != null && err.getErrorMessage() != null && !err.getErrorMessage().isEmpty()) {
+                                msg = err.getErrorMessage();
+                            }
                         }
-                    }
-                } catch (Exception ignored) { }
+                    } catch (Exception ignored) { }
 
-                Toast.makeText(Registro.this, msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(Registro.this, msg, Toast.LENGTH_LONG).show();
+                }
             }
-
-        }
-
 
             @Override
             public void onFailure(Call<com.example.roy.models.AuthResponse> call, Throwable t) {
                 setLoading(false);
-                Toast.makeText(Registro.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Registro.this,
+                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-
-    private void subirFotoPerfil(int userId) {
-        try {
-            byte[] bytes = readBytesFromUri(selectedImageUri);
-
-            RequestBody reqFile = RequestBody.create(bytes, MediaType.parse("image/*"));
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", "profile.jpg", reqFile);
-
-            apiService.subirFoto(userId, body).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    setLoading(false);
-
-                    if (response.isSuccessful()) {
-                        Toast.makeText(Registro.this, "Cuenta creada ✅ y foto subida ✅", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(Registro.this, "Cuenta creada ✅, pero falló la foto.", Toast.LENGTH_LONG).show();
-                    }
-
-                    Intent goInicio = new Intent(Registro.this, com.example.roy.Inicio.class);
-                    goInicio.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(goInicio);
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    setLoading(false);
-                    Toast.makeText(Registro.this, "Cuenta creada ✅, pero error subiendo foto: " + t.getMessage(), Toast.LENGTH_LONG).show();
-
-                    Intent goInicio = new Intent(Registro.this, com.example.roy.Inicio.class);
-                    goInicio.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(goInicio);
-                }
-            });
-
-        } catch (Exception e) {
-            setLoading(false);
-            Toast.makeText(this, "No se pudo leer la imagen: " + e.getMessage(), Toast.LENGTH_LONG).show();
-
-            Intent goInicio = new Intent(Registro.this, com.example.roy.Inicio.class);
-            goInicio.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(goInicio);
-        }
-    }
-
-
-    private byte[] readBytesFromUri(Uri uri) throws Exception {
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-        if (inputStream == null) throw new Exception("InputStream null");
-
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int nRead;
-        byte[] data = new byte[4096];
-
-        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-        inputStream.close();
-
-        return buffer.toByteArray();
     }
 
     private void setLoading(boolean loading) {

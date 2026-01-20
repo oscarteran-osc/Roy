@@ -1,6 +1,7 @@
 package com.example.roy.home;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class objetito extends Fragment {
+
+    private static final String TAG = "ObjetitoFragment";
 
     private ImageView imgmain, img1, img2, img3;
     private TextView nombreObj, nomRentador, precio, disponibilidad, categoria, descrip;
@@ -65,6 +68,13 @@ public class objetito extends Fragment {
         // Obtener ID del objeto de los argumentos
         if (getArguments() != null) {
             objetoId = getArguments().getInt("objetoId", -1);
+            Log.d(TAG, "objetoId desde arguments: " + objetoId);
+        }
+
+        if (objetoId == -1) {
+            Toast.makeText(getContext(), "Error: ID de objeto no válido",
+                    Toast.LENGTH_SHORT).show();
+            return vistita;
         }
 
         // Configurar zoom en imagen principal
@@ -82,7 +92,7 @@ public class objetito extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && objetoId != -1) {
             // Crear el fragmento de reseñas con el objetoId
             resenas resenasFragment = new resenas();
             Bundle args = new Bundle();
@@ -100,18 +110,10 @@ public class objetito extends Fragment {
         // Zoom en imagen principal
         imgmain.setOnClickListener(v -> mostrarImagenZoom((ImageView) v));
 
-        // Click en miniaturas
-        img1.setOnClickListener(v -> {
-            cambiarImagenPrincipal((ImageView) v);
-        });
-
-        img2.setOnClickListener(v -> {
-            cambiarImagenPrincipal((ImageView) v);
-        });
-
-        img3.setOnClickListener(v -> {
-            cambiarImagenPrincipal((ImageView) v);
-        });
+        // Click en miniaturas para cambiar imagen principal
+        img1.setOnClickListener(v -> cambiarImagenPrincipal((ImageView) v));
+        img2.setOnClickListener(v -> cambiarImagenPrincipal((ImageView) v));
+        img3.setOnClickListener(v -> cambiarImagenPrincipal((ImageView) v));
     }
 
     private void mostrarImagenZoom(ImageView imageView) {
@@ -153,6 +155,8 @@ public class objetito extends Fragment {
     }
 
     private void navegarAPerfilArrendador(int arrendadorId) {
+        Log.d(TAG, "Navegando a perfil del arrendador ID: " + arrendadorId);
+
         Fragment perfilFragment = new perfilArrendador();
         Bundle args = new Bundle();
         args.putInt("arrendadorId", arrendadorId);
@@ -165,30 +169,29 @@ public class objetito extends Fragment {
     }
 
     private void cargarDatosObjeto() {
-        if (objetoId == -1) {
-            Toast.makeText(getContext(), "Error: ID de objeto no válido",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         apiService.getObjetoPorId(objetoId).enqueue(new Callback<Objeto>() {
             @Override
             public void onResponse(Call<Objeto> call, Response<Objeto> response) {
+                if (!isAdded()) return;
+
                 if (response.isSuccessful() && response.body() != null) {
                     objetoActual = response.body();
+                    Log.d(TAG, "Objeto cargado: " + objetoActual.getNombreObjeto());
                     mostrarDatosObjeto(objetoActual);
                 } else {
                     Toast.makeText(getContext(), "Error al cargar el objeto",
                             Toast.LENGTH_SHORT).show();
-                    Log.e("objetito", "Error: " + response.code());
+                    Log.e(TAG, "Error: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Objeto> call, Throwable t) {
+                if (!isAdded()) return;
+
                 Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
-                Log.e("objetito", "Error: ", t);
+                Log.e(TAG, "Error: ", t);
             }
         });
     }
@@ -203,9 +206,11 @@ public class objetito extends Fragment {
 
         // ID del arrendador para navegación
         arrendadorId = objeto.getIdUsArrendador();
+        Log.d(TAG, "ID del arrendador: " + arrendadorId);
 
         // Disponibilidad
-        if (Boolean.parseBoolean(objeto.getEstado())) {
+        boolean estaDisponible = Boolean.parseBoolean(objeto.getEstado());
+        if (estaDisponible) {
             disponibilidad.setText("Disponible");
             disponibilidad.setTextColor(getResources().getColor(R.color.disponible, null));
         } else {
@@ -213,37 +218,55 @@ public class objetito extends Fragment {
             disponibilidad.setTextColor(getResources().getColor(R.color.no_disponible, null));
         }
 
-        // Rating (calculado desde las reseñas)
-       // rating.setRating(objeto.getCalificacionPromedio());
-        //rating.setIsIndicator(true); // Solo lectura
+        // Rating (opcional - puedes calcularlo desde las reseñas)
+        // rating.setRating(objeto.getCalificacionPromedio());
+        // rating.setIsIndicator(true);
 
-        // Cargar imágenes con Glide
-        if (objeto.getImagenUrl() != null && !objeto.getImagenUrl().isEmpty()) {
+        // Cargar imagen principal
+        String urlPrincipal = objeto.getImagenUrl();
+        if (urlPrincipal != null && !urlPrincipal.trim().isEmpty()) {
             Glide.with(this)
-                    .load(objeto.getImagenUrl())
-                    .placeholder(R.drawable.casacampania)
-                    .error(R.drawable.casacampania)
+                    .load(urlPrincipal.trim())
+                    .placeholder(R.drawable.error)
+                    .error(R.drawable.error)
                     .into(imgmain);
+        } else {
+            imgmain.setImageResource(R.drawable.error);
         }
 
         // Cargar miniaturas
-        if (objeto.getImagenes() != null && objeto.getImagenes().size() > 0) {
+        if (objeto.getImagenes() != null && !objeto.getImagenes().isEmpty()) {
             cargarMiniatura(img1, objeto.getImagenes().get(0));
+
             if (objeto.getImagenes().size() > 1) {
                 cargarMiniatura(img2, objeto.getImagenes().get(1));
+            } else {
+                img2.setVisibility(View.GONE);
             }
+
             if (objeto.getImagenes().size() > 2) {
                 cargarMiniatura(img3, objeto.getImagenes().get(2));
+            } else {
+                img3.setVisibility(View.GONE);
             }
+        } else {
+            // Si no hay imágenes adicionales, usar la principal en todas
+            img1.setVisibility(View.GONE);
+            img2.setVisibility(View.GONE);
+            img3.setVisibility(View.GONE);
         }
     }
 
     private void cargarMiniatura(ImageView imageView, String url) {
-        Glide.with(this)
-                .load(url)
-                .placeholder(R.drawable.casacampania)
-                .error(R.drawable.casacampania)
-                .into(imageView);
+        if (url != null && !url.trim().isEmpty()) {
+            Glide.with(this)
+                    .load(url.trim())
+                    .placeholder(R.drawable.error)
+                    .error(R.drawable.error)
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.error);
+        }
     }
 
     // Método estático para crear instancia con argumentos

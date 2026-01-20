@@ -19,7 +19,7 @@ import com.example.roy.models.Objeto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjetosCategoriaAdapter extends BaseAdapter {
+public class    ObjetosCategoriaAdapter extends BaseAdapter {
 
     public interface OnObjetoClickListener {
         void onClick(Objeto objeto);

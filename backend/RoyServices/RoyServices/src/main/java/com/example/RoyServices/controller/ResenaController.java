@@ -46,26 +46,6 @@ public class ResenaController {
         return ResponseEntity.ok(convertirADto(resena));
     }
 
-    // POST crear reseña
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody ResenaDto dto) {
-        try {
-            Resena resena = Resena.builder()
-                    .idUsAutor(dto.getIdUsAutor())
-                    .idUsReceptor(dto.getIdUsReceptor())
-                    .calificacion(dto.getCalificacion())
-                    .comentario(dto.getComentario())
-                    .fechaResena(dto.getFechaResena() != null ? dto.getFechaResena() : LocalDate.now())
-                    .build();
-
-            Resena guardada = resenaService.save(resena);
-            return ResponseEntity.ok(convertirADto(guardada));
-
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
-    }
-
     // PUT actualizar reseña
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ResenaDto dto) {
@@ -132,6 +112,15 @@ public class ResenaController {
                 .map(this::convertirADto)
                 .collect(Collectors.toList()));
     }
+    @GetMapping("/objeto/{idObjeto}")
+    public ResponseEntity<List<ResenaDto>> getPorObjeto(@PathVariable Integer idObjeto) {
+        List<Resena> resenas = resenaService.getResenasPorObjeto(idObjeto);
+        if (resenas.isEmpty()) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(
+                resenas.stream().map(this::convertirADto).collect(Collectors.toList())
+        );
+    }
 
     // GET reseñas por rango de fechas
     @GetMapping("/fechas")
@@ -176,6 +165,7 @@ public class ResenaController {
     private ResenaDto convertirADto(Resena resena) {
         return ResenaDto.builder()
                 .idResena(resena.getIdResena())
+                .idObjeto(resena.getIdObjeto())         // ✅
                 .idUsAutor(resena.getIdUsAutor())
                 .idUsReceptor(resena.getIdUsReceptor())
                 .calificacion(resena.getCalificacion())
@@ -183,4 +173,26 @@ public class ResenaController {
                 .fechaResena(resena.getFechaResena())
                 .build();
     }
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody ResenaDto dto) {
+        try {
+            Resena resena = Resena.builder()
+                    .idObjeto(dto.getIdObjeto()) // ✅
+                    .idUsAutor(dto.getIdUsAutor())
+                    .idUsReceptor(dto.getIdUsReceptor())
+                    .calificacion(dto.getCalificacion())
+                    .comentario(dto.getComentario())
+                    .fechaResena(dto.getFechaResena() != null ? dto.getFechaResena() : LocalDate.now())
+                    .build();
+
+            Resena guardada = resenaService.save(resena);
+            return ResponseEntity.ok(convertirADto(guardada));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+
 }

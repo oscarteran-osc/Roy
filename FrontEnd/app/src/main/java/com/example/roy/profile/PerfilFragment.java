@@ -48,6 +48,7 @@ public class PerfilFragment extends Fragment {
     private TextView tvPassword;
     private MaterialButton btnEditarPerfil;
     private RecyclerView rvHistorial;
+    private TextView tvSinHistorial; // Nuevo TextView para el mensaje
 
     // API
     private ApiService apiService;
@@ -80,9 +81,10 @@ public class PerfilFragment extends Fragment {
         // Configurar listeners
         setupListeners();
 
-        // Configurar RecyclerView de historial (dummy por ahora)
+        // Configurar RecyclerView de historial
         setupHistorialRecyclerView();
         btnLogout.setOnClickListener(v -> mostrarDialogoLogout());
+
         // Cargar datos del perfil desde el servidor
         cargarPerfil();
 
@@ -100,6 +102,7 @@ public class PerfilFragment extends Fragment {
         tvPassword = view.findViewById(R.id.tvPassword);
         btnEditarPerfil = view.findViewById(R.id.btnEditarPerfil);
         rvHistorial = view.findViewById(R.id.rvHistorial);
+        tvSinHistorial = view.findViewById(R.id.tvSinHistorial); // Asegúrate de agregar este TextView en tu XML
     }
 
     private boolean obtenerDatosSesion() {
@@ -210,28 +213,28 @@ public class PerfilFragment extends Fragment {
         );
         rvHistorial.setLayoutManager(layoutManager);
 
-        // Datos dummy por ahora
-        // Después los cargarás desde el endpoint de solicitudes/rentas del usuario
-        List<ItemHistorial> historial = obtenerHistorialDummy();
+        // Lista vacía por ahora - después cargarás datos reales desde el API
+        List<ItemHistorial> historial = new ArrayList<>();
 
-        HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
-            // Click en un item del historial
-            Toast.makeText(requireContext(),
-                    "Ver detalles de: " + item.getNombre(),
-                    Toast.LENGTH_SHORT).show();
-            // TODO: Navegar a detalle del objeto
-        });
+        if (historial.isEmpty()) {
+            // Mostrar mensaje de historial vacío
+            rvHistorial.setVisibility(View.GONE);
+            tvSinHistorial.setVisibility(View.VISIBLE);
+        } else {
+            // Mostrar el RecyclerView con datos
+            rvHistorial.setVisibility(View.VISIBLE);
+            tvSinHistorial.setVisibility(View.GONE);
 
-        rvHistorial.setAdapter(adapter);
-    }
+            HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
+                // Click en un item del historial
+                Toast.makeText(requireContext(),
+                        "Ver detalles de: " + item.getNombre(),
+                        Toast.LENGTH_SHORT).show();
+                // TODO: Navegar a detalle del objeto
+            });
 
-    private List<ItemHistorial> obtenerHistorialDummy() {
-        List<ItemHistorial> lista = new ArrayList<>();
-        lista.add(new ItemHistorial("Taladro eléctrico", "$80/día", "https://picsum.photos/200?random=1"));
-        lista.add(new ItemHistorial("Bocina JBL", "$120/día", "https://picsum.photos/200?random=2"));
-        lista.add(new ItemHistorial("Proyector HD", "$250/día", "https://picsum.photos/200?random=3"));
-        lista.add(new ItemHistorial("Bicicleta", "$160/día", "https://picsum.photos/200?random=4"));
-        return lista;
+            rvHistorial.setAdapter(adapter);
+        }
     }
 
     private void manejarErrorCarga(int codigoError) {
@@ -293,7 +296,6 @@ public class PerfilFragment extends Fragment {
     public interface OnHistorialClickListener {
         void onClick(ItemHistorial item);
     }
-
 
     private void mostrarDialogoLogout() {
         new AlertDialog.Builder(requireContext())

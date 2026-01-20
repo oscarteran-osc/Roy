@@ -18,9 +18,12 @@ import java.time.LocalDate;
 public class Resena {
 
     @Id
-    @Column(name = "id_resena")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_resena")
     private Integer idResena;
+
+    @Column(name = "id_objeto", nullable = false)   // ✅ NUEVO
+    private Integer idObjeto;
 
     @Column(name = "id_us_autor", nullable = false)
     private Integer idUsAutor;
@@ -36,13 +39,4 @@ public class Resena {
 
     @Column(name = "fecha_resena", nullable = false)
     private LocalDate fechaResena;
-
-    // @ManyToOne
-    // @JoinColumn(name = "id_us_autor", insertable = false, updatable = false)
-    // private Usuario autor;
-
-    // @ManyToOne
-    // @JoinColumn(name = "id_us_receptor", insertable = false, updatable = false)
-    // private Usuario receptor;
-
 }

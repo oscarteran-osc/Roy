@@ -103,4 +103,9 @@ public class ResenaServiceImpl implements ResenaService {
     public boolean usuarioYaResenoA(Integer idUsAutor, Integer idUsReceptor) {
         return resenaRepository.existsByIdUsAutorAndIdUsReceptor(idUsAutor, idUsReceptor);
     }
+
+    public List<Resena> getResenasPorObjeto(Integer idObjeto) {
+        return resenaRepository.findByIdObjeto(idObjeto);
+    }
+
 }

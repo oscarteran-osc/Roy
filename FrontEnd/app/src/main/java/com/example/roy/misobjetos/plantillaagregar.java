@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,8 +23,8 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
+import com.example.roy.utils.ImageUploadHelper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -42,10 +41,16 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
     private ApiService apiService;
     private int currentUserId;
 
-    private String imagenPrincipal = null;
+    // URLs de las imágenes subidas
+    private String imagenPrincipalUrl = null;
+    private String miniatura1Url = null;
+    private String miniatura2Url = null;
+    private String miniatura3Url = null;
+
     private int currentImageIndex = -1; // -1: main, 0: mini1, 1: mini2, 2: mini3
 
     private ActivityResultLauncher<PickVisualMediaRequest> photoPickerLauncher;
+    private ImageUploadHelper imageUploadHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         configurarListeners();
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
+        imageUploadHelper = new ImageUploadHelper(this);
 
         SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         currentUserId = prefs.getInt("userId", -1);
@@ -142,30 +148,71 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
 
     private void procesarImagen(Uri imageUri) {
         try {
+            // Mostrar preview inmediatamente
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
             Bitmap resizedBitmap = redimensionarBitmap(bitmap, 800, 800);
-            String base64Image = bitmapToBase64(resizedBitmap);
 
-            // Guardar solo la imagen principal por ahora
-            if (currentImageIndex == -1) {
-                imagenPrincipal = base64Image;
-                mainImg.setImageBitmap(resizedBitmap);
-            } else {
-                // Mostrar en las miniaturas
-                switch (currentImageIndex) {
-                    case 0:
-                        mini1.setImageBitmap(resizedBitmap);
-                        break;
-                    case 1:
-                        mini2.setImageBitmap(resizedBitmap);
-                        break;
-                    case 2:
-                        mini3.setImageBitmap(resizedBitmap);
-                        break;
-                }
+            ImageView targetImageView;
+            switch (currentImageIndex) {
+                case -1:
+                    targetImageView = mainImg;
+                    break;
+                case 0:
+                    targetImageView = mini1;
+                    break;
+                case 1:
+                    targetImageView = mini2;
+                    break;
+                case 2:
+                    targetImageView = mini3;
+                    break;
+                default:
+                    return;
             }
 
-            Toast.makeText(this, "Imagen cargada correctamente", Toast.LENGTH_SHORT).show();
+            targetImageView.setImageBitmap(resizedBitmap);
+            Toast.makeText(this, "Subiendo imagen...", Toast.LENGTH_SHORT).show();
+
+            // Subir a ImgBB y obtener URL
+            final int imageIndex = currentImageIndex;
+            imageUploadHelper.uploadImage(imageUri, new ImageUploadHelper.OnUploadListener() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    runOnUiThread(() -> {
+                        // Guardar la URL según la imagen
+                        switch (imageIndex) {
+                            case -1:
+                                imagenPrincipalUrl = imageUrl;
+                                Toast.makeText(plantillaagregar.this,
+                                        "✅ Imagen principal cargada", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 0:
+                                miniatura1Url = imageUrl;
+                                Toast.makeText(plantillaagregar.this,
+                                        "✅ Miniatura 1 cargada", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 1:
+                                miniatura2Url = imageUrl;
+                                Toast.makeText(plantillaagregar.this,
+                                        "✅ Miniatura 2 cargada", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                miniatura3Url = imageUrl;
+                                Toast.makeText(plantillaagregar.this,
+                                        "✅ Miniatura 3 cargada", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() ->
+                            Toast.makeText(plantillaagregar.this,
+                                    "❌ Error: " + error, Toast.LENGTH_LONG).show()
+                    );
+                }
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,19 +232,12 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
     }
 
-    private String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
         if (id == R.id.cancelar) {
-            finish(); // ✅ Cierra la Activity y regresa al Fragment
+            finish();
         } else if (id == R.id.agregarobj) {
             agregarObjeto();
         }
@@ -243,6 +283,13 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+        // Validación de imagen principal
+        if (imagenPrincipalUrl == null) {
+            Toast.makeText(this, "⚠️ Debes agregar al menos la imagen principal",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try {
             double precio = Double.parseDouble(precioStr);
 
@@ -251,10 +298,15 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             nuevoObjeto.setIdUsArrendador(currentUserId);
             nuevoObjeto.setNombreObjeto(nombre);
             nuevoObjeto.setPrecio(precio);
-            nuevoObjeto.setEstado("Disponible"); // ✅ Corregido
+            nuevoObjeto.setEstado("Disponible");
             nuevoObjeto.setCategoria(categoria);
             nuevoObjeto.setDescripcion(descripcion);
-            nuevoObjeto.setImagenUrl(imagenPrincipal);
+            nuevoObjeto.setImagenUrl(imagenPrincipalUrl); // ✅ Ahora es una URL real
+
+            // Si tienes campos para miniaturas en tu modelo Objeto, descomenta:
+            // nuevoObjeto.setMiniatura1(miniatura1Url);
+            // nuevoObjeto.setMiniatura2(miniatura2Url);
+            // nuevoObjeto.setMiniatura3(miniatura3Url);
 
             enviarObjetoAServidor(nuevoObjeto);
 
@@ -284,7 +336,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
                     resultIntent.putExtra("objeto_agregado", true);
                     setResult(RESULT_OK, resultIntent);
 
-                    finish(); // ✅ Cierra Activity y regresa al Fragment MisObjetos
+                    finish();
                 } else {
                     Toast.makeText(plantillaagregar.this,
                             "Error al guardar: " + response.code(),

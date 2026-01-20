@@ -6,6 +6,7 @@ import com.example.roy.models.RegisterRequest;
 import com.example.roy.models.Objeto;
 import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
+import com.example.roy.models.UpdateObjetoRequest;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
 
@@ -113,8 +114,6 @@ public interface ApiService {
     Call<Void> confirmarPago(@Body ConfirmacionPago confirmacion);
 
     // ==================== RESEÑAS ====================
-    @GET("api/resenas/objeto/{objetoId}")
-    Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
     @POST("api/resenas")
     Call<Resena> crearResena(@Body Resena resena, @Header("Authorization") String token);
@@ -136,6 +135,13 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
+    // ApiService.java
+
+
+    @PUT("/api/objeto/objeto/{id}")
+    Call<Objeto> actualizarObjeto(@Path("id") int id, @Body UpdateObjetoRequest request);
+
+
     @Multipart
     @PUT("Roy/api/usuario/{id}/foto")
     Call<String> actualizarFotoPerfil(
@@ -150,6 +156,13 @@ public interface ApiService {
             @Path("id") int id,
             @Part MultipartBody.Part file
     );
+
+    @GET("/api/resenas/objeto/{idObjeto}")
+    Call<List<Resena>> getResenasPorObjeto(@Path("idObjeto") int idObjeto);
+
+    @POST("/api/resenas")
+    Call<Resena> crearResena(@Body Resena resena);
+
 
     // ==================== CLASE INTERNA PARA CONFIRMACIÓN DE PAGO ====================
     class ConfirmacionPago {

@@ -258,17 +258,18 @@ public class Home extends Fragment {
                     tituloDestacado.setText(objetoDestacado.getNombreObjeto());
                     descDestacado.setText(objetoDestacado.getDescripcion());
 
+                    // FIX: Usar getImagenPrincipal() en lugar de getImagenUrl()
                     String url = objetoDestacado.getImagenUrl();
                     if (url != null) url = url.trim();
 
                     if (url != null && !url.isEmpty()) {
                         Glide.with(requireContext())
                                 .load(url)
-                                .placeholder(R.drawable.tent_image)
-                                .error(R.drawable.tent_image)
+                                .placeholder(R.drawable.error)
+                                .error(R.drawable.error)
                                 .into(imagenDestacado);
                     } else {
-                        imagenDestacado.setImageResource(R.drawable.tent_image);
+                        imagenDestacado.setImageResource(R.drawable.error);
                     }
 
                 } else {
@@ -310,13 +311,31 @@ public class Home extends Fragment {
                     return;
                 }
 
+                // FIX: Obtener el ID del usuario actual y filtrar sus objetos
+                int miUsuarioId = getUsuarioIdActual();
+                List<Objeto> objetosFiltrados = new ArrayList<>();
+
+                for (Objeto objeto : all) {
+                    // Solo agregar objetos que NO sean del usuario actual
+                    if (objeto.getIdUsArrendador() != miUsuarioId) {
+                        objetosFiltrados.add(objeto);
+                    }
+                }
+
+                Log.d(TAG, "objetos después de filtrar: " + objetosFiltrados.size());
+
+                if (objetosFiltrados.isEmpty()) {
+                    setEmptyState(true);
+                    return;
+                }
+
                 // Mezclar para que se vea variado
-                Collections.shuffle(all);
+                Collections.shuffle(objetosFiltrados);
 
                 // Recomendados
                 recomendadosList.clear();
-                for (int i = 0; i < Math.min(10, all.size()); i++) {
-                    recomendadosList.add(all.get(i));
+                for (int i = 0; i < Math.min(10, objetosFiltrados.size()); i++) {
+                    recomendadosList.add(objetosFiltrados.get(i));
                 }
 
                 // Cerca de ti (si hay zona guardada)
@@ -325,7 +344,7 @@ public class Home extends Fragment {
 
                 if (miZona != null && !miZona.trim().isEmpty()) {
                     String zonaNorm = miZona.trim().toLowerCase();
-                    for (Objeto o : all) {
+                    for (Objeto o : objetosFiltrados) {
                         if (o.getZona() != null && o.getZona().toLowerCase().contains(zonaNorm)) {
                             cercaList.add(o);
                         }
@@ -335,8 +354,8 @@ public class Home extends Fragment {
 
                 // Si no había zona o no hubo matches, fallback: siguientes 6 distintos
                 if (cercaList.isEmpty()) {
-                    for (int i = 10; i < Math.min(16, all.size()); i++) {
-                        cercaList.add(all.get(i));
+                    for (int i = 10; i < Math.min(16, objetosFiltrados.size()); i++) {
+                        cercaList.add(objetosFiltrados.get(i));
                     }
                 }
 
@@ -358,13 +377,23 @@ public class Home extends Fragment {
     }
 
     private String getZonaUsuario() {
-        // Ajusta el nombre del sharedprefs a tu app (ej: "ROY_PREFS")
         try {
             SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
-            // Ajusta la key a la que tú uses (ej: "zona", "userZona", etc.)
             return prefs.getString("zona", null);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    // FIX: Nuevo método para obtener el ID del usuario actual
+    private int getUsuarioIdActual() {
+        try {
+            SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
+            // Ajusta la key según cómo guardes el ID del usuario (puede ser "userId", "idUsuario", etc.)
+            return prefs.getInt("userId", -1);
+        } catch (Exception e) {
+            Log.e(TAG, "Error obteniendo userId: " + e.getMessage());
+            return -1;
         }
     }
 }
