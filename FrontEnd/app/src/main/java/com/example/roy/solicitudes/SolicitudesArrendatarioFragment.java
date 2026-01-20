@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
+import com.example.roy.models.Objeto;
 import com.example.roy.models.SolicitudRenta;
 
 import java.util.ArrayList;
@@ -29,10 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Fragment para el ARRENDATARIO (Rentador)
- * Muestra solicitudes que EL USUARIO envió para rentar objetos de otros
- */
+
 public class SolicitudesArrendatarioFragment extends Fragment
         implements SolicitudesArrendatarioAdapter.OnSolicitudActionListener {
 
@@ -79,7 +77,6 @@ public class SolicitudesArrendatarioFragment extends Fragment
         int userId = prefs.getInt("userId", -1);
 
         Log.d("SOLICITUDES_DEBUG", "🔍 Buscando solicitudes para userId: " + userId);
-        Toast.makeText(getContext(), "Buscando solicitudes de usuario: " + userId, Toast.LENGTH_LONG).show();
 
         if (userId == -1) {
             Toast.makeText(getContext(), "No hay sesión activa", Toast.LENGTH_SHORT).show();
@@ -104,13 +101,11 @@ public class SolicitudesArrendatarioFragment extends Fragment
                     solicitudes.addAll(response.body());
                     adapter.notifyDataSetChanged();
 
-                    Toast.makeText(getContext(),
-                            "✅ Se cargaron " + response.body().size() + " solicitudes",
-                            Toast.LENGTH_LONG).show();
+
                 } else if (response.code() == 404) {
                     solicitudes.clear();
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "⚠️ No tienes solicitudes aún (404)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "⚠️ No tienes solicitudes aún", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "❌ Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
@@ -127,18 +122,31 @@ public class SolicitudesArrendatarioFragment extends Fragment
 
     @Override
     public void onPagarClicked(SolicitudRenta solicitud) {
-        Intent intent = new Intent(getContext(), PayPalPaymentActivity.class);
-        intent.putExtra("idSolicitud", solicitud.getIdSolicitud());
+        // ✅ Primero obtener el objeto para sacar su precio
+        apiService.getObjetoPorId(solicitud.getIdObjeto()).enqueue(new Callback<Objeto>() {
+            @Override
+            public void onResponse(Call<Objeto> call, Response<Objeto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Objeto objeto = response.body();
+                    double monto = objeto.getPrecio();
 
-        // Obtener monto (si es 0 o no existe, usar valor por defecto)
-        double monto = solicitud.getMonto();
-        if (monto <= 0) {
-            monto = 500.00; // Monto por defecto
-        }
-        intent.putExtra("monto", monto);
+                    Intent intent = new Intent(getContext(), PayPalPaymentActivity.class);
+                    intent.putExtra("ID_SOLICITUD", solicitud.getIdSolicitud());
+                    intent.putExtra("MONTO", monto);
+                    intent.putExtra("nombreObjeto", objeto.getNombreObjeto());
 
-        intent.putExtra("nombreObjeto", "Objeto #" + solicitud.getIdObjeto());
-        startActivity(intent);
+                    Log.d("PAGO_DEBUG", "🚀 Abriendo PayPal - ID: " + solicitud.getIdSolicitud() + ", MONTO: " + monto);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "Error al obtener datos del objeto", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Objeto> call, Throwable t) {
+                Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

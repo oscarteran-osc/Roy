@@ -50,6 +50,7 @@ public class SolicitudRentaController {
                     .idObjeto(dto.getIdObjeto())
                     .idUsArrendador(dto.getIdUsArrendador())
                     .idUsArrendatario(dto.getIdUsArrendatario())
+                    .monto(dto.getMonto())  // ✅ AGREGAR ESTA LÍNEA
                     .build();
 
             SolicitudRenta guardada = solicitudService.save(solicitud);
@@ -192,6 +193,8 @@ public class SolicitudRentaController {
         return ResponseEntity.ok(Map.of("totalPendientes", total));
     }
 
+
+
     // ============================================
     // MÉTODO AUXILIAR
     // ============================================
@@ -212,6 +215,7 @@ public class SolicitudRentaController {
                 .idUsArrendador(solicitud.getIdUsArrendador())
                 .idUsArrendatario(solicitud.getIdUsArrendatario())
                 .diasRenta((int) diasRenta)
+                .monto(solicitud.getMonto())
                 .build();
     }
 

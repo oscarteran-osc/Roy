@@ -16,9 +16,6 @@ import com.example.roy.models.SolicitudRenta;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adapter para mostrar solicitudes recibidas por el ARRENDADOR
- */
 public class SolicitudesArrendadorAdapter extends BaseAdapter {
 
     public interface OnSolicitudArrendadorListener {

@@ -8,6 +8,7 @@ import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
+import com.example.roy.network.models.PayPalOrderResponse;
 
 import java.util.List;
 
@@ -21,6 +22,13 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import java.util.Map;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -150,6 +158,20 @@ public interface ApiService {
             @Path("id") int id,
             @Part MultipartBody.Part file
     );
+
+    @POST("/api/paypal/crear-orden")
+    Call<PayPalOrderResponse> crearOrdenPayPal(
+            @Query("total") double total,
+            @Query("moneda") String moneda,
+            @Query("descripcion") String descripcion
+    );
+
+    @POST("/api/paypal/capturar-pago")
+    Call<Map<String, Object>> capturarPago(@Body Map<String, Object> request);
+
+    // En ApiService.java
+    @PUT("api/solicitudes/{id}/pagar")
+    Call<Void> marcarComoPagada(@Path("id") int idSolicitud);
 
     // ==================== CLASE INTERNA PARA CONFIRMACIÓN DE PAGO ====================
     class ConfirmacionPago {
