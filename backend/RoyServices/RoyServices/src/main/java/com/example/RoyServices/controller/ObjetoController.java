@@ -18,18 +18,6 @@ public class ObjetoController {
 
     private final ObjetoService objetoService;
 
-    // ✅ LISTA (con zona)
-    @GetMapping("/objeto")
-    public ResponseEntity<List<ObjetoDto>> lista() {
-        List<ObjetoConZonaProjection> objetos = objetoService.getAllConZona();
-        if (objetos == null || objetos.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(
-                objetos.stream().map(this::toDto).collect(Collectors.toList())
-        );
-    }
-
     // ✅ GET BY ID (con zona)
     @GetMapping("/objeto/{id}")
     public ResponseEntity<ObjetoDto> getById(@PathVariable Integer id) {
@@ -120,19 +108,36 @@ public class ObjetoController {
     @GetMapping("/recomendados")
     public ResponseEntity<List<ObjetoDto>> recomendados() {
         List<ObjetoConZonaProjection> objetos = objetoService.obtenerRecomendadosConZona();
-        if (objetos == null || objetos.isEmpty()) return ResponseEntity.notFound().build();
 
-        // si quieres solo 10:
+        // ✅ Retorna lista vacía si no hay datos
+        if (objetos == null || objetos.isEmpty()) {
+            return ResponseEntity.ok(List.of()); // Lista vacía con 200 OK
+        }
+
         List<ObjetoConZonaProjection> top = objetos.size() > 10 ? objetos.subList(0, 10) : objetos;
-
         return ResponseEntity.ok(top.stream().map(this::toDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/destacado")
     public ResponseEntity<ObjetoDto> destacado() {
         ObjetoConZonaProjection o = objetoService.obtenerDestacadoConZona();
-        if (o == null) return ResponseEntity.notFound().build();
+
+        if (o == null) {
+            return ResponseEntity.noContent().build(); // ✅ 204 No Content
+        }
+
         return ResponseEntity.ok(toDto(o));
+    }
+
+    @GetMapping("/objeto")
+    public ResponseEntity<List<ObjetoDto>> lista() {
+        List<ObjetoConZonaProjection> objetos = objetoService.getAllConZona();
+
+        // ✅ Lista vacía si no hay datos
+        if (objetos == null || objetos.isEmpty()) {
+            return ResponseEntity.ok(List.of());
+        }
+        return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
     }
 
     // ----------------- Mapper -----------------

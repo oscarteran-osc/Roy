@@ -9,15 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class ObjetoServiceImpl implements ObjetoService {
 
     private final ObjetoRepository objetoRepository;
-
-    // =========================
-    // CRUD normal
-    // =========================
 
     @Override
     public List<Objeto> getAll() {
@@ -41,28 +37,24 @@ public class ObjetoServiceImpl implements ObjetoService {
 
     @Override
     public Objeto update(Integer id, Objeto objeto) {
-        Objeto aux = objetoRepository.findById(id).orElse(null);
-        if (aux == null) return null;
+        Objeto existente = objetoRepository.findById(id).orElse(null);
+        if (existente == null) return null;
 
-        aux.setIdUsArrendador(objeto.getIdUsArrendador());
-        aux.setNombreObjeto(objeto.getNombreObjeto());
-        aux.setPrecio(objeto.getPrecio());
-        aux.setEstado(objeto.getEstado());
-        aux.setCategoria(objeto.getCategoria());
-        aux.setDescripcion(objeto.getDescripcion());
-        aux.setImagenUrl(objeto.getImagenUrl()); // ✅
+        existente.setNombreObjeto(objeto.getNombreObjeto());
+        existente.setPrecio(objeto.getPrecio());
+        existente.setEstado(objeto.getEstado());
+        existente.setCategoria(objeto.getCategoria());
+        existente.setDescripcion(objeto.getDescripcion());
+        existente.setImagenUrl(objeto.getImagenUrl());
 
-        return objetoRepository.save(aux);
+        return objetoRepository.save(existente);
     }
 
-    // =========================
-    // HOME (sin zona) - legacy
-    // =========================
+    // =================== SIN ZONA ===================
 
     @Override
     public List<Objeto> buscarPorTexto(String texto) {
-        return objetoRepository
-                .findByNombreObjetoContainingIgnoreCaseOrDescripcionContainingIgnoreCase(texto, texto);
+        return objetoRepository.findByNombreObjetoContainingIgnoreCaseOrDescripcionContainingIgnoreCase(texto, texto);
     }
 
     @Override
@@ -77,13 +69,11 @@ public class ObjetoServiceImpl implements ObjetoService {
 
     @Override
     public Objeto obtenerDestacado() {
-        List<Objeto> lista = objetoRepository.findTop10ByOrderByIdObjetoDesc();
-        return lista.isEmpty() ? null : lista.get(0);
+        List<Objeto> top = objetoRepository.findTop10ByOrderByIdObjetoDesc();
+        return top.isEmpty() ? null : top.get(0);
     }
 
-    // =========================
-    // ✅ HOME (con zona)
-    // =========================
+    // =================== CON ZONA ===================
 
     @Override
     public List<ObjetoConZonaProjection> getAllConZona() {
@@ -112,7 +102,7 @@ public class ObjetoServiceImpl implements ObjetoService {
 
     @Override
     public ObjetoConZonaProjection obtenerDestacadoConZona() {
-        List<ObjetoConZonaProjection> lista = objetoRepository.findTop10ConZona();
-        return lista.isEmpty() ? null : lista.get(0);
+        List<ObjetoConZonaProjection> top = objetoRepository.findTop10ConZona();
+        return top.isEmpty() ? null : top.get(0);
     }
 }
