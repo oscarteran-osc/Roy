@@ -130,15 +130,15 @@ ORDER BY id_usuario;
 INSERT INTO objeto (id_us_arrendador, nombre_objeto, precio, estado, categoria, descripcion, imagen_url)
 VALUES
 (1,'Taladro inalámbrico 20V con brocas',180.00,'Disponible','Herramientas','Taladro inalámbrico ideal para casa. Incluye cargador y juego de brocas básico.','https://images.unsplash.com/photo-1504148455328-c376907d081c?w=640'),
-(2,'Escalera de aluminio 5 peldaños',120.00,'Disponible','Hogar','Escalera ligera y estable, perfecta para limpieza y mantenimiento.','https://images.unsplash.com/photo-1581858147666-503937a5ad74?w=640'),
-(3,'Hidrolavadora compacta',250.00,'No Disponible','Herramientas','Hidrolavadora para coche/patio. Boquillas y manguera incluidas.','https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=640'),
-(4,'Proyector Full HD (cine en casa)',320.00,'Disponible','Electrónica','Proyector con HDMI, ideal para pelis y presentaciones.','https://images.unsplash.com/photo-1593784991095-a205069470b6?w=640'),
-(5,'Consola retro con 2 controles',150.00,'Disponible','Electrónica','Consola retro con juegos preinstalados, perfecta para reunión.','https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=640'),
-(6,'Carpa para 4 personas',220.00,'No Disponible','Camping','Carpa impermeable, fácil de armar. Incluye estacas y bolsa.','https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=640'),
-(7,'Silla gamer ergonómica',200.00,'Disponible','Hogar','Silla cómoda para estudiar/jugar, reclinable y ajustable.','https://images.unsplash.com/photo-1564089876584-7f0210f0f5f1?w=640'),
-(8,'Bocina Bluetooth potente',160.00,'Disponible','Electrónica','Bocina con buen bass, batería larga. Ideal para fiesta pequeña.','https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=640'),
-(9,'Cámara instantánea tipo Polaroid',230.00,'No Disponible','Fotografía','Cámara instantánea para eventos. Incluye 1 paquete de película.','https://images.unsplash.com/photo-1526139334526-f591a54b477c?w=640'),
-(10,'Kit de luces LED para fotos/video',190.00,'Disponible','Fotografía','Aro de luz + tripié, perfecto para reels, fotos y tareas.','https://images.unsplash.com/photo-1550985616-10810253b84d?w=640'),
+(2,'Escalera de aluminio 5 peldaños',120.00,'Disponible','Hogar','Escalera ligera y estable, perfecta para limpieza y mantenimiento.','https://imgur.com/7eSMWSa'),
+(3,'Hidrolavadora compacta',250.00,'No Disponible','Herramientas','Hidrolavadora para coche/patio. Boquillas y manguera incluidas.','https://i.pinimg.com/736x/79/27/82/792782e4b1456309c4049488155bdb4c.jpg'),
+(4,'Proyector Full HD (cine en casa)',320.00,'Disponible','Electrónica','Proyector con HDMI, ideal para pelis y presentaciones.','https://imgur.com/0DBmcLz'),
+(5,'Consola retro con 2 controles',150.00,'Disponible','Electrónica','Consola retro con juegos preinstalados, perfecta para reunión.','https://i.pinimg.com/736x/0a/4c/bd/0a4cbd5fc654335f10a0893724d4c71a.jpg'),
+(6,'Carpa para 4 personas',220.00,'No Disponible','Camping','Carpa impermeable, fácil de armar. Incluye estacas y bolsa.','https://imgur.com/eSAyPQM'),
+(7,'Silla gamer ergonómica',200.00,'Disponible','Hogar','Silla cómoda para estudiar/jugar, reclinable y ajustable.','https://i.pinimg.com/736x/1c/b6/bf/1cb6bfc2b3142fa94e47563d170f8db7.jpg'),
+(8,'Bocina Bluetooth potente',160.00,'Disponible','Electrónica','Bocina con buen bass, batería larga. Ideal para fiesta pequeña.','https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=640'),
+(9,'Cámara instantánea tipo Polaroid',230.00,'No Disponible','Fotografía','Cámara instantánea para eventos. Incluye 1 paquete de película.','https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=640'),
+(10,'Kit de luces LED para fotos/video',190.00,'Disponible','Fotografía','Aro de luz + tripié, perfecto para reels, fotos y tareas.','https://i.pinimg.com/1200x/2a/99/00/2a99001ea817cec852a895607ddb935c.jpg'),
 
 (11,'PlayStation 4 Slim', 280.00, 'Disponible', 'Consolas', 'PS4 con 1 control. Juegos aparte.', 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=640'),
 (12,'Nintendo Switch', 300.00, 'No Disponible', 'Consolas', 'Switch con dock y joycons, lista para jugar.', 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=640'),
@@ -147,31 +147,31 @@ VALUES
 (15,'iPad 9a gen', 260.00, 'No Disponible', 'Computo', 'iPad para apuntes, incluye funda.', 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=640'),
 (16,'Microondas 20L', 75.00, 'Disponible', 'Hogar', 'Calienta bien, detalles estéticos.', 'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=640'),
 (1, 'Licuadora Oster', 55.00, 'Disponible', 'Cocina', 'Licuadora con vaso de vidrio, funciona al 100%.', 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=640'),
-(2, 'Freidora de aire', 85.00, 'No Disponible', 'Cocina', 'Airfryer 4L, fácil de usar, súper práctica.', 'https://images.unsplash.com/photo-1634141510639-d691d86f47be?w=640'),
-(3, 'Silla gamer', 90.00, 'Disponible', 'Hogar y Muebles', 'Silla cómoda, detalles en el vinipiel.', 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=640'),
-(4, 'Mesa plegable', 45.00, 'Disponible', 'Hogar y Muebles', 'Mesa fácil de guardar, ideal para eventos.', 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=640'),
+(2, 'Freidora de aire', 85.00, 'No Disponible', 'Cocina', 'Airfryer 4L, fácil de usar, súper práctica.', 'https://i.pinimg.com/1200x/31/02/af/3102af1800aa457d54a34ccba4fc722c.jpg'),
+(3, 'Silla gamer', 90.00, 'Disponible', 'Hogar y Muebles', 'Silla cómoda, detalles en el vinipiel.', 'https://i.pinimg.com/736x/a1/ad/a2/a1ada249832ad718abb0934cf618620b.jpg'),
+(4, 'Mesa plegable', 45.00, 'Disponible', 'Hogar y Muebles', 'Mesa fácil de guardar, ideal para eventos.', 'https://i.pinimg.com/736x/49/98/27/499827e5eef8b611dd3abab2a096e383.jpg'),
 
-(5, 'Andamio pequeño', 140.00, 'No Disponible', 'Herramientas', 'Andamio para pintura, seguro y estable.', 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=640'),
-(6, 'Hidrolavadora', 160.00, 'Disponible', 'Herramientas', 'Hidrolavadora para coche/patio. Incluye manguera.', 'https://images.unsplash.com/photo-1607473256286-26b3eadc1359?w=640'),
+(5, 'Andamio pequeño', 140.00, 'No Disponible', 'Herramientas', 'Andamio para pintura, seguro y estable.', 'https://i.pinimg.com/736x/84/f3/01/84f301a46ed89695c037158df1b6d536.jpg'),
+(6, 'Hidrolavadora', 160.00, 'Disponible', 'Herramientas', 'Hidrolavadora para coche/patio. Incluye manguera.', 'https://i.pinimg.com/736x/29/70/5a/29705a8522e4abf052ee0ed7032074c1.jpg'),
 (7, 'Parlante para fiesta', 150.00, 'Disponible', 'Audio', 'Bocina grande con micrófono, suena fuerte.', 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=640'),
 (8, 'Micrófono condenser', 60.00, 'No Disponible', 'Audio', 'Mic para grabar voz, incluye base y cable.', 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=640'),
 (9, 'Guitarra acústica', 90.00, 'Disponible', 'Música', 'Guitarra básica, cuerdas nuevas, funda incluida.', 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=640'),
-(10,'Teclado musical', 120.00, 'Disponible', 'Música', 'Teclado con soporte, ideal para practicar.', 'https://images.unsplash.com/photo-1563330232-57114bb0823c?w=640'),
+(10,'Teclado musical', 120.00, 'Disponible', 'Música', 'Teclado con soporte, ideal para practicar.', 'https://i.pinimg.com/736x/94/e4/a0/94e4a0734b870a171c2c0bd019b2a39f.jpg'),
 (11,'Maleta grande de viaje', 50.00, 'No Disponible', 'Viaje', 'Maleta 28”, ruedas funcionales.', 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=640'),
-(12,'GoPro Hero', 190.00, 'Disponible', 'Fotografía', 'GoPro con carcasa y accesorios básicos.', 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=640'),
+(12,'GoPro Hero', 190.00, 'Disponible', 'Fotografía', 'GoPro con carcasa y accesorios básicos.', 'https://i.pinimg.com/736x/d8/cd/6c/d8cd6cd77097fabfba482b8ddccd4473.jpg'),
 (13,'Impresora HP', 80.00, 'No Disponible', 'Computo', 'Impresora con wifi, imprime bien, tinta aparte.', 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=640'),
 (14,'Router WiFi', 35.00, 'Disponible', 'Computo', 'Router básico para casa, buena señal.', 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=640'),
 
-(15,'Bafle + tripié', 180.00, 'Disponible', 'Eventos', 'Bafle para fiestas, incluye tripié.', 'https://images.unsplash.com/photo-1558584673-c834fb1cc289?w=640'),
+(15,'Bafle + tripié', 180.00, 'Disponible', 'Eventos', 'Bafle para fiestas, incluye tripié.', 'https://i.pinimg.com/736x/fc/37/df/fc37df26da446996f65239c259d92c21.jpg'),
 (16,'Sillas plegables (x6)', 110.00, 'No Disponible', 'Eventos', 'Paquete de 6 sillas, perfectas para reunión.', 'https://images.unsplash.com/photo-1503602642458-232111445657?w=640'),
 (1, 'Mesa de dulces (setup)', 200.00, 'Disponible', 'Eventos', 'Decoración básica para mesa de dulces.', 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=640'),
-(2, 'Inflable pequeño para niños', 260.00, 'Disponible', 'Eventos', 'Inflable compacto, divertido para fiestas.', 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=640'),
-(3, 'Barra de pesas', 75.00, 'No Disponible', 'Deportes', 'Barra con discos básicos para entrenar.', 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=640'),
-(4, 'Caminadora', 300.00, 'Disponible', 'Deportes', 'Caminadora funciona, algo ruidosa.', 'https://images.unsplash.com/photo-1576678927484-cc907957d441?w=640'),
-(5, 'Set de camping (sillas+mesa)', 140.00, 'Disponible', 'Aventura', 'Set plegable para camping, muy cómodo.', 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=640'),
-(6, 'Kayak inflable', 280.00, 'No Disponible', 'Aventura', 'Kayak inflable con remos, para lago.', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=640'),
+(2, 'Inflable pequeño para niños', 260.00, 'Disponible', 'Eventos', 'Inflable compacto, divertido para fiestas.', 'https://i.pinimg.com/1200x/2b/6a/69/2b6a69d8293c577b6e2980cf451747df.jpg'),
+(3, 'Barra de pesas', 75.00, 'No Disponible', 'Deportes', 'Barra con discos básicos para entrenar.', 'https://i.pinimg.com/736x/b8/12/7a/b8127aae0a09cea9adf1b03555429dbb.jpg'),
+(4, 'Caminadora', 300.00, 'Disponible', 'Deportes', 'Caminadora funciona, algo ruidosa.', 'https://i.pinimg.com/736x/56/6c/43/566c43be98f2108925aeb1d6774d84c8.jpg'),
+(5, 'Set de camping (sillas+mesa)', 140.00, 'Disponible', 'Aventura', 'Set plegable para camping, muy cómodo.', 'https://i.pinimg.com/1200x/60/66/1b/60661bdb55a9fdded7fb3f0dfad91f33.jpg'),
+(6, 'Kayak inflable', 280.00, 'No Disponible', 'Aventura', 'Kayak inflable con remos, para lago.', 'https://i.pinimg.com/1200x/a2/61/57/a261575e99cd7e0d568bdb018f998cba.jpg'),
 (7, 'Dron básico', 210.00, 'Disponible', 'Electrónica', 'Dron para principiantes, cámara simple.', 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=640'),
-(8, 'Tripié profesional', 55.00, 'Disponible', 'Fotografía', 'Tripié alto, estable, para cámara/cel.', 'https://images.unsplash.com/photo-1606988899115-93f6f141f9a8?w=640');
+(8, 'Tripié profesional', 55.00, 'Disponible', 'Fotografía', 'Tripié alto, estable, para cámara/cel.', 'https://i.pinimg.com/1200x/20/f0/a0/20f0a04dc527016bcd31cb9369f87eaa.jpg');
 
 
 INSERT INTO imagen_objeto (id_objeto, url_imagen, es_principal)
@@ -218,5 +218,4 @@ UPDATE USUARIO
 SET contrasena = '$2a$10$o87TzCRbjKGTOCUM0yJKcOa7yhDkKu3bxCAIRdEgM5R6uEw..3sKm';
 ALTER TABLE usuario 
 MODIFY domicilio VARCHAR(255) NULL;
-
 
