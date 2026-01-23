@@ -1,6 +1,7 @@
 package com.example.roy.misobjetos;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -25,12 +26,14 @@ import retrofit2.Response;
 
 public class editarobjeto extends AppCompatActivity {
 
+    private static final String TAG = "EditarObjeto";
+
     private ImageButton btnVolver;
     private MaterialButton btnGuardarCambios, btnCancelar;
     private ProgressBar progressBar;
 
     private TextInputEditText etNombre, etPrecio, etDescripcion, etImagenUrl;
-    private AutoCompleteTextView actvCategoria, actvEstado, actvZona;
+    private AutoCompleteTextView actvCategoria, actvEstado;
 
     private ApiService apiService;
     private int objetoId = -1;
@@ -44,6 +47,7 @@ public class editarobjeto extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         objetoId = getIntent().getIntExtra("objetoId", -1);
+
         if (objetoId == -1) {
             Toast.makeText(this, "Error: objetoId inválido", Toast.LENGTH_SHORT).show();
             finish();
@@ -69,45 +73,37 @@ public class editarobjeto extends AppCompatActivity {
 
         actvCategoria = findViewById(R.id.actvCategoria);
         actvEstado = findViewById(R.id.actvEstado);
-        actvZona = findViewById(R.id.actvZona);
     }
 
     private void setupDropdowns() {
         String[] categorias = new String[]{
-                "Hogar", "Herramientas", "Electrónica", "Exteriores",
-                "Deportes", "Fiestas", "Música", "Cocina", "Otros"
+                "Tecnología",
+                "Eventos",
+                "Transporte",
+                "Herramientas",
+                "Hogar y Muebles",
+                "Deportes y Aire Libre",
+                "Electrodomésticos",
+                "Ropa y Accesorios",
+                "Juegos y Entretenimiento",
+                "Mascotas"
         };
 
         String[] estados = new String[]{"Disponible", "No Disponible"};
 
-        String[] zonas = new String[]{
-                "CDMX",
-                "Guadalajara, Jalisco",
-                "Monterrey, Nuevo León",
-                "Puebla, Puebla",
-                "Querétaro, Querétaro",
-                "Mérida, Yucatán",
-                "Tijuana, Baja California",
-                "Toluca, Estado de México"
-        };
-
         actvCategoria.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categorias));
         actvEstado.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, estados));
-        actvZona.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, zonas));
 
         actvCategoria.setThreshold(0);
         actvEstado.setThreshold(0);
-        actvZona.setThreshold(0);
 
         actvCategoria.setOnClickListener(v -> actvCategoria.showDropDown());
         actvEstado.setOnClickListener(v -> actvEstado.showDropDown());
-        actvZona.setOnClickListener(v -> actvZona.showDropDown());
     }
 
     private void setupListeners() {
         btnVolver.setOnClickListener(v -> finish());
         btnCancelar.setOnClickListener(v -> finish());
-
         btnGuardarCambios.setOnClickListener(v -> guardarCambios());
     }
 
@@ -121,6 +117,7 @@ public class editarobjeto extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     objetoActual = response.body();
+                    Log.d(TAG, "Objeto cargado: " + objetoActual.getNombreObjeto());
                     llenarFormulario(objetoActual);
                 } else {
                     Toast.makeText(editarobjeto.this, "No se pudo cargar el objeto", Toast.LENGTH_SHORT).show();
@@ -131,6 +128,7 @@ public class editarobjeto extends AppCompatActivity {
             @Override
             public void onFailure(Call<Objeto> call, Throwable t) {
                 setLoading(false);
+                Log.e(TAG, "Error al cargar objeto", t);
                 Toast.makeText(editarobjeto.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -139,13 +137,18 @@ public class editarobjeto extends AppCompatActivity {
 
     private void llenarFormulario(Objeto o) {
         etNombre.setText(safe(o.getNombreObjeto()));
-        //etPrecio.setText((o.getPrecio() != null) ? String.valueOf(o.getPrecio()) : "");
+
+        if (o.getPrecio() > 0) {
+            etPrecio.setText(String.valueOf(o.getPrecio()));
+        } else {
+            etPrecio.setText("");
+        }
+
         etDescripcion.setText(safe(o.getDescripcion()));
         etImagenUrl.setText(safe(o.getImagenUrl()));
 
         actvCategoria.setText(safe(o.getCategoria()), false);
         actvEstado.setText(safe(o.getEstado()), false);
-        actvZona.setText(safe(o.getZona()), false);
     }
 
     private void guardarCambios() {
@@ -156,31 +159,54 @@ public class editarobjeto extends AppCompatActivity {
 
         String categoria = actvCategoria.getText().toString().trim();
         String estado = actvEstado.getText().toString().trim();
-        String zona = actvZona.getText().toString().trim();
 
-        if (nombre.isEmpty() || precioStr.isEmpty() || categoria.isEmpty() || estado.isEmpty() || zona.isEmpty()) {
-            Toast.makeText(this, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show();
+        // Validaciones
+        if (nombre.isEmpty()) {
+            etNombre.setError("El nombre es requerido");
+            etNombre.requestFocus();
+            return;
+        }
+
+        if (precioStr.isEmpty()) {
+            etPrecio.setError("El precio es requerido");
+            etPrecio.requestFocus();
+            return;
+        }
+
+        if (categoria.isEmpty()) {
+            Toast.makeText(this, "Selecciona una categoría", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (estado.isEmpty()) {
+            Toast.makeText(this, "Selecciona un estado", Toast.LENGTH_SHORT).show();
             return;
         }
 
         double precio;
         try {
             precio = Double.parseDouble(precioStr);
-            if (precio < 0) throw new NumberFormatException();
+            if (precio < 0) {
+                etPrecio.setError("El precio no puede ser negativo");
+                etPrecio.requestFocus();
+                return;
+            }
         } catch (Exception e) {
-            Toast.makeText(this, "Precio inválido", Toast.LENGTH_SHORT).show();
+            etPrecio.setError("Precio inválido");
+            etPrecio.requestFocus();
             return;
         }
 
+        // Crear request
         UpdateObjetoRequest req = new UpdateObjetoRequest();
         req.setNombreObjeto(nombre);
         req.setPrecio(precio);
         req.setCategoria(categoria);
         req.setEstado(estado);
-        req.setZona(zona);
         req.setDescripcion(descripcion.isEmpty() ? null : descripcion);
         req.setImagenUrl(imagenUrl.isEmpty() ? null : imagenUrl);
 
+        Log.d(TAG, "Enviando actualización: " + nombre + ", $" + precio);
         actualizarObjeto(req);
     }
 
@@ -197,14 +223,20 @@ public class editarobjeto extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
                 } else {
-                    Toast.makeText(editarobjeto.this, "Error al actualizar. Código: " + response.code(), Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Error en respuesta: " + response.code());
+                    Toast.makeText(editarobjeto.this,
+                            "Error al actualizar. Código: " + response.code(),
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Objeto> call, Throwable t) {
                 setLoading(false);
-                Toast.makeText(editarobjeto.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Error de red al actualizar", t);
+                Toast.makeText(editarobjeto.this,
+                        "Error de conexión: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

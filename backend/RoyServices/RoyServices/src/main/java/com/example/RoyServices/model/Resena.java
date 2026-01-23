@@ -22,7 +22,7 @@ public class Resena {
     @Column(name = "id_resena")
     private Integer idResena;
 
-    @Column(name = "id_objeto", nullable = false)   // ✅ NUEVO
+    @Column(name = "id_objeto", nullable = true)
     private Integer idObjeto;
 
     @Column(name = "id_us_autor", nullable = false)

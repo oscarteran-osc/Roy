@@ -1,18 +1,16 @@
 package com.example.roy.home;
 
 import android.app.AlertDialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,22 +21,22 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Resena;
+import com.example.roy.utils.SessionManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class resenas extends Fragment implements AdapterView.OnItemClickListener {
+public class resenas extends Fragment {
 
     private static final String TAG = "ResenasFragment";
 
-    private ListView listView;
-    private ResenaAdapter adapter;
+    private LinearLayout containerResenas;
     private ApiService apiService;
+    private SessionManager sessionManager;
     private int objetoId = -1;
     private LinearLayout layoutSinResenas;
     private FloatingActionButton fabAgregarResena;
@@ -49,30 +47,24 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiService = RetrofitClient.getClient().create(ApiService.class);
+        sessionManager = new SessionManager(requireContext());
 
         if (getArguments() != null) {
             objetoId = getArguments().getInt("objetoId", -1);
             idUsReceptor = getArguments().getInt("idUsReceptor", -1);
+            Log.d(TAG, "onCreate - objetoId: " + objetoId + ", receptor: " + idUsReceptor);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vistita = inflater.inflate(R.layout.fragment_resenas, container, false);
 
-        listView = vistita.findViewById(R.id.rvResenas);
+        containerResenas = vistita.findViewById(R.id.containerResenas);
         layoutSinResenas = vistita.findViewById(R.id.layoutSinResenas);
         fabAgregarResena = vistita.findViewById(R.id.fabAgregarResena);
 
-        listView.setOnItemClickListener(this);
-
-        // Inicializar adaptador con lista vacía
-        adapter = new ResenaAdapter(getContext(), new ArrayList<>());
-        listView.setAdapter(adapter);
-
-        // Configurar botón flotante para agregar reseña
         if (fabAgregarResena != null) {
             fabAgregarResena.setOnClickListener(v -> mostrarDialogoAgregarResena());
         }
@@ -84,20 +76,12 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Intentar obtener el objetoId del fragmento padre si no lo tenemos
-        if (objetoId == -1 && getParentFragment() != null) {
-            Bundle parentArgs = getParentFragment().getArguments();
-            if (parentArgs != null) {
-                objetoId = parentArgs.getInt("objetoId", -1);
-            }
-        }
-
-        // Cargar reseñas
         if (objetoId != -1) {
             cargarResenas();
         } else {
             Toast.makeText(getContext(), "Error: ID de objeto no disponible",
                     Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "objetoId es -1");
         }
     }
 
@@ -109,6 +93,8 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
             public void onResponse(Call<List<Resena>> call, Response<List<Resena>> response) {
                 if (!isAdded()) return;
 
+                Log.d(TAG, "Respuesta recibida - código: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Resena> resenas = response.body();
                     Log.d(TAG, "Reseñas cargadas: " + resenas.size());
@@ -117,12 +103,13 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
                         mostrarMensajeSinResenas();
                     } else {
                         ocultarMensajeSinResenas();
-                        adapter.actualizarResenas(resenas);
+                        mostrarResenas(resenas);
                     }
                 } else {
                     Toast.makeText(getContext(), "Error al cargar reseñas",
                             Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error: " + response.code());
+                    mostrarMensajeSinResenas();
                 }
             }
 
@@ -133,14 +120,36 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
                 Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Error: ", t);
+                mostrarMensajeSinResenas();
             }
         });
     }
 
+    private void mostrarResenas(List<Resena> resenas) {
+        containerResenas.removeAllViews();
+
+        for (Resena resena : resenas) {
+            View resenaView = LayoutInflater.from(getContext())
+                    .inflate(R.layout.item_resena, containerResenas, false);
+
+            TextView tvNombre = resenaView.findViewById(R.id.tvNombreResena);
+            TextView tvFecha = resenaView.findViewById(R.id.tvFechaResena);
+            TextView tvComentario = resenaView.findViewById(R.id.tvComentarioResena);
+            RatingBar ratingBar = resenaView.findViewById(R.id.ratingBarResena);
+
+            tvNombre.setText(resena.getNombreAutor() != null ? resena.getNombreAutor() : "Usuario");
+            tvFecha.setText(resena.getFechaResena() != null ? resena.getFechaResena() : "");
+            tvComentario.setText(resena.getComentario());
+            ratingBar.setRating(resena.getCalificacion());
+
+            containerResenas.addView(resenaView);
+        }
+    }
+
     private void mostrarDialogoAgregarResena() {
-        // Verificar que el usuario esté autenticado
-        SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
-        int userId = prefs.getInt("userId", -1);
+        int userId = sessionManager.getUserId();
+
+        Log.d(TAG, "Intentando agregar reseña - userId: " + userId);
 
         if (userId == -1) {
             Toast.makeText(getContext(), "Debes iniciar sesión para dejar una reseña",
@@ -148,7 +157,12 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
             return;
         }
 
-        // Crear diálogo personalizado
+        if (userId == idUsReceptor) {
+            Toast.makeText(getContext(), "No puedes dejar reseñas en tus propios objetos",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_agregar_resena, null);
 
@@ -178,7 +192,6 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
                 return;
             }
 
-            // Enviar reseña
             enviarResena(userId, calificacion, comentario);
             dialog.dismiss();
         });
@@ -187,9 +200,9 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
     }
 
     private void enviarResena(int userId, float calificacion, String comentario) {
-
         if (objetoId == -1 || idUsReceptor == -1) {
             Toast.makeText(getContext(), "Error: faltan datos del objeto", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Error - objetoId: " + objetoId + ", receptor: " + idUsReceptor);
             return;
         }
 
@@ -200,6 +213,9 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
         nuevaResena.setCalificacion((int) calificacion);
         nuevaResena.setComentario(comentario);
 
+        Log.d(TAG, "Enviando reseña - objeto: " + objetoId + ", autor: " + userId +
+                ", receptor: " + idUsReceptor + ", calificación: " + calificacion);
+
         apiService.crearResena(nuevaResena).enqueue(new Callback<Resena>() {
             @Override
             public void onResponse(Call<Resena> call, Response<Resena> response) {
@@ -209,7 +225,8 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
                     Toast.makeText(getContext(), "Reseña agregada exitosamente", Toast.LENGTH_SHORT).show();
                     cargarResenas();
                 } else {
-                    Toast.makeText(getContext(), "Error al agregar reseña", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error al agregar reseña: " + response.code(),
+                            Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error: " + response.code());
                 }
             }
@@ -217,37 +234,30 @@ public class resenas extends Fragment implements AdapterView.OnItemClickListener
             @Override
             public void onFailure(Call<Resena> call, Throwable t) {
                 if (!isAdded()) return;
-                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Error: ", t);
             }
         });
     }
 
-
     private void mostrarMensajeSinResenas() {
         if (layoutSinResenas != null) {
             layoutSinResenas.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
+            containerResenas.setVisibility(View.GONE);
         }
     }
 
     private void ocultarMensajeSinResenas() {
         if (layoutSinResenas != null) {
             layoutSinResenas.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            containerResenas.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Opcional: agregar funcionalidad al hacer clic en una reseña
-        // Por ejemplo, mostrar opciones para reportar
-    }
-
-    // Método público para que el fragmento padre pase el objetoId
     public void setObjetoId(int objetoId) {
         this.objetoId = objetoId;
-        if (adapter != null && objetoId != -1) {
+        if (objetoId != -1) {
             cargarResenas();
         }
     }

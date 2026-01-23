@@ -1,51 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <ListView
-        android:id="@+id/rvResenas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="76dp"
-        android:nestedScrollingEnabled="false"
-        android:clipToPadding="false"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <!-- Mensaje cuando no hay reseñas -->
     <LinearLayout
         android:id="@+id/layoutSinResenas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="32dp"
         android:visibility="gone">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_gravity="center"
             android:src="@android:drawable/ic_dialog_info"
-            android:tint="#CCCCCC" />
+            android:tint="#CCCCCC"
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             android:text="No hay reseñas aún"
-            android:textColor="#999999"
             android:textSize="16sp"
-            android:fontFamily="@font/poppins_medium" />
+            android:textColor="#999999"
+            android:fontFamily="@font/poppins_medium"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:text="Sé el primero en dejar una reseña"
             android:textColor="#CCCCCC"
@@ -53,16 +40,23 @@
 
     </LinearLayout>
 
+    <!-- ✅ Contenedor de reseñas (sin ListView, sin scroll propio) -->
+    <LinearLayout
+        android:id="@+id/containerResenas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
     <!-- Botón flotante para agregar reseña -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAgregarResena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="end"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
         android:contentDescription="Agregar reseña"
         app:tint="@android:color/white"
         app:backgroundTint="#3469CC" />
 
-</FrameLayout>
+</LinearLayout>

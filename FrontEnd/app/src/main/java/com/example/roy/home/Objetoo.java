@@ -118,8 +118,8 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        // Verificar disponibilidad
-        boolean disponible = Boolean.parseBoolean(objetoActual.getEstado());
+        // CORRECCIÓN: Verificar disponibilidad correctamente
+        boolean disponible = esDisponible(objetoActual.getEstado());
 
         if (!disponible) {
             Toast.makeText(this, "Este objeto no está disponible actualmente",
@@ -147,5 +147,16 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
         // intent.putExtra("objetoId", objetoId);
         // intent.putExtra("arrendadorId", objetoActual.getIdUsArrendador());
         // startActivity(intent);
+    }
+
+    /**
+     * Método auxiliar para verificar disponibilidad
+     * Maneja tanto "Disponible" como "true" como valores válidos
+     */
+    private boolean esDisponible(String estado) {
+        if (estado == null) return false;
+
+        String estadoLower = estado.trim().toLowerCase();
+        return estadoLower.equals("disponible") || estadoLower.equals("true");
     }
 }

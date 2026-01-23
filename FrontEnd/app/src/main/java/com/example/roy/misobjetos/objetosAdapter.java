@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -106,12 +105,7 @@ public class objetosAdapter extends BaseAdapter {
             }
         });
 
-        // Click en Eliminar
-        holder.btnEliminar.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEliminarClicked(objeto, position);
-            }
-        });
+        // ELIMINADO: Click en Eliminar ya que no existe el botón en el layout
 
         return convertView;
     }
@@ -122,6 +116,6 @@ public class objetosAdapter extends BaseAdapter {
         Chip catChip;
         TextView precioobj;
         MaterialButton btndetalles;
-        ImageButton btnEliminar;
+        // ELIMINADO: ImageButton btnEliminar;
     }
 }

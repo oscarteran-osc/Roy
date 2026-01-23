@@ -1,25 +1,30 @@
 package com.example.RoyServices.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "IMAGEN_OBJETO")
+@Table(name = "imagen_objeto")
 public class ImagenObjeto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_imagen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idImagen;
 
-    @Column(name = "id_objeto", nullable = false)
+    @Column(name = "id_objeto")
     private Integer idObjeto;
 
-    @Column(name = "url_imagen", nullable = false, length = 255)
+    @Column(name = "url_imagen")
     private String urlImagen;
 
     @Column(name = "es_principal")
     private Boolean esPrincipal;
 }
-

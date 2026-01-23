@@ -27,6 +27,7 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
+import com.example.roy.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +52,7 @@ public class Home extends Fragment {
 
     // Destacado
     private CardView featuredCard;
-    private TextView tituloDestacado, descDestacado;
+    private TextView tituloDestacado, descDestacado, verMasBtn;
     private ImageView imagenDestacado;
     private Objeto objetoDestacado;
 
@@ -67,6 +68,7 @@ public class Home extends Fragment {
     private TextView recomendadosEmpty;
 
     private ApiService api;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -77,6 +79,7 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         api = RetrofitClient.getClient().create(ApiService.class);
+        sessionManager = new SessionManager(requireContext());
 
         bindViews(view);
         setupClicks();
@@ -116,6 +119,7 @@ public class Home extends Fragment {
             tituloDestacado = featuredCard.findViewById(R.id.titulo_destacado);
             descDestacado = featuredCard.findViewById(R.id.desc_destacado);
             imagenDestacado = featuredCard.findViewById(R.id.imagen_destacado);
+            verMasBtn = featuredCard.findViewById(R.id.ver_mas_btn);
         }
 
         recomendadosRecycler = view.findViewById(R.id.recomendados_recycler);
@@ -152,8 +156,18 @@ public class Home extends Fragment {
             );
         }
 
+        // Click en la tarjeta completa del destacado
         if (featuredCard != null) {
             featuredCard.setOnClickListener(v -> {
+                if (objetoDestacado != null) {
+                    openObjetoActivity(objetoDestacado.getIdObjeto());
+                }
+            });
+        }
+
+        // Click en el botón "Ver más"
+        if (verMasBtn != null) {
+            verMasBtn.setOnClickListener(v -> {
                 if (objetoDestacado != null) {
                     openObjetoActivity(objetoDestacado.getIdObjeto());
                 }
@@ -242,10 +256,23 @@ public class Home extends Fragment {
         if (recomendadosEmpty != null) recomendadosEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 
-    private void cargarDestacado() {
-        if (tituloDestacado == null || descDestacado == null || imagenDestacado == null) return;
+    // ✅ REEMPLAZA SOLO ESTE MÉTODO en tu clase Home.java
 
-        api.getDestacado().enqueue(new Callback<Objeto>() {
+    private void cargarDestacado() {
+        if (featuredCard == null) return;
+
+        // Obtener el userId actual desde SessionManager
+        int miUsuarioId = sessionManager.getUserId();
+
+        // Llamar al endpoint con el userId (si existe, sino enviar null)
+        Call<Objeto> call;
+        if (miUsuarioId != -1) {
+            call = api.getDestacado(miUsuarioId);
+        } else {
+            call = api.getDestacado(null);
+        }
+
+        call.enqueue(new Callback<Objeto>() {
             @Override
             public void onResponse(Call<Objeto> call, Response<Objeto> response) {
                 if (!isAdded()) return;
@@ -255,31 +282,51 @@ public class Home extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     objetoDestacado = response.body();
 
-                    tituloDestacado.setText(objetoDestacado.getNombreObjeto());
-                    descDestacado.setText(objetoDestacado.getDescripcion());
+                    // Mostrar la tarjeta destacada
+                    featuredCard.setVisibility(View.VISIBLE);
 
-                    // FIX: Usar getImagenPrincipal() en lugar de getImagenUrl()
-                    String url = objetoDestacado.getImagenUrl();
-                    if (url != null) url = url.trim();
+                    // Llenar los datos
+                    if (tituloDestacado != null) {
+                        tituloDestacado.setText(objetoDestacado.getNombreObjeto());
+                    }
 
-                    if (url != null && !url.isEmpty()) {
-                        Glide.with(requireContext())
-                                .load(url)
-                                .placeholder(R.drawable.error)
-                                .error(R.drawable.error)
-                                .into(imagenDestacado);
-                    } else {
-                        imagenDestacado.setImageResource(R.drawable.error);
+                    if (descDestacado != null) {
+                        String descripcionCompleta = objetoDestacado.getDescripcion();
+                        if (descripcionCompleta != null && descripcionCompleta.length() > 80) {
+                            descDestacado.setText(descripcionCompleta.substring(0, 80) + "...");
+                        } else {
+                            descDestacado.setText(descripcionCompleta);
+                        }
+                    }
+
+                    if (imagenDestacado != null) {
+                        String url = objetoDestacado.getImagenUrl();
+                        if (url != null) url = url.trim();
+
+                        if (url != null && !url.isEmpty()) {
+                            Glide.with(requireContext())
+                                    .load(url)
+                                    .placeholder(R.drawable.error)
+                                    .error(R.drawable.error)
+                                    .into(imagenDestacado);
+                        } else {
+                            imagenDestacado.setImageResource(R.drawable.error);
+                        }
                     }
 
                 } else {
+                    // Si no hay destacado disponible (code 204 No Content), ocultar la tarjeta
                     Log.w(TAG, "destacado falló code=" + response.code());
+                    featuredCard.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<Objeto> call, Throwable t) {
                 Log.e(TAG, "destacado failure: " + t.getMessage(), t);
+                if (isAdded() && featuredCard != null) {
+                    featuredCard.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -311,13 +358,14 @@ public class Home extends Fragment {
                     return;
                 }
 
-                // FIX: Obtener el ID del usuario actual y filtrar sus objetos
-                int miUsuarioId = getUsuarioIdActual();
+                // Obtener el ID del usuario actual y filtrar sus objetos
+                int miUsuarioId = sessionManager.getUserId();
                 List<Objeto> objetosFiltrados = new ArrayList<>();
 
                 for (Objeto objeto : all) {
                     // Solo agregar objetos que NO sean del usuario actual
-                    if (objeto.getIdUsArrendador() != miUsuarioId) {
+                    // Si no hay sesión (userId = -1), mostrar todos
+                    if (miUsuarioId == -1 || objeto.getIdUsArrendador() != miUsuarioId) {
                         objetosFiltrados.add(objeto);
                     }
                 }
@@ -382,18 +430,6 @@ public class Home extends Fragment {
             return prefs.getString("zona", null);
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    // FIX: Nuevo método para obtener el ID del usuario actual
-    private int getUsuarioIdActual() {
-        try {
-            SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
-            // Ajusta la key según cómo guardes el ID del usuario (puede ser "userId", "idUsuario", etc.)
-            return prefs.getInt("userId", -1);
-        } catch (Exception e) {
-            Log.e(TAG, "Error obteniendo userId: " + e.getMessage());
-            return -1;
         }
     }
 }

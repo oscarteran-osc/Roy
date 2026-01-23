@@ -1,19 +1,17 @@
 package com.example.roy.profile;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +20,7 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.home.ObjetosArrendadorAdapter;
+import com.example.roy.home.Objetoo;
 import com.example.roy.models.Objeto;
 import com.example.roy.models.UserProfileResponse;
 import com.google.android.material.button.MaterialButton;
@@ -35,11 +34,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class perfilArrendador extends Fragment {
+public class PerfilArrendadorActivity extends AppCompatActivity {
 
-    private static final String TAG = "PerfilArrendador";
+    private static final String TAG = "PerfilArrendadorActivity";
 
-    // UI Components del XML
+    // UI Components
+    private ImageButton btnBack;
     private ShapeableImageView imgAvatarArr;
     private TextView tvNombreArr;
     private TextView tvRegionArr;
@@ -57,33 +57,30 @@ public class perfilArrendador extends Fragment {
     private String token;
     private UserProfileResponse perfilArrendador;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_perfil_arrendador, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_perfil_arrendador);
 
         // Inicializar API
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         // Vincular vistas
-        initViews(view);
+        initViews();
 
         // Obtener datos de sesión
         obtenerDatosSesion();
 
-        // Obtener ID del arrendador desde los argumentos
-        if (getArguments() != null) {
-            arrendadorId = getArguments().getInt("arrendadorId", -1);
+        // Obtener ID del arrendador desde el Intent
+        if (getIntent() != null) {
+            arrendadorId = getIntent().getIntExtra("arrendadorId", -1);
             Log.d(TAG, "ArrendadorId recibido: " + arrendadorId);
         }
 
         if (arrendadorId == -1) {
-            Toast.makeText(requireContext(), "Error: ID de arrendador no válido", Toast.LENGTH_SHORT).show();
-            getParentFragmentManager().popBackStack();
-            return view;
+            Toast.makeText(this, "Error: ID de arrendador no válido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
 
         // Configurar listeners
@@ -92,29 +89,29 @@ public class perfilArrendador extends Fragment {
         // Cargar datos del arrendador
         cargarPerfilArrendador();
         cargarObjetosArrendador();
-
-        return view;
     }
 
-    private void initViews(View view) {
-        imgAvatarArr = view.findViewById(R.id.imgAvatarArr);
-        tvNombreArr = view.findViewById(R.id.tvNombreArr);
-        tvRegionArr = view.findViewById(R.id.tvRegionArr);
-        tvReputacionPromedioArr = view.findViewById(R.id.tvReputacionPromedioArr);
-        tvTotalResenasArr = view.findViewById(R.id.tvTotalResenasArr);
-        rbCalificarArr = view.findViewById(R.id.rbCalificarArr);
-        etComentarioArr = view.findViewById(R.id.etComentarioArr);
-        btnEnviarCalificacionArr = view.findViewById(R.id.btnEnviarCalificacionArr);
-        rvObjetosArrendador = view.findViewById(R.id.rvObjetosArrendador);
+    private void initViews() {
+        btnBack = findViewById(R.id.btnBackPerfil);
+        imgAvatarArr = findViewById(R.id.imgAvatarArr);
+        tvNombreArr = findViewById(R.id.tvNombreArr);
+        tvRegionArr = findViewById(R.id.tvRegionArr);
+        tvReputacionPromedioArr = findViewById(R.id.tvReputacionPromedioArr);
+        tvTotalResenasArr = findViewById(R.id.tvTotalResenasArr);
+        rbCalificarArr = findViewById(R.id.rbCalificarArr);
+        etComentarioArr = findViewById(R.id.etComentarioArr);
+        btnEnviarCalificacionArr = findViewById(R.id.btnEnviarCalificacionArr);
+        rvObjetosArrendador = findViewById(R.id.rvObjetosArrendador);
     }
 
     private void obtenerDatosSesion() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("RoyPrefs", android.content.Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         currentUserId = prefs.getInt("userId", -1);
         token = prefs.getString("token", null);
     }
 
     private void setupListeners() {
+        btnBack.setOnClickListener(v -> finish());
         btnEnviarCalificacionArr.setOnClickListener(v -> enviarCalificacion());
     }
 
@@ -124,13 +121,11 @@ public class perfilArrendador extends Fragment {
         apiService.getPerfil(arrendadorId, auth).enqueue(new Callback<UserProfileResponse>() {
             @Override
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
-                if (!isAdded()) return;
-
                 if (response.isSuccessful() && response.body() != null) {
                     perfilArrendador = response.body();
                     mostrarDatosPerfil(perfilArrendador);
                 } else {
-                    Toast.makeText(requireContext(),
+                    Toast.makeText(PerfilArrendadorActivity.this,
                             "Error al cargar el perfil del arrendador",
                             Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error: " + response.code());
@@ -139,9 +134,7 @@ public class perfilArrendador extends Fragment {
 
             @Override
             public void onFailure(Call<UserProfileResponse> call, Throwable t) {
-                if (!isAdded()) return;
-
-                Toast.makeText(requireContext(),
+                Toast.makeText(PerfilArrendadorActivity.this,
                         "Error de conexión: " + t.getMessage(),
                         Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Error: ", t);
@@ -167,9 +160,8 @@ public class perfilArrendador extends Fragment {
         }
         tvReputacionPromedioArr.setText(String.format(Locale.US, "⭐ %.1f", reputacion));
 
-        // Total de reseñas (puedes obtener esto del backend)
-        // Por ahora lo dejamos vacío o puedes calcularlo
-        tvTotalResenasArr.setText(""); // O algo como "(10 reseñas)"
+        // Total de reseñas
+        tvTotalResenasArr.setText("");
 
         // Foto de perfil con Glide
         cargarFotoPerfil(perfil.getFotoUrl());
@@ -177,7 +169,7 @@ public class perfilArrendador extends Fragment {
 
     private void cargarFotoPerfil(String fotoUrl) {
         if (fotoUrl != null && !fotoUrl.isEmpty()) {
-            Glide.with(requireContext())
+            Glide.with(this)
                     .load(fotoUrl)
                     .placeholder(R.drawable.profileuser)
                     .error(R.drawable.profileuser)
@@ -191,8 +183,6 @@ public class perfilArrendador extends Fragment {
         apiService.getObjetosPorArrendador(arrendadorId).enqueue(new Callback<List<Objeto>>() {
             @Override
             public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
-                if (!isAdded()) return;
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<Objeto> objetos = response.body();
                     Log.d(TAG, "Objetos del arrendador cargados: " + objetos.size());
@@ -205,8 +195,6 @@ public class perfilArrendador extends Fragment {
 
             @Override
             public void onFailure(Call<List<Objeto>> call, Throwable t) {
-                if (!isAdded()) return;
-
                 Log.e(TAG, "Error de conexión al cargar objetos: " + t.getMessage());
                 mostrarObjetosArrendador(new ArrayList<>());
             }
@@ -215,22 +203,20 @@ public class perfilArrendador extends Fragment {
 
     private void mostrarObjetosArrendador(List<Objeto> objetos) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(
-                requireContext(),
+                this,
                 LinearLayoutManager.HORIZONTAL,
                 false
         );
         rvObjetosArrendador.setLayoutManager(layoutManager);
 
         if (objetos.isEmpty()) {
-            // Mostrar mensaje de que no hay objetos
-            Toast.makeText(requireContext(),
+            Toast.makeText(this,
                     "Este arrendador no tiene objetos publicados",
                     Toast.LENGTH_SHORT).show();
         }
 
-        // Usar el adapter de objetos del arrendador
         ObjetosArrendadorAdapter adapter = new ObjetosArrendadorAdapter(objetos, objeto -> {
-            // Click en un objeto - navegar a detalles
+            // Click en un objeto - abrir Activity de detalles
             navigateToObjetoDetalle(objeto.getIdObjeto());
         });
 
@@ -238,49 +224,38 @@ public class perfilArrendador extends Fragment {
     }
 
     private void navigateToObjetoDetalle(int objetoId) {
-        // Navegar al fragment de detalles del objeto
-        com.example.roy.home.objetito detalleFragment =
-                com.example.roy.home.objetito.newInstance(objetoId);
-
-        // CORRECCIÓN: Usar el ID correcto del contenedor
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.contenedorfragmentos, detalleFragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this, Objetoo.class);
+        intent.putExtra("objetoId", objetoId);
+        startActivity(intent);
     }
 
     private void enviarCalificacion() {
         float calificacion = rbCalificarArr.getRating();
         String comentario = etComentarioArr.getText().toString().trim();
 
-        // Validar que haya seleccionado una calificación
         if (calificacion == 0) {
-            Toast.makeText(requireContext(),
+            Toast.makeText(this,
                     "Por favor selecciona una calificación",
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validar que el usuario esté logueado
         if (currentUserId == -1 || token == null) {
-            Toast.makeText(requireContext(),
+            Toast.makeText(this,
                     "Debes iniciar sesión para calificar",
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validar que no se esté calificando a sí mismo
         if (currentUserId == arrendadorId) {
-            Toast.makeText(requireContext(),
+            Toast.makeText(this,
                     "No puedes calificarte a ti mismo",
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
         // TODO: Implementar el endpoint para enviar la calificación
-        // Por ahora solo mostramos un mensaje
-        Toast.makeText(requireContext(),
+        Toast.makeText(this,
                 "Calificación enviada: " + calificacion + " estrellas",
                 Toast.LENGTH_SHORT).show();
 
@@ -288,7 +263,7 @@ public class perfilArrendador extends Fragment {
         rbCalificarArr.setRating(0);
         etComentarioArr.setText("");
 
-        // Recargar el perfil para actualizar la reputación
+        // Recargar el perfil
         cargarPerfilArrendador();
     }
 
@@ -301,13 +276,5 @@ public class perfilArrendador extends Fragment {
             return valorPorDefecto;
         }
         return texto.trim();
-    }
-
-    public static perfilArrendador newInstance(int arrendadorId) {
-        perfilArrendador fragment = new perfilArrendador();
-        Bundle args = new Bundle();
-        args.putInt("arrendadorId", arrendadorId);
-        fragment.setArguments(args);
-        return fragment;
     }
 }

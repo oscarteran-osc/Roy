@@ -3,12 +3,12 @@ package com.example.roy.models;
 public class Resena {
 
     private Integer idResena;
-    private Integer idObjeto;       // ✅ NUEVO
+    private Integer idObjeto;
     private Integer idUsAutor;
     private Integer idUsReceptor;
     private Integer calificacion;
     private String comentario;
-    private String fechaResena;     // ✅ String (ISO: "2026-01-20")
+    private String fechaResena;
 
     private String nombreAutor;
     private String nombreReceptor;

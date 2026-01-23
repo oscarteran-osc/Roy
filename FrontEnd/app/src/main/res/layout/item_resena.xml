@@ -1,88 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="12dp"
+    android:layout_margin="8dp"
     app:cardUseCompatPadding="true"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
     app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Avatar -->
-        <ImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            tools:src="@drawable/img"
-            android:layout_margin="5dp"
-            android:contentDescription="@string/app_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Nombre -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
+        <!-- Nombre del usuario -->
         <TextView
-            android:id="@+id/tvNombre"
+            android:id="@+id/tvNombreResena"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Monse Gutiérrez"
             android:textStyle="bold"
-            android:textSize="14dp"
-            app:layout_constraintStart_toEndOf="@id/imgAvatar"
-            app:layout_constraintTop_toTopOf="@id/imgAvatar"
-            app:layout_constraintEnd_toStartOf="@id/tvFecha"
-            android:layout_marginStart="8dp" />
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            tools:text="Monse Gutiérrez" />
 
-        <!-- Fecha -->
+        <!-- Fecha de la reseña -->
         <TextView
-            android:id="@+id/tvFecha"
+            android:id="@+id/tvFechaResena"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="29/08/25"
-            android:textSize="12dp"
-            android:layout_marginStart="8dp"
+            android:textSize="12sp"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintTop_toTopOf="@id/tvNombre"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginTop="4dp"
+            tools:text="2026-01-15" />
 
-        <!-- Rating -->
+        <!-- Rating con estrellas -->
         <RatingBar
+            android:id="@+id/ratingBarResena"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="8dp"
-            android:adjustViewBounds="true"
-            tools:rating="4"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="0"
             android:progressTint="#FFEB3B"
-            android:progressBackgroundTint="#737171"
-            android:secondaryProgressTint="#9B9898"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/rating"/>
+            android:progressBackgroundTint="#E0E0E0"
+            android:secondaryProgressTint="#FFC107" />
 
-        <!-- Texto de la reseña -->
+        <!-- Comentario de la reseña -->
         <TextView
-            android:id="@+id/tvContenido"
+            android:id="@+id/tvComentarioResena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="La tienda está en excelentes condiciones..."
-            android:textSize="13sp"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"
+            android:textColor="#333333"
             android:lineSpacingExtra="2dp"
-            android:paddingTop="8dp" />
-        </LinearLayout>
+            tools:text="Excelente servicio, muy recomendado. El objeto estaba en perfectas condiciones." />
 
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>
