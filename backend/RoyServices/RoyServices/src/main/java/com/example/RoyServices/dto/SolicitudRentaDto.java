@@ -1,11 +1,16 @@
 package com.example.RoyServices.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SolicitudRentaDto {
     private Integer idSolicitud;
     private LocalDate fechaInicio;
@@ -14,11 +19,15 @@ public class SolicitudRentaDto {
     private Integer idObjeto;
     private Integer idUsArrendador;
     private Integer idUsArrendatario;
+    private Integer diasRenta;
+    private Double monto;
 
-    // Campos adicionales opcionales
+    // Campos adicionales
     private String nombreObjeto;
     private String nombreArrendador;
     private String nombreArrendatario;
-    private Integer diasRenta; // Calculado
-    private Double monto;
+
+    // ✅ AGREGAR ESTOS DOS CAMPOS:
+    private String imagenObjeto;
+    private Double precioObjeto;
 }

@@ -7,6 +7,7 @@ import com.example.roy.models.Objeto;
 import com.example.roy.models.ImagenObjeto;
 import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
+import com.example.roy.models.SolicitudRentaRequest;
 import com.example.roy.models.UpdateObjetoRequest;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
@@ -29,6 +30,14 @@ import retrofit2.http.Query;
 import java.util.Map;
 
 public interface ApiService {
+
+    // ✅ Para obtener objetos de un usuario específico
+    @GET("api/objeto/arrendador/{arrendadorId}")
+    Call<List<Objeto>> getObjetosPorUsuario(@Path("arrendadorId") int userId);
+
+    // ✅ Para crear solicitud de renta
+    @POST("api/solicitudes")
+    Call<SolicitudRenta> crearSolicitudRenta(@Body SolicitudRentaRequest solicitud);
 
     // ==================== AUTH ====================
     @POST("auth/login")

@@ -16,6 +16,7 @@ import com.example.roy.models.SolicitudRenta;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.bumptech.glide.Glide;
 
 public class SolicitudesArrendatarioAdapter extends BaseAdapter {
 
@@ -74,12 +75,36 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
             context.startActivity(intent);
         };
 
+        // ✅ Mostrar nombre real del objeto
+        String nombreObjeto = solicitud.getNombreObjeto();
+        if (nombreObjeto != null && !nombreObjeto.isEmpty()) {
+            holder.tvNombreObjeto.setText(nombreObjeto);
+        } else {
+            holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
+        }
         holder.tvNombreObjeto.setOnClickListener(abrirObjeto);
-        holder.ivImagen.setOnClickListener(abrirObjeto);
 
-        // Cargar datos
-        holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
-        holder.tvNombreArrendador.setText("De: Usuario #" + solicitud.getIdUsArrendador());
+        // ✅ Mostrar nombre real del arrendador
+        String nombreArrendador = solicitud.getNombreArrendador();
+        if (nombreArrendador != null && !nombreArrendador.isEmpty()) {
+            holder.tvNombreArrendador.setText("De: " + nombreArrendador);
+        } else {
+            holder.tvNombreArrendador.setText("De: Usuario #" + solicitud.getIdUsArrendador());
+        }
+
+        // ✅ Cargar imagen del objeto
+        String imagenUrl = solicitud.getImagenObjeto();
+        if (imagenUrl != null && !imagenUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imagenUrl)
+                    .placeholder(R.drawable.error)
+                    .error(R.drawable.error)
+                    .centerCrop()
+                    .into(holder.ivImagen);
+        } else {
+            holder.ivImagen.setImageResource(R.drawable.error);
+        }
+        holder.ivImagen.setOnClickListener(abrirObjeto);
 
         String fechaInicio = solicitud.getFechaInicio();
         holder.tvFechaSolicitud.setText("Fecha: " + (fechaInicio != null ? fechaInicio : "-"));

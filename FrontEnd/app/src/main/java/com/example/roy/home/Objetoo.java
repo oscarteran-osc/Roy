@@ -15,6 +15,8 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
+import com.example.roy.models.SolicitudRenta;
+import com.example.roy.models.SolicitudRentaRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,35 +120,75 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        // CORRECCIÓN: Verificar disponibilidad correctamente
+        // Verificar disponibilidad
         boolean disponible = esDisponible(objetoActual.getEstado());
-
         if (!disponible) {
             Toast.makeText(this, "Este objeto no está disponible actualmente",
                     Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Verificar que no sea el propio objeto del usuario
-        SharedPreferences prefs = getSharedPreferences("ROY_PREFS", MODE_PRIVATE);
+        // Obtener datos del usuario logeado
+        SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         int miUsuarioId = prefs.getInt("userId", -1);
 
+        if (miUsuarioId == -1) {
+            Toast.makeText(this, "❌ Debes iniciar sesión", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Verificar que no sea el propio objeto del usuario
         if (objetoActual.getIdUsArrendador() == miUsuarioId) {
             Toast.makeText(this, "No puedes solicitar tu propio objeto",
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Aquí implementarías la lógica para enviar la solicitud
-        // Por ejemplo, abrir una Activity de solicitud de renta
-        Toast.makeText(this, "Solicitud enviada para: " + objetoActual.getNombreObjeto(),
-                Toast.LENGTH_SHORT).show();
+        // ✅ Crear la solicitud
+        SolicitudRentaRequest solicitud = new SolicitudRentaRequest();
+        solicitud.setIdUsArrendatario(miUsuarioId); // Quien solicita
+        solicitud.setIdUsArrendador(objetoActual.getIdUsArrendador()); // Dueño del objeto
+        solicitud.setIdObjeto(objetoId); // ID del objeto
+        solicitud.setEstado("PENDIENTE"); // Estado inicial
 
-        // Ejemplo de cómo abrir una Activity de solicitud:
-        // Intent intent = new Intent(this, SolicitudRentaActivity.class);
-        // intent.putExtra("objetoId", objetoId);
-        // intent.putExtra("arrendadorId", objetoActual.getIdUsArrendador());
-        // startActivity(intent);
+        // Fechas de ejemplo (deberías pedirle al usuario que las seleccione)
+        solicitud.setFechaInicio("2026-02-01");
+        solicitud.setFechaFin("2026-02-05");
+
+        solicitud.setMonto(objetoActual.getPrecio()); // Precio del objeto
+
+        Log.d(TAG, "📤 Enviando solicitud - Arrendatario: " + miUsuarioId +
+                ", Arrendador: " + objetoActual.getIdUsArrendador() +
+                ", Objeto: " + objetoId);
+
+        // ✅ Enviar al backend
+        apiService.crearSolicitudRenta(solicitud).enqueue(new Callback<SolicitudRenta>() {
+            @Override
+            public void onResponse(Call<SolicitudRenta> call, Response<SolicitudRenta> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SolicitudRenta creada = response.body();
+                    Log.d(TAG, "✅ Solicitud creada con ID: " + creada.getIdSolicitud());
+
+                    Toast.makeText(Objetoo.this,
+                            "✅ Solicitud enviada correctamente",
+                            Toast.LENGTH_LONG).show();
+                    finish(); // Volver atrás
+                } else {
+                    Log.e(TAG, "❌ Error al crear solicitud: " + response.code());
+                    Toast.makeText(Objetoo.this,
+                            "❌ Error: " + response.code(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SolicitudRenta> call, Throwable t) {
+                Log.e(TAG, "💥 Error de conexión: " + t.getMessage());
+                Toast.makeText(Objetoo.this,
+                        "💥 Error de conexión: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**

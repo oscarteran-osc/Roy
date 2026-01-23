@@ -101,25 +101,21 @@ public class SolicitudRentaController {
     // GET solicitudes de un arrendador (dueño)
     @GetMapping("/arrendador/{idArrendador}")
     public ResponseEntity<List<SolicitudRentaDto>> getPorArrendador(@PathVariable Integer idArrendador) {
-        List<SolicitudRenta> solicitudes = solicitudService.getSolicitudesPorArrendador(idArrendador);
+        List<SolicitudRentaDto> solicitudes = solicitudService.getSolicitudesArrendadorConDetalles(idArrendador);
         if (solicitudes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(solicitudes.stream()
-                .map(this::convertirADto)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(solicitudes);
     }
 
     // GET solicitudes de un arrendatario (quien renta)
     @GetMapping("/arrendatario/{idArrendatario}")
     public ResponseEntity<List<SolicitudRentaDto>> getPorArrendatario(@PathVariable Integer idArrendatario) {
-        List<SolicitudRenta> solicitudes = solicitudService.getSolicitudesPorArrendatario(idArrendatario);
+        List<SolicitudRentaDto> solicitudes = solicitudService.getSolicitudesArrendatarioConDetalles(idArrendatario);
         if (solicitudes.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(solicitudes.stream()
-                .map(this::convertirADto)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(solicitudes);
     }
 
     // GET solicitudes de un objeto

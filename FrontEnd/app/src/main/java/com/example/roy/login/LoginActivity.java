@@ -1,4 +1,5 @@
 package com.example.roy.login;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +14,8 @@ import com.example.roy.Inicio;
 import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
-import com.example.roy.models.AuthResponse; // Importar AuthResponse
-import com.example.roy.models.LoginRequest; // Importar LoginRequest
+import com.example.roy.models.AuthResponse;
+import com.example.roy.models.LoginRequest;
 import com.example.roy.utils.SessionManager;
 
 import retrofit2.Call;
@@ -39,10 +40,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         apiService = RetrofitClient.getClient().create(ApiService.class);
         sessionManager = new SessionManager(this);
 
-
         // Inicializar vistas
-        etMail = findViewById(R.id.loginmail); // Asegúrate que el ID sea correcto
-        etContra = findViewById(R.id.logincontra); // Asegúrate que el ID sea correcto
+        etMail = findViewById(R.id.loginmail);
+        etContra = findViewById(R.id.logincontra);
         btnIniciar = findViewById(R.id.btnlogin);
         goBackRegister = findViewById(R.id.backregister);
         progressBar = findViewById(R.id.progressBar);
@@ -61,12 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent goRegister = new Intent(this, Registro.class);
             startActivity(goRegister);
         }
-        else if (id == R.id.rowlogin){
-            Intent intentito = new Intent(this, MainActivity.class);
-            startActivity(intentito);
-            finish();
-
-        }
+        // ✅ ELIMINADO: El código de rowlogin que causaba el problema
     }
 
     private void realizarLogin() {
@@ -78,15 +73,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        // 1. Mostrar loading
+        // Mostrar loading
         btnIniciar.setEnabled(false);
         btnIniciar.setText("Iniciando...");
         progressBar.setVisibility(View.VISIBLE);
 
-        // 2. Construir el objeto LoginRequest
+        // Construir el objeto LoginRequest
         LoginRequest credenciales = new LoginRequest(email, password);
 
-        // 3. Llamada a Retrofit y espera AuthResponse
+        // Llamada a Retrofit
         apiService.loginUser(credenciales).enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
@@ -101,14 +96,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String token = authResponse.getToken();
 
                     if (userId != null && token != null && !token.trim().isEmpty()) {
-                        sessionManager.saveSession(userId, token);
+                        // ✅ Guardar sesión en SharedPreferences con el nombre correcto
+                        SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
+                        prefs.edit()
+                                .putInt("userId", userId)
+                                .putString("token", token)
+                                .putString("userName", authResponse.getNombre())
+                                .putString("userEmail", authResponse.getCorreo())
+                                .apply();
 
                         Toast.makeText(LoginActivity.this,
                                 "¡Bienvenido " + authResponse.getNombre() + "!",
                                 Toast.LENGTH_SHORT).show();
 
-                        Intent goinicio = new Intent(LoginActivity.this, Inicio.class);
-                        startActivity(goinicio);
+                        // ✅ Ir a Inicio y limpiar el stack de activities
+                        Intent intent = new Intent(LoginActivity.this, Inicio.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         finish();
 
                     } else {
@@ -123,13 +127,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
 
-
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
                 btnIniciar.setEnabled(true);
                 btnIniciar.setText("Iniciar Sesión");
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,
+                        "Error de conexión: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

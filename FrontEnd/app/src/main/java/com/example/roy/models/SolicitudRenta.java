@@ -9,6 +9,11 @@ public class SolicitudRenta {
     private String fechaFin;
     private String estado; // PENDIENTE, APROBADA, RECHAZADA
     private double monto;
+    private String nombreObjeto;
+    private String imagenObjeto;
+    private String nombreArrendatario;
+    private String nombreArrendador;
+    private double precioObjeto;
 
     // Constructor vacío
     public SolicitudRenta(int i, int i1, int i2, String date, String s, String rechazada) {
@@ -26,6 +31,7 @@ public class SolicitudRenta {
         this.fechaFin = fechaFin;
         this.estado = estado;
         this.monto = monto;
+
     }
 
     // Getters
@@ -93,4 +99,19 @@ public class SolicitudRenta {
     public void setMonto(double monto) {
         this.monto = monto;
     }
+
+    public String getNombreObjeto() { return nombreObjeto; }
+    public void setNombreObjeto(String nombreObjeto) { this.nombreObjeto = nombreObjeto; }
+
+    public String getImagenObjeto() { return imagenObjeto; }
+    public void setImagenObjeto(String imagenObjeto) { this.imagenObjeto = imagenObjeto; }
+
+    public String getNombreArrendatario() { return nombreArrendatario; }
+    public void setNombreArrendatario(String nombreArrendatario) { this.nombreArrendatario = nombreArrendatario; }
+
+    public String getNombreArrendador() { return nombreArrendador; }
+    public void setNombreArrendador(String nombreArrendador) { this.nombreArrendador = nombreArrendador; }
+
+    public double getPrecioObjeto() { return precioObjeto; }
+    public void setPrecioObjeto(double precioObjeto) { this.precioObjeto = precioObjeto; }
 }

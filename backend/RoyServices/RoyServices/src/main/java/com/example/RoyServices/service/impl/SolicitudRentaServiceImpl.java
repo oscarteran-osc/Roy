@@ -1,12 +1,16 @@
 package com.example.RoyServices.service.impl;
 
+import com.example.RoyServices.dto.SolicitudRentaDto;
 import com.example.RoyServices.model.SolicitudRenta;
 import com.example.RoyServices.repository.SolicitudRentaRepository;
 import com.example.RoyServices.service.SolicitudRentaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -147,5 +151,71 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
     @Override
     public Long contarSolicitudesPendientes(Integer idUsArrendador) {
         return solicitudRepository.countByIdUsArrendadorAndEstado(idUsArrendador, "PENDIENTE");
+    }
+
+    // ============================================
+    // ✅ NUEVOS MÉTODOS
+    // ============================================
+
+    private String obtenerImagenUrl(String imagenUrl) {
+        if (imagenUrl == null || imagenUrl.isEmpty()) {
+            return "https://picsum.photos/200/200?random=" + System.currentTimeMillis();
+        }
+        return imagenUrl;
+    }
+
+    @Override
+    public List<SolicitudRentaDto> getSolicitudesArrendadorConDetalles(Integer idArrendador) {
+        List<Object[]> resultados = solicitudRepository.findSolicitudesArrendadorConDetalles(idArrendador);
+        return mapearResultadosADto(resultados);
+    }
+
+    @Override
+    public List<SolicitudRentaDto> getSolicitudesArrendatarioConDetalles(Integer idArrendatario) {
+        List<Object[]> resultados = solicitudRepository.findSolicitudesArrendatarioConDetalles(idArrendatario);
+        return mapearResultadosADto(resultados);
+    }
+
+    // ✅ MÉTODO AUXILIAR: Mapear Object[] a SolicitudRentaDto
+    private List<SolicitudRentaDto> mapearResultadosADto(List<Object[]> resultados) {
+        List<SolicitudRentaDto> solicitudes = new ArrayList<>();
+
+        for (Object[] row : resultados) {
+            try {
+                // Convertir fechas SQL a LocalDate
+                LocalDate fechaInicio = row[5] != null ? ((Date) row[5]).toLocalDate() : null;
+                LocalDate fechaFin = row[6] != null ? ((Date) row[6]).toLocalDate() : null;
+
+                // Calcular días de renta
+                int diasRenta = 0;
+                if (fechaInicio != null && fechaFin != null) {
+                    diasRenta = (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin) + 1;
+                }
+
+                SolicitudRentaDto dto = SolicitudRentaDto.builder()
+                        .idSolicitud((Integer) row[0])
+                        .idUsArrendatario((Integer) row[1])
+                        .idUsArrendador((Integer) row[2])
+                        .idObjeto((Integer) row[3])
+                        .estado((String) row[4])
+                        .fechaInicio(fechaInicio)
+                        .fechaFin(fechaFin)
+                        .monto(row[7] != null ? ((Number) row[7]).doubleValue() : 0.0)
+                        .nombreObjeto((String) row[9])
+                        .imagenObjeto((String) row[10])
+                        .precioObjeto(row[11] != null ? ((Number) row[11]).doubleValue() : 0.0)
+                        .nombreArrendatario((String) row[12])
+                        .nombreArrendador((String) row[13])
+                        .diasRenta(diasRenta)
+                        .build();
+
+                solicitudes.add(dto);
+            } catch (Exception e) {
+                // Log del error (opcional)
+                System.err.println("Error al mapear solicitud: " + e.getMessage());
+            }
+        }
+
+        return solicitudes;
     }
 }
