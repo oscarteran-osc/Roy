@@ -15,13 +15,15 @@ import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.AuthResponse; // Importar AuthResponse
 import com.example.roy.models.LoginRequest; // Importar LoginRequest
+import com.example.roy.utils.SessionManager;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private SharedPreferences prefs;
+    private SessionManager sessionManager;
     private ApiService apiService;
     private EditText etMail, etContra;
     private Button btnIniciar;
@@ -35,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Inicializar Retrofit y SharedPreferences
         apiService = RetrofitClient.getClient().create(ApiService.class);
-        prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
+        sessionManager = new SessionManager(this);
 
 
         // Inicializar vistas
@@ -99,14 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String token = authResponse.getToken();
 
                     if (userId != null && token != null && !token.trim().isEmpty()) {
-
-                        // ✅ Guarda aquí, ya que sabemos que NO es null
-                        prefs.edit()
-                                .putString("TOKEN", token)
-                                .putInt("ID_USUARIO", userId)
-                                .putInt("userId", userId)   // si quieres conservar tus dos keys, ok
-                                .putString("token", token)
-                                .apply();
+                        sessionManager.saveSession(userId, token);
 
                         Toast.makeText(LoginActivity.this,
                                 "¡Bienvenido " + authResponse.getNombre() + "!",
@@ -121,7 +116,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 "El servidor no devolvió token/userId válidos.",
                                 Toast.LENGTH_LONG).show();
                     }
-
                 } else {
                     Toast.makeText(LoginActivity.this,
                             "Credenciales incorrectas.",

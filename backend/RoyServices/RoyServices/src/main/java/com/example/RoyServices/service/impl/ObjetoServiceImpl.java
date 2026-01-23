@@ -7,7 +7,9 @@ import com.example.RoyServices.service.ObjetoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -101,8 +103,42 @@ public class ObjetoServiceImpl implements ObjetoService {
     }
 
     @Override
-    public ObjetoConZonaProjection obtenerDestacadoConZona() {
-        List<ObjetoConZonaProjection> top = objetoRepository.findTop10ConZona();
-        return top.isEmpty() ? null : top.get(0);
+    public ObjetoConZonaProjection obtenerDestacadoConZona(Integer userIdExcluir) {
+        try {
+            List<ObjetoConZonaProjection> todos = objetoRepository.findAllConZona();
+
+            if (todos == null || todos.isEmpty()) {
+                return null;
+            }
+
+            // Si no hay userId para excluir, retornar el primero
+            if (userIdExcluir == null) {
+                return todos.get(0);
+            }
+
+            // Filtrar objetos que NO sean del usuario actual
+            List<ObjetoConZonaProjection> filtrados = todos.stream()
+                    .filter(obj -> obj.getIdUsArrendador() != null &&
+                            !obj.getIdUsArrendador().equals(userIdExcluir))
+                    .collect(Collectors.toList());
+
+            // Si no quedan objetos después de filtrar, retornar null
+            if (filtrados.isEmpty()) {
+                return null;
+            }
+
+            // Retornar uno aleatorio de los filtrados
+            Collections.shuffle(filtrados);
+            return filtrados.get(0);
+        } catch (Exception e) {
+            System.err.println("Error en obtenerDestacadoConZona: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<ObjetoConZonaProjection> buscarPorArrendadorConZona(Integer arrendadorId) {
+        return objetoRepository.findByIdUsArrendador(arrendadorId);
     }
 }

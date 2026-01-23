@@ -27,6 +27,7 @@ import com.example.roy.R;
 import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.models.Objeto;
+import com.example.roy.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +52,7 @@ public class Home extends Fragment {
 
     // Destacado
     private CardView featuredCard;
-    private TextView tituloDestacado, descDestacado;
+    private TextView tituloDestacado, descDestacado, verMasBtn;
     private ImageView imagenDestacado;
     private Objeto objetoDestacado;
 
@@ -67,6 +68,7 @@ public class Home extends Fragment {
     private TextView recomendadosEmpty;
 
     private ApiService api;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -77,6 +79,7 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         api = RetrofitClient.getClient().create(ApiService.class);
+        sessionManager = new SessionManager(requireContext());
 
         bindViews(view);
         setupClicks();
@@ -116,6 +119,7 @@ public class Home extends Fragment {
             tituloDestacado = featuredCard.findViewById(R.id.titulo_destacado);
             descDestacado = featuredCard.findViewById(R.id.desc_destacado);
             imagenDestacado = featuredCard.findViewById(R.id.imagen_destacado);
+            verMasBtn = featuredCard.findViewById(R.id.ver_mas_btn);
         }
 
         recomendadosRecycler = view.findViewById(R.id.recomendados_recycler);
@@ -152,8 +156,18 @@ public class Home extends Fragment {
             );
         }
 
+        // Click en la tarjeta completa del destacado
         if (featuredCard != null) {
             featuredCard.setOnClickListener(v -> {
+                if (objetoDestacado != null) {
+                    openObjetoActivity(objetoDestacado.getIdObjeto());
+                }
+            });
+        }
+
+        // Click en el botón "Ver más"
+        if (verMasBtn != null) {
+            verMasBtn.setOnClickListener(v -> {
                 if (objetoDestacado != null) {
                     openObjetoActivity(objetoDestacado.getIdObjeto());
                 }
@@ -242,10 +256,23 @@ public class Home extends Fragment {
         if (recomendadosEmpty != null) recomendadosEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 
-    private void cargarDestacado() {
-        if (tituloDestacado == null || descDestacado == null || imagenDestacado == null) return;
+    // ✅ REEMPLAZA SOLO ESTE MÉTODO en tu clase Home.java
 
-        api.getDestacado().enqueue(new Callback<Objeto>() {
+    private void cargarDestacado() {
+        if (featuredCard == null) return;
+
+        // Obtener el userId actual desde SessionManager
+        int miUsuarioId = sessionManager.getUserId();
+
+        // Llamar al endpoint con el userId (si existe, sino enviar null)
+        Call<Objeto> call;
+        if (miUsuarioId != -1) {
+            call = api.getDestacado(miUsuarioId);
+        } else {
+            call = api.getDestacado(null);
+        }
+
+        call.enqueue(new Callback<Objeto>() {
             @Override
             public void onResponse(Call<Objeto> call, Response<Objeto> response) {
                 if (!isAdded()) return;
@@ -255,30 +282,51 @@ public class Home extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     objetoDestacado = response.body();
 
-                    tituloDestacado.setText(objetoDestacado.getNombreObjeto());
-                    descDestacado.setText(objetoDestacado.getDescripcion());
+                    // Mostrar la tarjeta destacada
+                    featuredCard.setVisibility(View.VISIBLE);
 
-                    String url = objetoDestacado.getImagenUrl();
-                    if (url != null) url = url.trim();
+                    // Llenar los datos
+                    if (tituloDestacado != null) {
+                        tituloDestacado.setText(objetoDestacado.getNombreObjeto());
+                    }
 
-                    if (url != null && !url.isEmpty()) {
-                        Glide.with(requireContext())
-                                .load(url)
-                                .placeholder(R.drawable.tent_image)
-                                .error(R.drawable.tent_image)
-                                .into(imagenDestacado);
-                    } else {
-                        imagenDestacado.setImageResource(R.drawable.tent_image);
+                    if (descDestacado != null) {
+                        String descripcionCompleta = objetoDestacado.getDescripcion();
+                        if (descripcionCompleta != null && descripcionCompleta.length() > 80) {
+                            descDestacado.setText(descripcionCompleta.substring(0, 80) + "...");
+                        } else {
+                            descDestacado.setText(descripcionCompleta);
+                        }
+                    }
+
+                    if (imagenDestacado != null) {
+                        String url = objetoDestacado.getImagenUrl();
+                        if (url != null) url = url.trim();
+
+                        if (url != null && !url.isEmpty()) {
+                            Glide.with(requireContext())
+                                    .load(url)
+                                    .placeholder(R.drawable.error)
+                                    .error(R.drawable.error)
+                                    .into(imagenDestacado);
+                        } else {
+                            imagenDestacado.setImageResource(R.drawable.error);
+                        }
                     }
 
                 } else {
+                    // Si no hay destacado disponible (code 204 No Content), ocultar la tarjeta
                     Log.w(TAG, "destacado falló code=" + response.code());
+                    featuredCard.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<Objeto> call, Throwable t) {
                 Log.e(TAG, "destacado failure: " + t.getMessage(), t);
+                if (isAdded() && featuredCard != null) {
+                    featuredCard.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -310,13 +358,32 @@ public class Home extends Fragment {
                     return;
                 }
 
+                // Obtener el ID del usuario actual y filtrar sus objetos
+                int miUsuarioId = sessionManager.getUserId();
+                List<Objeto> objetosFiltrados = new ArrayList<>();
+
+                for (Objeto objeto : all) {
+                    // Solo agregar objetos que NO sean del usuario actual
+                    // Si no hay sesión (userId = -1), mostrar todos
+                    if (miUsuarioId == -1 || objeto.getIdUsArrendador() != miUsuarioId) {
+                        objetosFiltrados.add(objeto);
+                    }
+                }
+
+                Log.d(TAG, "objetos después de filtrar: " + objetosFiltrados.size());
+
+                if (objetosFiltrados.isEmpty()) {
+                    setEmptyState(true);
+                    return;
+                }
+
                 // Mezclar para que se vea variado
-                Collections.shuffle(all);
+                Collections.shuffle(objetosFiltrados);
 
                 // Recomendados
                 recomendadosList.clear();
-                for (int i = 0; i < Math.min(10, all.size()); i++) {
-                    recomendadosList.add(all.get(i));
+                for (int i = 0; i < Math.min(10, objetosFiltrados.size()); i++) {
+                    recomendadosList.add(objetosFiltrados.get(i));
                 }
 
                 // Cerca de ti (si hay zona guardada)
@@ -325,7 +392,7 @@ public class Home extends Fragment {
 
                 if (miZona != null && !miZona.trim().isEmpty()) {
                     String zonaNorm = miZona.trim().toLowerCase();
-                    for (Objeto o : all) {
+                    for (Objeto o : objetosFiltrados) {
                         if (o.getZona() != null && o.getZona().toLowerCase().contains(zonaNorm)) {
                             cercaList.add(o);
                         }
@@ -335,8 +402,8 @@ public class Home extends Fragment {
 
                 // Si no había zona o no hubo matches, fallback: siguientes 6 distintos
                 if (cercaList.isEmpty()) {
-                    for (int i = 10; i < Math.min(16, all.size()); i++) {
-                        cercaList.add(all.get(i));
+                    for (int i = 10; i < Math.min(16, objetosFiltrados.size()); i++) {
+                        cercaList.add(objetosFiltrados.get(i));
                     }
                 }
 
@@ -358,10 +425,8 @@ public class Home extends Fragment {
     }
 
     private String getZonaUsuario() {
-        // Ajusta el nombre del sharedprefs a tu app (ej: "ROY_PREFS")
         try {
             SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
-            // Ajusta la key a la que tú uses (ej: "zona", "userZona", etc.)
             return prefs.getString("zona", null);
         } catch (Exception e) {
             return null;

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +30,7 @@ import retrofit2.Response;
 public class listaobjetos extends Fragment {
 
     private ListView listView;
+    private TextView tvMensajeVacio;
     private objetosAdapter adapter;
     private ApiService apiService;
     private int currentUserId;
@@ -49,6 +51,7 @@ public class listaobjetos extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_listaobjetos, container, false);
         listView = view.findViewById(R.id.listaobjeto);
+        //tvMensajeVacio = view.findViewById(R.id.tvMensajeVacio);
 
         adapter = new objetosAdapter(requireContext(), new ArrayList<>(),
                 new objetosAdapter.OnItemActionListener() {
@@ -57,13 +60,6 @@ public class listaobjetos extends Fragment {
                         Intent intent = new Intent(getContext(), detalles.class);
                         intent.putExtra("objetoId", objeto.getIdObjeto());
                         startActivity(intent);
-                    }
-
-                    @Override
-                    public void onVerSolicitudesClicked(Objeto objeto, View view) {
-                        Toast.makeText(getContext(),
-                                "Solicitudes de: " + objeto.getNombreObjeto(),
-                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -83,25 +79,60 @@ public class listaobjetos extends Fragment {
     }
 
     private void cargarObjetos() {
+        if (currentUserId == -1) {
+            Toast.makeText(getContext(), "Error: Usuario no identificado", Toast.LENGTH_SHORT).show();
+            mostrarMensajeVacio(true);
+            return;
+        }
+
         apiService.getObjetos().enqueue(new Callback<List<Objeto>>() {
             @Override
             public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    adapter.updateData(response.body());
+                    // Filtrar solo los objetos del usuario actual
+                    List<Objeto> todosLosObjetos = response.body();
+                    List<Objeto> misObjetos = new ArrayList<>();
+
+                    for (Objeto objeto : todosLosObjetos) {
+                        if (objeto.getIdUsArrendador() == currentUserId) {
+                            misObjetos.add(objeto);
+                        }
+                    }
+
+                    adapter.updateData(misObjetos);
+
+                    // Mostrar u ocultar mensaje vacío
+                    mostrarMensajeVacio(misObjetos.isEmpty());
+                } else {
+                    Toast.makeText(getContext(), "Error al cargar objetos", Toast.LENGTH_SHORT).show();
+                    mostrarMensajeVacio(true);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Objeto>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                mostrarMensajeVacio(true);
             }
         });
+    }
+
+    private void mostrarMensajeVacio(boolean mostrar) {
+        if (tvMensajeVacio != null && listView != null) {
+            if (mostrar) {
+                tvMensajeVacio.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            } else {
+                tvMensajeVacio.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void mostrarDialogoEliminar(Objeto objeto) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Eliminar objeto")
-                .setMessage("¿Eliminar \"" + objeto.getNombreObjeto() + "\"?")
+                .setMessage("¿Estás seguro de eliminar \"" + objeto.getNombreObjeto() + "\"?")
                 .setPositiveButton("Eliminar", (d, w) -> eliminarObjeto(objeto.getIdObjeto()))
                 .setNegativeButton("Cancelar", null)
                 .show();
@@ -109,8 +140,20 @@ public class listaobjetos extends Fragment {
 
     private void eliminarObjeto(int id) {
         apiService.eliminarObjeto(id).enqueue(new Callback<Void>() {
-            @Override public void onResponse(Call<Void> c, Response<Void> r) { cargarObjetos(); }
-            @Override public void onFailure(Call<Void> c, Throwable t) {}
+            @Override
+            public void onResponse(Call<Void> c, Response<Void> r) {
+                if (r.isSuccessful()) {
+                    Toast.makeText(getContext(), "Objeto eliminado correctamente", Toast.LENGTH_SHORT).show();
+                    cargarObjetos();
+                } else {
+                    Toast.makeText(getContext(), "Error al eliminar objeto", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> c, Throwable t) {
+                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

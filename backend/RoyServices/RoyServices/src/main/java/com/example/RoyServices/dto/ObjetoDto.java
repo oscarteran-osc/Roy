@@ -15,4 +15,5 @@ public class ObjetoDto {
     private String descripcion;
     private String imagenUrl;
     private String zona;
+    private String nomArrendador; // ✅ NUEVO
 }

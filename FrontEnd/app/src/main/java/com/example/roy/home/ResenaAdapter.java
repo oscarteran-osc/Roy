@@ -48,17 +48,18 @@ public class ResenaAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         ViewHolder holder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_resena, parent, false);
             holder = new ViewHolder();
-            holder.avatar = convertView.findViewById(R.id.imgAvatar);
-            holder.txtNombre = convertView.findViewById(R.id.tvNombre);
-            holder.txtFecha = convertView.findViewById(R.id.tvFecha);
-            holder.txtComentario = convertView.findViewById(R.id.tvContenido);
-            holder.rating = convertView.findViewById(R.id.rating);
+
+            // ✅ IDs actualizados
+            holder.txtNombre = convertView.findViewById(R.id.tvNombreResena);
+            holder.txtFecha = convertView.findViewById(R.id.tvFechaResena);
+            holder.txtComentario = convertView.findViewById(R.id.tvComentarioResena);
+            holder.rating = convertView.findViewById(R.id.ratingBarResena);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -66,23 +67,25 @@ public class ResenaAdapter extends BaseAdapter {
 
         Resena resena = resenas.get(position);
 
-        // Setear datos
-        holder.txtNombre.setText(resena.getNombreAutor());
-        holder.txtFecha.setText(resena.getFechaResena().toString());
-        holder.txtComentario.setText(resena.getComentario());
-        holder.rating.setRating(resena.getCalificacion());
+        // Nombre del autor
+        holder.txtNombre.setText(
+                resena.getNombreAutor() != null ? resena.getNombreAutor() : "Usuario"
+        );
 
-        // Cargar avatar con Glide
-      //  if (resena.getAvatarUrl() != null && !resena.getAvatarUrl().isEmpty()) {
-      //      Glide.with(context)
-     //               .load(resena.getAvatarUrl())
-      //              .placeholder(R.drawable.img)
-     //               .error(R.drawable.img)
-      //              .circleCrop()
-      //              .into(holder.avatar);
-       // } else {
-       //     holder.avatar.setImageResource(R.drawable.img);
-      //  }
+        // Fecha
+        holder.txtFecha.setText(
+                resena.getFechaResena() != null ? resena.getFechaResena() : ""
+        );
+
+        // Comentario
+        holder.txtComentario.setText(
+                resena.getComentario() != null ? resena.getComentario() : ""
+        );
+
+        // Rating
+        holder.rating.setRating(
+                resena.getCalificacion() != null ? resena.getCalificacion() : 0
+        );
 
         // Forzar estrellas amarillas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -94,13 +97,11 @@ public class ResenaAdapter extends BaseAdapter {
         return convertView;
     }
 
-    // Método para actualizar la lista de reseñas
     public void actualizarResenas(List<Resena> nuevasResenas) {
         this.resenas = nuevasResenas != null ? nuevasResenas : new ArrayList<>();
         notifyDataSetChanged();
     }
 
-    // ViewHolder para mejorar el rendimiento
     static class ViewHolder {
         ImageView avatar;
         TextView txtNombre;

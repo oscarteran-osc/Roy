@@ -4,8 +4,10 @@ import com.example.roy.models.AuthResponse;
 import com.example.roy.models.LoginRequest;
 import com.example.roy.models.RegisterRequest;
 import com.example.roy.models.Objeto;
+import com.example.roy.models.ImagenObjeto;
 import com.example.roy.models.Resena;
 import com.example.roy.models.SolicitudRenta;
+import com.example.roy.models.UpdateObjetoRequest;
 import com.example.roy.models.UpdateProfileRequest;
 import com.example.roy.models.UserProfileResponse;
 import com.example.roy.network.models.PayPalOrderResponse;
@@ -25,12 +27,6 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import java.util.Map;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -61,7 +57,7 @@ public interface ApiService {
     Call<List<Objeto>> getRecomendados();
 
     @GET("api/objeto/destacado")
-    Call<Objeto> getDestacado();
+    Call<Objeto> getDestacado(@Query("userId") Integer miUsuarioId);
 
     @GET("api/objeto/buscar")
     Call<List<Objeto>> buscarObjetos(@Query("q") String texto);
@@ -69,54 +65,38 @@ public interface ApiService {
     @GET("api/objeto/categoria")
     Call<List<Objeto>> objetosPorCategoria(@Query("nombre") String categoria);
 
+    // ✅ CORRECCIÓN: Ruta correcta para objetos del arrendador
+    @GET("api/objeto/arrendador/{arrendadorId}")
+    Call<List<Objeto>> getObjetosPorArrendador(@Path("arrendadorId") int arrendadorId);
+
+    // ==================== IMÁGENES DE OBJETOS ====================
+    @GET("api/imagen/objeto/{objetoId}")
+    Call<List<ImagenObjeto>> getImagenesObjeto(@Path("objetoId") int objetoId);
+
     // ==================== SOLICITUDES - ARRENDATARIO ====================
-    /**
-     * Obtiene solicitudes que EL USUARIO envió para rentar objetos
-     */
     @GET("api/solicitudes/arrendatario/{idArrendatario}")
     Call<List<SolicitudRenta>> getSolicitudesArrendatario(@Path("idArrendatario") int idArrendatario);
 
-    /**
-     * Cancela una solicitud (solo PENDIENTE)
-     */
     @DELETE("api/solicitudes/{idSolicitud}")
     Call<Void> cancelarSolicitud(@Path("idSolicitud") int idSolicitud);
 
-    /**
-     * Elimina una solicitud (generalmente RECHAZADA)
-     */
     @DELETE("api/solicitudes/{id}")
     Call<Void> eliminarSolicitud(@Path("id") int id);
 
     // ==================== SOLICITUDES - ARRENDADOR ====================
-    /**
-     * Obtiene solicitudes que OTROS le enviaron al usuario (dueño de objetos)
-     */
     @GET("api/solicitudes/arrendador/{idArrendador}")
     Call<List<SolicitudRenta>> getSolicitudesArrendador(@Path("idArrendador") int idArrendador);
 
-    /**
-     * Aprueba una solicitud recibida
-     */
     @PUT("api/solicitudes/{id}/aprobar")
     Call<Void> aprobarSolicitud(@Path("id") int idSolicitud);
 
-    /**
-     * Rechaza una solicitud recibida
-     */
     @PUT("api/solicitudes/{id}/rechazar")
     Call<Void> rechazarSolicitud(@Path("id") int idSolicitud);
 
-    /**
-     * Completa una solicitud
-     */
     @PUT("api/solicitudes/{id}/completar")
     Call<SolicitudRenta> completarSolicitud(@Path("id") int idSolicitud);
 
     // ==================== PAGOS ====================
-    /**
-     * Confirma el pago de una solicitud aprobada
-     */
     @POST("api/pagos/confirmar")
     Call<Void> confirmarPago(@Body ConfirmacionPago confirmacion);
 
@@ -125,7 +105,7 @@ public interface ApiService {
     Call<List<Resena>> getResenasPorObjeto(@Path("objetoId") int objetoId);
 
     @POST("api/resenas")
-    Call<Resena> crearResena(@Body Resena resena, @Header("Authorization") String token);
+    Call<Resena> crearResena(@Body Resena resena);
 
     @DELETE("api/resenas/{resenaId}")
     Call<Void> eliminarResena(@Path("resenaId") int resenaId, @Header("Authorization") String token);
@@ -143,6 +123,9 @@ public interface ApiService {
             @Body UpdateProfileRequest request,
             @Header("Authorization") String token
     );
+
+    @PUT("/api/objeto/objeto/{id}")
+    Call<Objeto> actualizarObjeto(@Path("id") int id, @Body UpdateObjetoRequest request);
 
     @Multipart
     @PUT("Roy/api/usuario/{id}/foto")
@@ -169,7 +152,6 @@ public interface ApiService {
     @POST("/api/paypal/capturar-pago")
     Call<Map<String, Object>> capturarPago(@Body Map<String, Object> request);
 
-    // En ApiService.java
     @PUT("api/solicitudes/{id}/pagar")
     Call<Void> marcarComoPagada(@Path("id") int idSolicitud);
 

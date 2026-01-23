@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- TOP: imagen + info + menu -->
+        <!-- TOP: imagen + info + eliminar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,6 +29,7 @@
                 android:layout_height="84dp"
                 android:scaleType="centerCrop"
                 android:layout_marginEnd="12dp"
+                app:shapeAppearanceOverlay="@drawable/bg_rounded_corners"
                 tools:src="@drawable/casacampania" />
 
             <LinearLayout
@@ -73,56 +74,24 @@
 
             </LinearLayout>
 
-            <!-- Menú (⋮) -->
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/dot_indicator"
-
-                app:tint="#111827" />
 
         </LinearLayout>
 
-        <!-- BOTONES -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btndetalles"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:text="Detalles"
-                android:textAllCaps="false"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="14sp"
-                app:cornerRadius="12dp"
-                app:iconPadding="6dp"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="1dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnsolis"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:text="Solicitudes"
-                android:textAllCaps="false"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="14sp"
-                app:cornerRadius="12dp"
-                app:iconPadding="6dp"
-                style="@style/Widget.Material3.Button.TonalButton" />
-
-        </LinearLayout>
+        <!-- BOTÓN DETALLES -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btndetalles"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:text="Ver Detalles"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_info_details"
+            app:iconPadding="6dp"
+            style="@style/Widget.Material3.Button.TonalButton" />
 
     </LinearLayout>
 
