@@ -18,129 +18,178 @@ public class ObjetoController {
 
     private final ObjetoService objetoService;
 
-    // ✅ GET BY ID (con zona)
     @GetMapping("/objeto/{id}")
     public ResponseEntity<ObjetoDto> getById(@PathVariable Integer id) {
-        ObjetoConZonaProjection o = objetoService.getByIdConZona(id);
-        if (o == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(toDto(o));
+        try {
+            ObjetoConZonaProjection o = objetoService.getByIdConZona(id);
+            if (o == null) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(toDto(o));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 
-    // ✅ SAVE (zona NO se manda; se deriva)
     @PostMapping("/objeto")
     public ResponseEntity<ObjetoDto> save(@RequestBody ObjetoDto dto) {
-        Objeto o = Objeto.builder()
-                .idUsArrendador(dto.getIdUsArrendador())
-                .nombreObjeto(dto.getNombreObjeto())
-                .precio(dto.getPrecio())
-                .estado(dto.getEstado())
-                .categoria(dto.getCategoria())
-                .descripcion(dto.getDescripcion())
-                .imagenUrl(dto.getImagenUrl())
-                .build();
+        try {
+            Objeto o = Objeto.builder()
+                    .idUsArrendador(dto.getIdUsArrendador())
+                    .nombreObjeto(dto.getNombreObjeto())
+                    .precio(dto.getPrecio())
+                    .estado(dto.getEstado())
+                    .categoria(dto.getCategoria())
+                    .descripcion(dto.getDescripcion())
+                    .imagenUrl(dto.getImagenUrl())
+                    .build();
 
-        objetoService.save(o);
+            objetoService.save(o);
 
-        // volvemos a pedirlo con zona para devolver respuesta completa
-        ObjetoConZonaProjection creado = objetoService.getByIdConZona(o.getIdObjeto());
-        if (creado == null) {
-            // fallback sin zona (por si algo raro)
-            return ResponseEntity.ok(ObjetoDto.builder()
-                    .idObjeto(o.getIdObjeto())
-                    .idUsArrendador(o.getIdUsArrendador())
-                    .nombreObjeto(o.getNombreObjeto())
-                    .precio(o.getPrecio())
-                    .estado(o.getEstado())
-                    .categoria(o.getCategoria())
-                    .descripcion(o.getDescripcion())
-                    .imagenUrl(o.getImagenUrl())
-                    .zona(null)
-                    .build());
+            ObjetoConZonaProjection creado = objetoService.getByIdConZona(o.getIdObjeto());
+            if (creado == null) {
+                return ResponseEntity.ok(ObjetoDto.builder()
+                        .idObjeto(o.getIdObjeto())
+                        .idUsArrendador(o.getIdUsArrendador())
+                        .nombreObjeto(o.getNombreObjeto())
+                        .precio(o.getPrecio())
+                        .estado(o.getEstado())
+                        .categoria(o.getCategoria())
+                        .descripcion(o.getDescripcion())
+                        .imagenUrl(o.getImagenUrl())
+                        .zona(null)
+                        .nomArrendador(null)
+                        .build());
+            }
+            return ResponseEntity.ok(toDto(creado));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
-        return ResponseEntity.ok(toDto(creado));
     }
 
     @DeleteMapping("/objeto/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        objetoService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            objetoService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 
-    // ✅ UPDATE (zona NO se manda; se deriva)
+    @GetMapping("/arrendador/{arrendadorId}")
+    public ResponseEntity<List<ObjetoDto>> getObjetosPorArrendador(@PathVariable Integer arrendadorId) {
+        try {
+            List<ObjetoConZonaProjection> objetos = objetoService.buscarPorArrendadorConZona(arrendadorId);
+
+            if (objetos == null || objetos.isEmpty()) {
+                return ResponseEntity.ok(List.of());
+            }
+
+            return ResponseEntity.ok(
+                    objetos.stream()
+                            .map(this::toDto)
+                            .collect(Collectors.toList())
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     @PutMapping("/objeto/{id}")
     public ResponseEntity<ObjetoDto> update(@PathVariable Integer id, @RequestBody ObjetoDto dto) {
+        try {
+            Objeto o = Objeto.builder()
+                    .idUsArrendador(dto.getIdUsArrendador())
+                    .nombreObjeto(dto.getNombreObjeto())
+                    .precio(dto.getPrecio())
+                    .estado(dto.getEstado())
+                    .categoria(dto.getCategoria())
+                    .descripcion(dto.getDescripcion())
+                    .imagenUrl(dto.getImagenUrl())
+                    .build();
 
-        Objeto o = Objeto.builder()
-                .idUsArrendador(dto.getIdUsArrendador())
-                .nombreObjeto(dto.getNombreObjeto())
-                .precio(dto.getPrecio())
-                .estado(dto.getEstado())
-                .categoria(dto.getCategoria())
-                .descripcion(dto.getDescripcion())
-                .imagenUrl(dto.getImagenUrl())
-                .build();
+            Objeto aux = objetoService.update(id, o);
+            if (aux == null) return ResponseEntity.notFound().build();
 
-        Objeto aux = objetoService.update(id, o);
+            ObjetoConZonaProjection actualizado = objetoService.getByIdConZona(aux.getIdObjeto());
+            if (actualizado == null) return ResponseEntity.notFound().build();
 
-        // devolver actualizado con zona
-        ObjetoConZonaProjection actualizado = objetoService.getByIdConZona(aux.getIdObjeto());
-        if (actualizado == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(toDto(actualizado));
+            return ResponseEntity.ok(toDto(actualizado));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
-
-    // ----------------- Home endpoints (con zona) -----------------
 
     @GetMapping("/buscar")
     public ResponseEntity<List<ObjetoDto>> buscar(@RequestParam("q") String texto) {
-        List<ObjetoConZonaProjection> objetos = objetoService.buscarPorTextoConZona(texto);
-        if (objetos == null || objetos.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
+        try {
+            List<ObjetoConZonaProjection> objetos = objetoService.buscarPorTextoConZona(texto);
+            if (objetos == null || objetos.isEmpty()) return ResponseEntity.ok(List.of());
+            return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @GetMapping("/categoria")
     public ResponseEntity<List<ObjetoDto>> porCategoria(@RequestParam("nombre") String categoria) {
-        List<ObjetoConZonaProjection> objetos = objetoService.buscarPorCategoriaConZona(categoria);
-        if (objetos == null || objetos.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
+        try {
+            List<ObjetoConZonaProjection> objetos = objetoService.buscarPorCategoriaConZona(categoria);
+            if (objetos == null || objetos.isEmpty()) return ResponseEntity.ok(List.of());
+            return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @GetMapping("/recomendados")
     public ResponseEntity<List<ObjetoDto>> recomendados() {
-        List<ObjetoConZonaProjection> objetos = objetoService.obtenerRecomendadosConZona();
-
-        // ✅ Retorna lista vacía si no hay datos
-        if (objetos == null || objetos.isEmpty()) {
-            return ResponseEntity.ok(List.of()); // Lista vacía con 200 OK
+        try {
+            List<ObjetoConZonaProjection> objetos = objetoService.obtenerRecomendadosConZona();
+            if (objetos == null || objetos.isEmpty()) {
+                return ResponseEntity.ok(List.of());
+            }
+            List<ObjetoConZonaProjection> top = objetos.size() > 10 ? objetos.subList(0, 10) : objetos;
+            return ResponseEntity.ok(top.stream().map(this::toDto).collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
-
-        List<ObjetoConZonaProjection> top = objetos.size() > 10 ? objetos.subList(0, 10) : objetos;
-        return ResponseEntity.ok(top.stream().map(this::toDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/destacado")
-    public ResponseEntity<ObjetoDto> destacado() {
-        ObjetoConZonaProjection o = objetoService.obtenerDestacadoConZona();
-
-        if (o == null) {
-            return ResponseEntity.noContent().build(); // ✅ 204 No Content
+    public ResponseEntity<ObjetoDto> destacado(@RequestParam(value = "userId", required = false) Integer userId) {
+        try {
+            ObjetoConZonaProjection o = objetoService.obtenerDestacadoConZona(userId);
+            if (o == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(toDto(o));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
-
-        return ResponseEntity.ok(toDto(o));
     }
 
     @GetMapping("/objeto")
     public ResponseEntity<List<ObjetoDto>> lista() {
-        List<ObjetoConZonaProjection> objetos = objetoService.getAllConZona();
-
-        // ✅ Lista vacía si no hay datos
-        if (objetos == null || objetos.isEmpty()) {
-            return ResponseEntity.ok(List.of());
+        try {
+            List<ObjetoConZonaProjection> objetos = objetoService.getAllConZona();
+            if (objetos == null || objetos.isEmpty()) {
+                return ResponseEntity.ok(List.of());
+            }
+            return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
-        return ResponseEntity.ok(objetos.stream().map(this::toDto).collect(Collectors.toList()));
     }
-
-    // ----------------- Mapper -----------------
 
     private ObjetoDto toDto(ObjetoConZonaProjection o) {
         return ObjetoDto.builder()
@@ -152,7 +201,8 @@ public class ObjetoController {
                 .categoria(o.getCategoria())
                 .descripcion(o.getDescripcion())
                 .imagenUrl(o.getImagenUrl())
-                .zona(o.getZona()) // ✅ AQUI VA
+                .zona(o.getZona())
+                .nomArrendador(o.getNomArrendador())
                 .build();
     }
 }

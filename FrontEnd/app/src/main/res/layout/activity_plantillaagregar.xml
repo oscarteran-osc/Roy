@@ -1,158 +1,378 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- activity_plantillaagregar.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="20dp"
+    android:background="@color/white"
+    android:fillViewport="true"
     tools:context=".misobjetos.plantillaagregar">
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
+        <!-- Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Nuevo Objeto"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Sección de Imágenes -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📸 Imágenes del producto"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Imagen Principal (Preview) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:cardCornerRadius="12dp"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="#E0E0E0"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/mainimg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/imagenolonger"
+                        android:contentDescription="Vista previa imagen principal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vista Previa"
+                        android:textColor="@color/white"
+                        android:background="#80000000"
+                        android:padding="8dp"
+                        android:layout_gravity="bottom|center"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Miniaturas (3 imágenes) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona hasta 3 imágenes"
+                    android:textSize="12sp"
+                    android:textColor="#757575"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="3">
+
+                    <!-- Miniatura 1 (Principal) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="#4CAF50">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/mini1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/mas"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:contentDescription="Imagen principal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Principal"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+                                android:background="#4CAF50"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:layout_gravity="top|start"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                        </FrameLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Miniatura 2 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="#E0E0E0">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/mini2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/mas"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:contentDescription="Imagen 2" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+                                android:background="#757575"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="2dp"
+                                android:layout_gravity="top|start"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                        </FrameLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Miniatura 3 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="8dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="#E0E0E0">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/mini3"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/mas"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:contentDescription="Imagen 3" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+                                android:background="#757575"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="2dp"
+                                android:layout_gravity="top|start"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                        </FrameLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Datos del Producto -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📝 Información del producto"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Nombre -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del producto"
+                    app:boxStrokeColor="#3469CC"
+                    app:hintTextColor="#3469CC"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nomobj"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="text"
+                        android:maxLines="2" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Precio -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Precio por día"
+                    app:prefixText="$ "
+                    app:boxStrokeColor="#3469CC"
+                    app:hintTextColor="#3469CC"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/precioobj"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Categoría -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Categoría"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp" />
+
+                <Spinner
+                    android:id="@+id/catobj"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/spinner_background"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Descripción -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Descripción"
+                    app:boxStrokeColor="#3469CC"
+                    app:hintTextColor="#3469CC"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/descobj"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:minLines="3"
+                        android:gravity="top" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botones de Acción -->
         <LinearLayout
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp">
 
-            <ImageView
-                android:layout_width="360dp"
-                android:src="@drawable/imagenolonger"
-                android:layout_marginVertical="15dp"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_height="250dp"
-                android:id="@+id/mainimg"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelar"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Cancelar"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#3469CC"
+                app:backgroundTint="@color/white"
+                app:strokeColor="#3469CC"
+                app:strokeWidth="2dp"
+                app:cornerRadius="12dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <ImageView
-                    android:id="@+id/mini1"
-                    android:clickable="true"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mas"
-                    android:layout_marginRight="15dp"/>
-
-                <ImageView
-                    android:id="@+id/mini2"
-                    android:clickable="true"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/mas"/>
-
-                <ImageView
-                    android:id="@+id/mini3"
-                    android:clickable="true"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mas"/>
-            </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:layout_marginTop="20dp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/agregarobj"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Agregar Objeto"
+                android:textSize="16sp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Nombre del producto:" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#C7BFBF"
-                android:hint="P. ej. Canon EOS M50 marca 2 cámara"
-                android:textSize="15dp"
-                android:id="@+id/nomobj"
-                android:padding="5dp"
-                android:fontFamily="@font/poppins_mediumitalic"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/poppins_semibolditalic"
-                android:text="Precio:"/>
-            <EditText
-                android:layout_width="wrap_content"
-                android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:background="#C7BFBF"
-                android:hint="$    .00"
-                android:textColor="#5B5050"
-                android:textSize="15dp"
-                android:id="@+id/precioobj"
-                android:fontFamily="@font/poppins_mediumitalic"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:fontFamily="@font/poppins_semibolditalic"
-                android:text="Categoría:"/>
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:id="@+id/catobj"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:fontFamily="@font/poppins_semibolditalic"
-                android:layout_marginTop="15dp"
-                android:text="Descripión:"
-                />
-            <EditText
-                android:layout_width="wrap_content"
-                android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:background="#C7BFBF"
-                android:hint="Agrega una descripción de tu producto..."
-                android:textColor="#5B5050"
-                android:textSize="15dp"
-                android:id="@+id/descobj"
-                android:fontFamily="@font/poppins_mediumitalic"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Cancelar"
-                    android:fontFamily="@font/poppins_medium"
-                    android:backgroundTint="#3469CC"
-                    android:textSize="18dp"
-                    android:id="@+id/cancelar"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Agregar"
-                    android:fontFamily="@font/poppins_medium"
-                    android:backgroundTint="#3469CC"
-                    android:textSize="18dp"
-                    android:id="@+id/agregarobj"
-                    />
-            </LinearLayout>
+                app:backgroundTint="#3469CC"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_add"
+                app:iconGravity="textStart" />
+
         </LinearLayout>
 
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

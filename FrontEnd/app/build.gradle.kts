@@ -95,6 +95,9 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // Para subir imágenes a ImgBB
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
     // Fragment
     implementation("androidx.fragment:fragment:1.6.2")
 

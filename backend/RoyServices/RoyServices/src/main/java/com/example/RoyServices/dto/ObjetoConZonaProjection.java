@@ -10,4 +10,5 @@ public interface ObjetoConZonaProjection {
     String getDescripcion();
     String getImagenUrl();
     String getZona();
+    String getNomArrendador();
 }

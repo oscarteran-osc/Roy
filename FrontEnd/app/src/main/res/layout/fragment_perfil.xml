@@ -235,6 +235,19 @@
                     android:clipToPadding="false"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp" />
+                <!-- Agregar este TextView justo debajo o cerca del RecyclerView del historial -->
+                <TextView
+                    android:id="@+id/tvSinHistorial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📦 Sin historial, ¡comienza rentando objetos!"
+                    android:textSize="14sp"
+                    android:textColor="#757575"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins_regular"
+                    android:padding="24dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

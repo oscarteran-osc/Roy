@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregar Reseña"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calificación"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#505050"
+        android:layout_marginBottom="8dp" />
+
+    <RatingBar
+        android:id="@+id/dialogRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1"
+        android:rating="0"
+        android:progressTint="#FFEB3B"
+        android:progressBackgroundTint="#CCCCCC"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comentario"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#505050"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/dialogEditComentario"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="Escribe tu opinión sobre este objeto..."
+        android:gravity="top|start"
+        android:padding="12dp"
+        android:background="@drawable/rounded_edittext_background"
+        android:maxLength="500"
+        android:inputType="textMultiLine|textCapSentences"
+        android:layout_marginBottom="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_medium"
+            android:backgroundTint="#CCCCCC"
+            android:textColor="@color/black"
+            android:layout_marginEnd="12dp" />
+
+        <Button
+            android:id="@+id/btnEnviar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enviar"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_medium"
+            android:backgroundTint="#3469CC" />
+
+    </LinearLayout>
+
+</LinearLayout>

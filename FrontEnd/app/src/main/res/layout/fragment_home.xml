@@ -438,7 +438,6 @@
                             android:id="@+id/imagen_destacado"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/tent_image"
                             android:scaleType="centerCrop"
                             android:contentDescription="Tent"/>
                     </androidx.cardview.widget.CardView>

@@ -1,6 +1,10 @@
 USE ROY;
 
 SET FOREIGN_KEY_CHECKS = 0;
+-- Agregar columna id_objeto a la tabla resena
+ALTER TABLE resena 
+ADD COLUMN id_objeto INT NULL AFTER id_us_receptor,
+ADD CONSTRAINT resena_ibfk_3 FOREIGN KEY (id_objeto) REFERENCES objeto(id_objeto);
 
 -- Tablas que dependen de otras (hijas) primero:
 TRUNCATE TABLE FAVORITO;
@@ -23,4 +27,3 @@ SET FOREIGN_KEY_CHECKS = 1;
 SELECT id_usuario, nombre_us, foto_url, zona
 FROM usuario
 WHERE id_usuario = 1;
-
