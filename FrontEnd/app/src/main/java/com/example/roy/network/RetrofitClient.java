@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class RetrofitClient {
 
     // ⚠️ Cambia esta IP por la de tu PC
-    private static final String BASE_URL = "http://192.168.0.5:8080/";
+    private static final String BASE_URL = "http://192.168.0.11:8080/";
 
     private static Retrofit retrofit = null;
 

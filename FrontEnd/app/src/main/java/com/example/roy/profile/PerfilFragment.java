@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.login.LoginActivity;
 import com.example.roy.login.MainActivity;
+import com.example.roy.models.Objeto;
 import com.example.roy.models.UserProfileResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -38,7 +40,7 @@ import retrofit2.Response;
 
 public class PerfilFragment extends Fragment {
 
-    // UI Components según el XML
+    // UI Components
     private ShapeableImageView imgAvatar;
     private TextView tvNombre;
     private TextView tvRegion;
@@ -48,7 +50,7 @@ public class PerfilFragment extends Fragment {
     private TextView tvPassword;
     private MaterialButton btnEditarPerfil;
     private RecyclerView rvHistorial;
-    private TextView tvSinHistorial; // Nuevo TextView para el mensaje
+    private TextView tvSinHistorial;
 
     // API
     private ApiService apiService;
@@ -102,11 +104,11 @@ public class PerfilFragment extends Fragment {
         tvPassword = view.findViewById(R.id.tvPassword);
         btnEditarPerfil = view.findViewById(R.id.btnEditarPerfil);
         rvHistorial = view.findViewById(R.id.rvHistorial);
-        tvSinHistorial = view.findViewById(R.id.tvSinHistorial); // Asegúrate de agregar este TextView en tu XML
+        tvSinHistorial = view.findViewById(R.id.tvSinHistorial);
     }
 
     private boolean obtenerDatosSesion() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("RoyPrefs", android.content.Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         userId = prefs.getInt("userId", -1);
         token = prefs.getString("token", null);
 
@@ -124,9 +126,7 @@ public class PerfilFragment extends Fragment {
                     .commit();
         });
 
-        // Click en la foto para cambiarla (opcional)
         imgAvatar.setOnClickListener(v -> {
-            // TODO: Implementar cambio de foto
             Toast.makeText(requireContext(), "Cambiar foto (próximamente)", Toast.LENGTH_SHORT).show();
         });
     }
@@ -164,8 +164,7 @@ public class PerfilFragment extends Fragment {
         // Región/Zona
         tvRegion.setText(obtenerTextoSeguro(perfil.getZona(), "CDMX"));
 
-        // Reputación (calificación promedio)
-        // Por ahora hardcoded, después lo calcularás desde las reseñas
+        // Reputación
         Double reputacion = perfil.getReputacion();
         if (reputacion == null) {
             reputacion = 0.0;
@@ -175,7 +174,6 @@ public class PerfilFragment extends Fragment {
         // Teléfono - formateado
         String telefono = obtenerTextoSeguro(perfil.getTelefono(), "No registrado");
         if (!telefono.equals("No registrado") && telefono.length() == 10) {
-            // Formato: 55 1234 5678
             telefono = telefono.substring(0, 2) + " " +
                     telefono.substring(2, 6) + " " +
                     telefono.substring(6);
@@ -213,28 +211,69 @@ public class PerfilFragment extends Fragment {
         );
         rvHistorial.setLayoutManager(layoutManager);
 
-        // Lista vacía por ahora - después cargarás datos reales desde el API
-        List<ItemHistorial> historial = new ArrayList<>();
+        // ✅ Cargar objetos desde el API
+        cargarHistorialObjetos();
+    }
 
-        if (historial.isEmpty()) {
-            // Mostrar mensaje de historial vacío
-            rvHistorial.setVisibility(View.GONE);
-            tvSinHistorial.setVisibility(View.VISIBLE);
-        } else {
-            // Mostrar el RecyclerView con datos
-            rvHistorial.setVisibility(View.VISIBLE);
-            tvSinHistorial.setVisibility(View.GONE);
+    private void cargarHistorialObjetos() {
+        apiService.getObjetosPorUsuario(userId).enqueue(new Callback<List<Objeto>>() {
+            @Override
+            public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
+                if (!isAdded()) return;
 
-            HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
-                // Click en un item del historial
-                Toast.makeText(requireContext(),
-                        "Ver detalles de: " + item.getNombre(),
-                        Toast.LENGTH_SHORT).show();
-                // TODO: Navegar a detalle del objeto
-            });
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Objeto> objetos = response.body();
+                    Log.d("PERFIL_DEBUG", "📦 Objetos cargados: " + objetos.size());
+                    mostrarHistorial(objetos);
+                } else {
+                    Log.e("PERFIL_DEBUG", "❌ Error al cargar objetos: " + response.code());
+                    mostrarHistorialVacio();
+                }
+            }
 
-            rvHistorial.setAdapter(adapter);
+            @Override
+            public void onFailure(Call<List<Objeto>> call, Throwable t) {
+                if (!isAdded()) return;
+                Log.e("PERFIL_DEBUG", "💥 Error de conexión: " + t.getMessage());
+                mostrarHistorialVacio();
+            }
+        });
+    }
+
+    private void mostrarHistorial(List<Objeto> objetos) {
+        if (objetos == null || objetos.isEmpty()) {
+            mostrarHistorialVacio();
+            return;
         }
+
+        // Convertir objetos a ItemHistorial
+        List<ItemHistorial> historial = new ArrayList<>();
+        for (Objeto objeto : objetos) {
+            ItemHistorial item = new ItemHistorial(
+                    objeto.getNombreObjeto(),
+                    "$" + objeto.getPrecio(),
+                    objeto.getImagenUrl()
+            );
+            historial.add(item);
+        }
+
+        // Mostrar el RecyclerView
+        rvHistorial.setVisibility(View.VISIBLE);
+        tvSinHistorial.setVisibility(View.GONE);
+
+        HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
+            Toast.makeText(requireContext(),
+                    "Ver detalles de: " + item.getNombre(),
+                    Toast.LENGTH_SHORT).show();
+            // TODO: Navegar a detalle del objeto
+        });
+
+        rvHistorial.setAdapter(adapter);
+    }
+
+    private void mostrarHistorialVacio() {
+        rvHistorial.setVisibility(View.GONE);
+        tvSinHistorial.setVisibility(View.VISIBLE);
     }
 
     private void manejarErrorCarga(int codigoError) {
@@ -253,12 +292,12 @@ public class PerfilFragment extends Fragment {
     }
 
     private void redirigirALogin() {
-        // Limpiar sesión
-        SharedPreferences prefs = requireActivity().getSharedPreferences("RoyPrefs", android.content.Context.MODE_PRIVATE);
+        // ✅ Limpiar sesión
+        SharedPreferences prefs = requireActivity().getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         prefs.edit().clear().apply();
 
-        // Ir a login
-        Intent intent = new Intent(requireActivity(), LoginActivity.class);
+        // ✅ Ir a MainActivity
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         requireActivity().finish();
@@ -275,7 +314,6 @@ public class PerfilFragment extends Fragment {
         return texto.trim();
     }
 
-    // Clase interna para items del historial
     public static class ItemHistorial {
         private String nombre;
         private String precio;
@@ -292,7 +330,6 @@ public class PerfilFragment extends Fragment {
         public String getImagenUrl() { return imagenUrl; }
     }
 
-    // Listener para clicks en el historial
     public interface OnHistorialClickListener {
         void onClick(ItemHistorial item);
     }
@@ -307,13 +344,13 @@ public class PerfilFragment extends Fragment {
     }
 
     private void realizarLogout() {
-        // Limpiar SharedPreferences
+        // ✅ Limpiar SharedPreferences completamente
         SharedPreferences prefs = requireContext().getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         prefs.edit().clear().apply();
 
         Toast.makeText(requireContext(), "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show();
 
-        // Redirigir al MainActivity
+        // ✅ Redirigir a MainActivity con flags correctos
         Intent intent = new Intent(requireContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

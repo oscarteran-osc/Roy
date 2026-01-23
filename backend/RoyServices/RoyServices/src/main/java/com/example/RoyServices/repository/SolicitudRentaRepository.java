@@ -65,4 +65,64 @@ public interface SolicitudRentaRepository extends JpaRepository<SolicitudRenta, 
             @Param("hoy") LocalDate hoy,
             @Param("fechaLimite") LocalDate fechaLimite
     );
+
+    // ============================================
+    // ✅ QUERIES CORREGIDAS - USO DE nombre_us Y apellido_us
+    // ============================================
+
+    /**
+     * Obtener solicitudes del arrendador con información completa del objeto y usuarios
+     * ✅ CORREGIDO: Usa nombre_us y apellido_us en lugar de nombre y apellido
+     */
+    @Query(value = "SELECT " +
+            "s.id_solicitud, " +
+            "s.id_us_arrendatario, " +
+            "s.id_us_arrendador, " +
+            "s.id_objeto, " +
+            "s.estado, " +
+            "s.fecha_inicio, " +
+            "s.fecha_fin, " +
+            "s.monto, " +
+            "s.fecha_solicitud, " +
+            "o.nombre_objeto, " +
+            "o.imagen_url, " +
+            "o.precio, " +
+            "CONCAT(u_arrendatario.nombre_us, ' ', u_arrendatario.apellido_us), " +
+            "CONCAT(u_arrendador.nombre_us, ' ', u_arrendador.apellido_us) " +
+            "FROM solicitud_renta s " +
+            "LEFT JOIN objeto o ON s.id_objeto = o.id_objeto " +
+            "LEFT JOIN usuario u_arrendatario ON s.id_us_arrendatario = u_arrendatario.id_usuario " +
+            "LEFT JOIN usuario u_arrendador ON s.id_us_arrendador = u_arrendador.id_usuario " +
+            "WHERE s.id_us_arrendador = :idArrendador " +
+            "ORDER BY s.id_solicitud DESC",
+            nativeQuery = true)
+    List<Object[]> findSolicitudesArrendadorConDetalles(@Param("idArrendador") Integer idArrendador);
+
+    /**
+     * Obtener solicitudes del arrendatario con información completa del objeto y usuarios
+     * ✅ CORREGIDO: Usa nombre_us y apellido_us en lugar de nombre y apellido
+     */
+    @Query(value = "SELECT " +
+            "s.id_solicitud, " +
+            "s.id_us_arrendatario, " +
+            "s.id_us_arrendador, " +
+            "s.id_objeto, " +
+            "s.estado, " +
+            "s.fecha_inicio, " +
+            "s.fecha_fin, " +
+            "s.monto, " +
+            "s.fecha_solicitud, " +
+            "o.nombre_objeto, " +
+            "o.imagen_url, " +
+            "o.precio, " +
+            "CONCAT(u_arrendatario.nombre_us, ' ', u_arrendatario.apellido_us), " +
+            "CONCAT(u_arrendador.nombre_us, ' ', u_arrendador.apellido_us) " +
+            "FROM solicitud_renta s " +
+            "LEFT JOIN objeto o ON s.id_objeto = o.id_objeto " +
+            "LEFT JOIN usuario u_arrendatario ON s.id_us_arrendatario = u_arrendatario.id_usuario " +
+            "LEFT JOIN usuario u_arrendador ON s.id_us_arrendador = u_arrendador.id_usuario " +
+            "WHERE s.id_us_arrendatario = :idArrendatario " +
+            "ORDER BY s.id_solicitud DESC",
+            nativeQuery = true)
+    List<Object[]> findSolicitudesArrendatarioConDetalles(@Param("idArrendatario") Integer idArrendatario);
 }

@@ -15,6 +15,7 @@ import com.example.roy.models.SolicitudRenta;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.bumptech.glide.Glide;
 
 public class SolicitudesArrendadorAdapter extends BaseAdapter {
 
@@ -64,9 +65,34 @@ public class SolicitudesArrendadorAdapter extends BaseAdapter {
 
         SolicitudRenta solicitud = solicitudes.get(position);
 
-        // Datos básicos
-        holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
-        holder.tvNombreArrendatario.setText("De: Usuario #" + solicitud.getIdUsArrendatario());
+        // ✅ Mostrar nombre real del objeto
+        String nombreObjeto = solicitud.getNombreObjeto();
+        if (nombreObjeto != null && !nombreObjeto.isEmpty()) {
+            holder.tvNombreObjeto.setText(nombreObjeto);
+        } else {
+            holder.tvNombreObjeto.setText("Objeto #" + solicitud.getIdObjeto());
+        }
+
+        // ✅ Mostrar nombre real del arrendatario
+        String nombreArrendatario = solicitud.getNombreArrendatario();
+        if (nombreArrendatario != null && !nombreArrendatario.isEmpty()) {
+            holder.tvNombreArrendatario.setText("De: " + nombreArrendatario);
+        } else {
+            holder.tvNombreArrendatario.setText("De: Usuario #" + solicitud.getIdUsArrendatario());
+        }
+
+        // ✅ Cargar imagen del objeto
+        String imagenUrl = solicitud.getImagenObjeto();
+        if (imagenUrl != null && !imagenUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imagenUrl)
+                    .placeholder(R.drawable.error)
+                    .error(R.drawable.error)
+                    .centerCrop()
+                    .into(holder.ivImagen);
+        } else {
+            holder.ivImagen.setImageResource(R.drawable.error);
+        }
 
         String fechaInicio = solicitud.getFechaInicio();
         holder.tvFechaSolicitud.setText("Solicitud: " + (fechaInicio != null ? fechaInicio : "-"));

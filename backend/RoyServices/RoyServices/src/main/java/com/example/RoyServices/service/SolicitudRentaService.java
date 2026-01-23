@@ -1,5 +1,6 @@
 package com.example.RoyServices.service;
 
+import com.example.RoyServices.dto.SolicitudRentaDto;
 import com.example.RoyServices.model.SolicitudRenta;
 
 import java.time.LocalDate;
@@ -28,4 +29,8 @@ public interface SolicitudRentaService {
     List<SolicitudRenta> getSolicitudesProximasAVencer(Integer dias);
 
     Long contarSolicitudesPendientes(Integer idUsArrendador);
+
+    // ✅ NUEVOS MÉTODOS:
+    List<SolicitudRentaDto> getSolicitudesArrendadorConDetalles(Integer idArrendador);
+    List<SolicitudRentaDto> getSolicitudesArrendatarioConDetalles(Integer idArrendatario);
 }
