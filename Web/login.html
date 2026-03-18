@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROY – Iniciar Sesión</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="auth-page">
+
+  <nav class="navbar navbar-auth">
+    <a href="index.html" class="logo">
+      <img src="img/royazul.png" alt="ROY Logo" class="logo-img"/>
+    </a>
+    <span class="nav-tagline">ACCESS MORE, OWN LESS.</span>
+  </nav>
+
+  <div class="auth-hero">
+    <div class="auth-wave"></div>
+
+    <div class="auth-card">
+      <h2 class="auth-title"><em>Inicia sesión en <strong>ROY</strong></em></h2>
+      <p class="auth-sub">Ingresa a tu cuenta y continúa disfrutando de nuestros servicios.</p>
+
+      <div class="form-group">
+        <input type="email" class="form-input" placeholder="Correo electrónico" id="correo"/>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-input" placeholder="Contraseña" id="contra"/>
+      </div>
+
+      <button class="btn-form" onclick="iniciarSesion()">Iniciar Sesión</button>
+
+      <p class="auth-link">¿Nuevo en ROY? <a href="registro.html">Regístrate</a></p>
+    </div>
+
+    <div class="auth-deco auth-deco-left">📦</div>
+    <div class="auth-deco auth-deco-right">🌿</div>
+  </div>
+
+  <script>
+    // ── JS MUY SENCILLO ──
+    // Valida que los campos no estén vacíos.
+    // Cuando conectes el backend, aquí harías un fetch() POST a tu API
+    // para verificar el correo y contraseña.
+
+    function iniciarSesion() {
+      const correo = document.getElementById('correo').value.trim();
+      const contra = document.getElementById('contra').value;
+
+      if (!correo || !contra) {
+        alert('Por favor ingresa tu correo y contraseña.');
+        return;
+      }
+
+      // ── AQUÍ iría el fetch a tu API ──
+      // fetch('http://localhost:8080/Roy/api/usuario/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ correo, password: contra })
+      // }).then(res => res.json()).then(data => {
+      //   if (data.idUsuario) {
+      //     window.location.href = 'dashboard.html';
+      //   } else {
+      //     alert('Credenciales incorrectas.');
+      //   }
+      // });
+
+      alert('¡Sesión iniciada!');
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

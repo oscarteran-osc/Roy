@@ -1,0 +1,293 @@
+/* ============================================================
+   ROY – Estilos principales
+   Azul: #0349A5  |  Naranja: #F57C00  |  Blanco: #FFFFFF
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --azul:       #0349A5;
+  --azul-dark:  #023585;
+  --naranja:    #F57C00;
+  --blanco:     #FFFFFF;
+  --texto:      #1A1A2E;
+  --texto-suave:#666;
+  --font: 'Poppins', sans-serif;
+}
+
+body { font-family: var(--font); color: var(--texto); background: var(--blanco); overflow-x: hidden; }
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 72px; background: var(--blanco);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100;
+}
+.logo-img { height: 48px; object-fit: contain; }
+.nav-links { display: flex; gap: 32px; }
+.nav-link {
+  text-decoration: none; color: var(--texto); font-weight: 500;
+  font-size: .95rem; position: relative; padding-bottom: 4px; transition: color .2s;
+}
+.nav-link:hover { color: var(--azul); }
+.nav-link.active { color: var(--azul); }
+
+/* Rayita — solo aparece en hover */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--azul);
+  border-radius: 2px;
+  transition: left .25s ease, right .25s ease;
+}
+.nav-link:hover::after {
+  left: 0;
+  right: 0;
+}
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+
+/* ── BOTONES NAVBAR ── */
+.btn-primary {
+  background: var(--azul); color: var(--blanco); border: 2px solid var(--azul);
+  padding: 10px 24px; border-radius: 50px; font-family: var(--font);
+  font-size: .9rem; font-weight: 500; text-decoration: none;
+  transition: background .25s, color .25s, transform .15s; display: inline-block;
+}
+.btn-primary:hover { background: transparent; color: var(--azul); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent; color: var(--azul); border: 2px solid var(--azul);
+  padding: 10px 24px; border-radius: 50px; font-family: var(--font);
+  font-size: .9rem; font-weight: 500; text-decoration: none;
+  transition: background .2s, color .2s, transform .15s; display: inline-block;
+}
+.btn-outline:hover { background: var(--azul); color: var(--blanco); transform: translateY(-1px); }
+
+/* ── BOTONES HERO ── */
+.btn-primary-hero {
+  background: var(--azul-dark); color: var(--blanco); border: 2px solid var(--azul-dark);
+  padding: 12px 32px; border-radius: 50px; font-family: var(--font);
+  font-size: 1rem; font-weight: 500; text-decoration: none;
+  transition: background .2s, transform .15s; display: inline-block;
+}
+.btn-primary-hero:hover { background: var(--blanco); color: var(--azul-dark); transform: translateY(-1px); }
+
+.btn-outline-white {
+  background: transparent; color: var(--blanco); border: 2px solid var(--blanco);
+  padding: 12px 32px; border-radius: 50px; font-family: var(--font);
+  font-size: 1rem; font-weight: 500; text-decoration: none;
+  transition: background .2s, color .2s; display: inline-block;
+}
+.btn-outline-white:hover { background: var(--blanco); color: var(--azul); transform: translateY(-1px);}
+
+/* ── HERO ── */
+.hero {
+  background: var(--azul);          /* fondo azul sólido */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 80px 0;             /* sin padding-bottom, la ola ocupa ese espacio */
+  gap: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content { flex: 1; position: relative; z-index: 2; padding-bottom: 80px; }
+.hero-img      { flex: 1; display: flex; justify-content: flex-end; position: relative; z-index: 2; align-self: flex-end; }
+
+.hero-title {
+  font-size: 2.8rem; font-weight: 700; color: var(--blanco);
+  line-height: 1.15; margin-bottom: 32px;
+}
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.hero-illustration-img {
+  width: 100%; max-width: 500px; object-fit: contain;
+  display: block;
+}
+
+/* ── OLA al fondo del hero ── */
+.hero-wave-svg {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  z-index: 1;
+  line-height: 0;
+}
+.hero-wave-svg svg {
+  display: block;
+  width: 100%;
+  height: 160px;
+}
+
+/* ── VENTAJAS ── */
+.ventajas { padding: 70px 80px; text-align: center; background: var(--blanco); }
+.ventajas-sub { font-size: 1.1rem; color: var(--texto); margin-bottom: 48px; }
+.highlight { color: var(--azul); font-weight: 600; }
+
+.cards-row { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.card {
+  border: 1.5px solid #D9E2F0; border-radius: 20px; padding: 36px 28px;
+  width: 240px; text-align: center; transition: box-shadow .2s, transform .2s;
+}
+.card:hover { box-shadow: 0 8px 28px rgba(3,73,165,.15); transform: translateY(-4px); }
+.card-icon  { font-size: 2.8rem; margin-bottom: 16px; }
+.card-title { color: var(--azul); font-weight: 600; font-size: 1rem; margin-bottom: 10px; }
+.card-desc  { color: var(--texto-suave); font-size: .88rem; line-height: 1.5; }
+
+/* ── DIVISOR ── */
+.divider { border: none; border-top: 2px solid var(--azul); margin: 0 80px; }
+
+/* ── SOBRE ATP ── */
+.sobre { display: flex; gap: 60px; align-items: flex-start; padding: 60px 80px 80px; }
+.sobre-logo {
+  background: #EFF3FB; border-radius: 16px; padding: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.atp-logo { width: 140px; height: auto; object-fit: contain; }
+.sobre-text { max-width: 760px; }
+.sobre-negra   { font-size: 1.5rem; font-weight: 700; color: var(--texto); }
+.sobre-naranja { font-size: 1.5rem; font-weight: 700; color: var(--naranja); }
+.sobre-text p  { margin-top: 14px; font-size: .95rem; line-height: 1.7; color: #444; }
+
+/* ── AUTH ── */
+.auth-page { background: var(--blanco); }
+.navbar-auth { justify-content: space-between; }
+.nav-tagline  { font-weight: 600; font-size: .9rem; color: var(--texto); }
+
+.auth-hero {
+  position: relative; min-height: calc(100vh - 72px);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.auth-wave {
+  position: absolute; top: 0; left: 0; right: 0; height: 300px;
+  background: var(--azul); clip-path: ellipse(60% 100% at 50% 0%); z-index: 0;
+}
+.auth-wave::after {
+  content: ''; position: absolute; bottom: -20px; left: -5%;
+  width: 110%; height: 40px; background: var(--naranja); border-radius: 50%;
+}
+.auth-card {
+  position: relative; z-index: 2; background: var(--blanco);
+  border-radius: 24px; padding: 40px 44px; width: 100%; max-width: 500px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.14); margin: 40px 0;
+}
+.auth-title { font-size: 1.6rem; font-weight: 400; color: var(--azul); margin-bottom: 8px; }
+.auth-title strong { font-weight: 700; }
+.auth-sub { font-size: .88rem; color: var(--texto-suave); margin-bottom: 28px; line-height: 1.5; }
+
+.form-group { margin-bottom: 18px; }
+.form-input {
+  width: 100%; border: none; border-bottom: 1.5px solid #CCC;
+  padding: 10px 4px; font-family: var(--font); font-size: .95rem;
+  color: var(--texto); outline: none; background: transparent; transition: border-color .2s;
+}
+.form-input:focus        { border-bottom-color: var(--azul); }
+.form-input::placeholder { color: #AAA; }
+.btn-form {
+  width: 100%; background: transparent; color: var(--azul); border: 2px solid var(--azul);
+  padding: 13px; border-radius: 50px; font-family: var(--font); font-size: 1rem;
+  font-weight: 600; cursor: pointer; margin-top: 12px;
+  transition: background .2s, color .2s, transform .15s;
+}
+.btn-form:hover { background: var(--azul); color: var(--blanco); transform: translateY(-1px); }
+.auth-link { text-align: center; margin-top: 18px; font-size: .88rem; color: var(--texto-suave); }
+.auth-link a { color: var(--naranja); font-weight: 600; text-decoration: none; }
+.auth-link a:hover { text-decoration: underline; }
+.auth-deco       { position: absolute; font-size: 4rem; z-index: 1; opacity: .6; }
+.auth-deco-left  { bottom: 60px; left: 60px; }
+.auth-deco-right { bottom: 60px; right: 60px; font-size: 5rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .navbar     { padding: 0 20px; }
+  .nav-links  { display: none; }
+  .hero       { flex-direction: column; padding: 40px 24px 0; }
+  .hero-title { font-size: 2rem; }
+  .hero-img   { justify-content: center; }
+  .ventajas   { padding: 50px 24px; }
+  .divider    { margin: 0 24px; }
+  .sobre      { flex-direction: column; padding: 40px 24px; }
+  .auth-card  { margin: 20px; padding: 32px 24px; }
+}
+
+
+/* ══════════════════════════════
+   DASHBOARD (home usuario logueado)
+══════════════════════════════ */
+.dashboard-page {
+  background: #f0f2f8;
+  min-height: 100vh;
+}
+
+.navbar-dashboard {
+  background: var(--azul);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 32px;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-img-dash {
+  height: 42px;
+  object-fit: contain;
+}
+
+/* Buscador */
+.dash-search {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  background: var(--azul);
+  border: 2px solid rgba(255,255,255,.5);
+  border-radius: 50px;
+  padding: 6px 16px;
+  gap: 10px;
+}
+.dash-search-icon  { font-size: 1rem; color: var(--blanco); opacity: .8; }
+.dash-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--blanco);
+  font-family: var(--font);
+  font-size: .9rem;
+}
+.dash-search-input::placeholder { color: rgba(255,255,255,.7); }
+.dash-search-filter { font-size: 1.1rem; color: var(--blanco); cursor: pointer; opacity: .8; }
+
+/* Links de nav del dashboard */
+.dash-nav-links {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+}
+.dash-nav-link {
+  color: var(--blanco);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: .95rem;
+  opacity: .85;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.dash-nav-link:hover,
+.dash-nav-link.active { opacity: 1; }
+.dash-nav-link.active {
+  font-weight: 700;
+  border-bottom: 2px solid var(--blanco);
+  padding-bottom: 2px;
+}
+
+/* Área de contenido */
+.dash-main {
+  padding: 32px 40px;
+  min-height: calc(100vh - 70px);
+}
