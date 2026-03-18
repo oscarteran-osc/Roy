@@ -1,57 +1,117 @@
 package com.example.roy.models;
 
-import com.google.gson.annotations.SerializedName;
-
 public class SolicitudRenta {
-    @SerializedName("idSolicitud")
-    private Integer idSolicitud;
-
-    @SerializedName("fechaInicio")
+    private int idSolicitud;
+    private int idObjeto;
+    private int idUsArrendador;
+    private int idUsArrendatario;
     private String fechaInicio;
-
-    @SerializedName("fechaFin")
     private String fechaFin;
-
-    @SerializedName("estado")
-    private String estado; // PENDIENTE, APROBADA, RECHAZADA, COMPLETADA
-
-    @SerializedName("idObjeto")
-    private Integer idObjeto;
-
-    @SerializedName("idUsArrendador")
-    private Integer idUsArrendador;
-
-    @SerializedName("idUsArrendatario")
-    private Integer idUsArrendatario;
-
-    @SerializedName("diasRenta")
-    private Integer diasRenta;
+    private String estado; // PENDIENTE, APROBADA, RECHAZADA
+    private double monto;
+    private String nombreObjeto;
+    private String imagenObjeto;
+    private String nombreArrendatario;
+    private String nombreArrendador;
+    private double precioObjeto;
 
     // Constructor vacío
-    public SolicitudRenta() {}
+    public SolicitudRenta(int i, int i1, int i2, String date, String s, String rechazada) {
+    }
 
-    // Getters y Setters
-    public Integer getIdSolicitud() { return idSolicitud; }
-    public void setIdSolicitud(Integer idSolicitud) { this.idSolicitud = idSolicitud; }
+    // Constructor completo
+    public SolicitudRenta(int idSolicitud, int idObjeto, int idUsArrendador,
+                          int idUsArrendatario, String fechaInicio, String fechaFin,
+                          String estado, double monto) {
+        this.idSolicitud = idSolicitud;
+        this.idObjeto = idObjeto;
+        this.idUsArrendador = idUsArrendador;
+        this.idUsArrendatario = idUsArrendatario;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.estado = estado;
+        this.monto = monto;
 
-    public String getFechaInicio() { return fechaInicio; }
-    public void setFechaInicio(String fechaInicio) { this.fechaInicio = fechaInicio; }
+    }
 
-    public String getFechaFin() { return fechaFin; }
-    public void setFechaFin(String fechaFin) { this.fechaFin = fechaFin; }
+    // Getters
+    public int getIdSolicitud() {
+        return idSolicitud;
+    }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public int getIdObjeto() {
+        return idObjeto;
+    }
 
-    public Integer getIdObjeto() { return idObjeto; }
-    public void setIdObjeto(Integer idObjeto) { this.idObjeto = idObjeto; }
+    public int getIdUsArrendador() {
+        return idUsArrendador;
+    }
 
-    public Integer getIdUsArrendador() { return idUsArrendador; }
-    public void setIdUsArrendador(Integer idUsArrendador) { this.idUsArrendador = idUsArrendador; }
+    public int getIdUsArrendatario() {
+        return idUsArrendatario;
+    }
 
-    public Integer getIdUsArrendatario() { return idUsArrendatario; }
-    public void setIdUsArrendatario(Integer idUsArrendatario) { this.idUsArrendatario = idUsArrendatario; }
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
 
-    public Integer getDiasRenta() { return diasRenta; }
-    public void setDiasRenta(Integer diasRenta) { this.diasRenta = diasRenta; }
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    // Setters
+    public void setIdSolicitud(int idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }
+
+    public void setIdObjeto(int idObjeto) {
+        this.idObjeto = idObjeto;
+    }
+
+    public void setIdUsArrendador(int idUsArrendador) {
+        this.idUsArrendador = idUsArrendador;
+    }
+
+    public void setIdUsArrendatario(int idUsArrendatario) {
+        this.idUsArrendatario = idUsArrendatario;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
+    public String getNombreObjeto() { return nombreObjeto; }
+    public void setNombreObjeto(String nombreObjeto) { this.nombreObjeto = nombreObjeto; }
+
+    public String getImagenObjeto() { return imagenObjeto; }
+    public void setImagenObjeto(String imagenObjeto) { this.imagenObjeto = imagenObjeto; }
+
+    public String getNombreArrendatario() { return nombreArrendatario; }
+    public void setNombreArrendatario(String nombreArrendatario) { this.nombreArrendatario = nombreArrendatario; }
+
+    public String getNombreArrendador() { return nombreArrendador; }
+    public void setNombreArrendador(String nombreArrendador) { this.nombreArrendador = nombreArrendador; }
+
+    public double getPrecioObjeto() { return precioObjeto; }
+    public void setPrecioObjeto(double precioObjeto) { this.precioObjeto = precioObjeto; }
 }

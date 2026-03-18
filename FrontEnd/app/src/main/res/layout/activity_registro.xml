@@ -1,87 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".login.Registro">
+    android:background="@color/white">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-        <ImageButton
-            android:id="@+id/rowregresar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/backrow"/>
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/backrow"
+                android:layout_marginTop="6dp"/>
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/royazul"
+                android:layout_marginTop="10dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crea una nueva cuenta"
+            android:textColor="#0349A5"
+            android:textSize="22sp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/royazul"/>
-    </FrameLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Crea una nueva cuenta"
-        android:fontFamily="@font/poppins_medium"
-        android:textColor="#0349A5"
-        android:textSize="25sp"
-        android:layout_gravity="center_horizontal"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="25dp"
-        android:textSize="20sp"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="Nombre"
-        android:id="@+id/nombre"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:textSize="20sp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="Apellido"
-        android:id="@+id/apellido"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:textSize="20sp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="Número telefónico"
-        android:id="@+id/num"/>
-    <Button
-        android:id="@+id/sig1"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Siguiente "
-        android:textColor="#0349A5"
-        android:textSize="20sp"
-        android:fontFamily="@font/poppins_medium"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/btnborde"/>
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/poppins_medium"/>
 
-    <TextView
-        android:id="@+id/backlogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:text="@string/textiniciosesion"
-        android:padding="8dp"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"/>
+        <!-- Foto de perfil -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/persona"
+            android:contentDescription="Foto de perfil"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            android:scaleType="centerCrop"/>
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPickPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#0349A5"
+            android:text="Elegir foto"
+            app:cornerRadius="14dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+        <!-- Nombres -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:hint="Nombre(s)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Apellidos -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Apellidos">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Teléfono -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Teléfono (MX)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="phone"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Correo -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Correo electrónico">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Ciudad: dropdown moderno (Exposed) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Ciudad"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/actvCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Domicilio (opcional) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Domicilio (opcional)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDomicilio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="textPostalAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Contraseña"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Confirm Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Confirmar contraseña"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword2"
+                android:fontFamily="@font/poppins_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrearCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:textColor="#0349A5"
+            android:text="Crear cuenta"
+            android:fontFamily="@font/poppins_medium"
+            android:background="@drawable/btnborde"
+            app:cornerRadius="16dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvBackLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:text="@string/textiniciosesion"
+            android:padding="8dp"/>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

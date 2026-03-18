@@ -14,4 +14,6 @@ public class RegisterRequest {
     private String telefono;    // Viene del Android
     private String domicilio;   // Viene del Android como "direccion"
     private String password;    // Viene del Android
+    private String zona;
+    private String fotoUrl;
 }

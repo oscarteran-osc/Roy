@@ -19,7 +19,7 @@ public interface ResenaService {
     List<Resena> getResenasPorReceptor(Integer idUsReceptor);
     List<Resena> getResenasPorCalificacion(Integer calificacion);
     List<Resena> getResenasPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin);
-
+    List<Resena> getResenasPorObjeto(Integer idObjeto);
     Double getPromedioCalificaciones(Integer idUsuario);
     Long contarResenasRecibidas(Integer idUsuario);
 

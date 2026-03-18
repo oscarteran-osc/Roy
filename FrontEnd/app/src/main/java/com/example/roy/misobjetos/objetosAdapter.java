@@ -5,36 +5,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.roy.R;
 import com.example.roy.models.Objeto;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class objetosAdapter extends BaseAdapter {
 
+    private Context context;
+    private List<Objeto> objetos;
+    private OnItemActionListener listener;
+
     public interface OnItemActionListener {
         void onVerDetallesClicked(Objeto objeto);
-        void onVerSolicitudesClicked(Objeto objeto, View view);
         void onEliminarClicked(Objeto objeto, int position);
     }
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Objeto> objetos; // ✅ AHORA USA LA LISTA DE OBJETOS
-    private OnItemActionListener listener;
-
-    // ✅ NUEVO CONSTRUCTOR que recibe List<Objeto>
     public objetosAdapter(Context context, List<Objeto> objetos, OnItemActionListener listener) {
         this.context = context;
-        this.objetos = objetos != null ? objetos : new ArrayList<>();
+        this.objetos = objetos;
         this.listener = listener;
-        this.inflater = LayoutInflater.from(context);
+    }
+
+    public void updateData(List<Objeto> nuevosObjetos) {
+        this.objetos = nuevosObjetos;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class objetosAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return objetos.get(position).getIdObjeto();
+        return position;
     }
 
     @Override
@@ -57,65 +58,64 @@ public class objetosAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.objeto, parent, false);
-            holder = new ViewHolder(convertView);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_objeto, parent, false);
+            holder = new ViewHolder();
+
+            holder.imgobj = convertView.findViewById(R.id.imgobj);
+            holder.nomobj = convertView.findViewById(R.id.nomobj);
+            holder.catChip = convertView.findViewById(R.id.catChip);
+            holder.precioobj = convertView.findViewById(R.id.precioobj);
+            holder.btndetalles = convertView.findViewById(R.id.btndetalles);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        // ✅ OBTENER EL OBJETO EN ESTA POSICIÓN
         Objeto objeto = objetos.get(position);
 
-        // ✅ LLENAR LOS DATOS
-        holder.tvNombre.setText(objeto.getNombreObjeto());
-        holder.tvCategoria.setText(objeto.getCategoria());
-        holder.tvPrecio.setText("$" + String.format("%.2f", objeto.getPrecio()));
+        // Nombre
+        holder.nomobj.setText(objeto.getNombreObjeto());
 
-        // TODO: Cargar imagen real con Glide cuando tengas URLs
-        // Por ahora usa placeholder
-        holder.ivImagen.setImageResource(R.drawable.camara);
+        // Categoría
+        String categoria = objeto.getCategoria() != null ? objeto.getCategoria() : "Sin categoría";
+        holder.catChip.setText(categoria);
 
-        // ✅ LISTENERS
-        holder.btnDetalles.setOnClickListener(v -> {
-            if (listener != null) listener.onVerDetallesClicked(objeto);
+        // Precio
+        double precio = objeto.getPrecio();
+        holder.precioobj.setText(String.format("$%.0f / día", precio));
+
+        // Imagen principal
+        String imagenUrl = objeto.getImagenUrl();
+        if (imagenUrl != null && !imagenUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imagenUrl)
+                    .placeholder(R.drawable.casacampania)
+                    .error(R.drawable.casacampania)
+                    .centerCrop()
+                    .into(holder.imgobj);
+        } else {
+            holder.imgobj.setImageResource(R.drawable.casacampania);
+        }
+
+        // Click en Detalles
+        holder.btndetalles.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onVerDetallesClicked(objeto);
+            }
         });
 
-        holder.btnSolicitudes.setOnClickListener(v -> {
-            if (listener != null) listener.onVerSolicitudesClicked(objeto, v);
-        });
-
-        holder.btnEliminar.setOnClickListener(v -> {
-            if (listener != null) listener.onEliminarClicked(objeto, position);
-        });
+        // ELIMINADO: Click en Eliminar ya que no existe el botón en el layout
 
         return convertView;
     }
 
-    // ✅ MÉTODO PARA ACTUALIZAR LA LISTA
-    public void updateData(List<Objeto> nuevosObjetos) {
-        this.objetos = nuevosObjetos != null ? nuevosObjetos : new ArrayList<>();
-        notifyDataSetChanged();
-    }
-
-    // ViewHolder pattern para mejor performance
     static class ViewHolder {
-        ImageView ivImagen;
-        TextView tvNombre;
-        TextView tvCategoria;
-        TextView tvPrecio;
-        Button btnDetalles;
-        Button btnSolicitudes;
-        ImageButton btnEliminar;
-
-        ViewHolder(View view) {
-            ivImagen = view.findViewById(R.id.imgobj);
-            tvNombre = view.findViewById(R.id.nomobj);
-            tvCategoria = view.findViewById(R.id.catobj);
-            tvPrecio = view.findViewById(R.id.precioobj);
-            btnDetalles = view.findViewById(R.id.btndetalles);
-            btnSolicitudes = view.findViewById(R.id.btnsolis);
-            btnEliminar = view.findViewById(R.id.delete);
-        }
+        ImageView imgobj;
+        TextView nomobj;
+        Chip catChip;
+        TextView precioobj;
+        MaterialButton btndetalles;
+        // ELIMINADO: ImageButton btnEliminar;
     }
 }

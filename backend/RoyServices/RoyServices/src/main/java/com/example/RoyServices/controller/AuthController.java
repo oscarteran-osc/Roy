@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")  // ⬅️ AQUÍ el cambio importante
 @CrossOrigin(origins = "*")
 public class AuthController {
 
@@ -28,9 +27,7 @@ public class AuthController {
             AuthResponse response = authService.login(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // Registrar la excepción completa para depuración
             logger.error("Error en login:", e);
-            // Devolver el error usando el constructor de AuthResponse
             return ResponseEntity.badRequest().body(new AuthResponse(e.getMessage()));
         }
     }
@@ -41,11 +38,10 @@ public class AuthController {
             AuthResponse response = authService.register(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // 1. IMPRIMIR EL ERROR COMPLETO en la consola
             logger.error("Error al registrar usuario:", e);
-
-            // 2. DEVOLVER EL MENSAJE al cliente (HTTP 409 Conflict o 400 Bad Request)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse(e.getMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(new AuthResponse(e.getMessage()));
         }
     }
 }

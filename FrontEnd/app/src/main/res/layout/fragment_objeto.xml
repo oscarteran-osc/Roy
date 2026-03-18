@@ -6,56 +6,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".home.Objetoo">
 
+    <!-- Header con botón atrás y logo -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
-            android:layout_marginLeft="15dp"
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/atras"
-            android:backgroundTint="@color/white"
-            android:id="@+id/back"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Regresar" />
 
         <ImageView
             android:layout_width="145dp"
             android:layout_height="46dp"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/royazul" />
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/royazul"
+            android:contentDescription="Logo ROY" />
 
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content" />
 
+    <!-- ✅ Contenedor de fragmentos que ocupa todo el espacio disponible -->
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/contenedorfragmentos"/>
-    />
-
-    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/contenedorfragmentos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        />
+        android:layout_weight="1" />
+
+    <!-- ✅ Separador antes del botón -->
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- ✅ Botón fijo en la parte inferior -->
     <Button
-        android:layout_width="350dp"
+        android:id="@+id/enviosoli"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Enviar Solicitud"
-        android:textSize="23dp"
-        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:paddingVertical="12dp"
         android:backgroundTint="#3469CC"
-        android:textAllCaps="false"
-        android:id="@+id/enviosoli"/>
+        android:textAllCaps="false" />
+
 </LinearLayout>

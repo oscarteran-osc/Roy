@@ -14,4 +14,7 @@ public class UsuarioDto {
     private String direccion;
     private String fecharegistro;
     private String password;
+    private String zona;
+    private String fotoUrl;
+
 }

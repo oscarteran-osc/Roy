@@ -36,6 +36,7 @@ public class UsuarioController {
                             .direccion("Direccion " + i)
                             .fecharegistro("Fecha de registro " + i)
                             .password("Password " + i)
+
                             .build()
             );
         }
@@ -64,6 +65,7 @@ public class UsuarioController {
                                         .direccion(u.getDomicilio())
                                         .fecharegistro(u.getFechaDeRegistro() != null ? u.getFechaDeRegistro().toString() : null)
                                         .password(u.getPassword())
+                                        .zona(u.getZona()).fotoUrl(u.getFotoUrl())
                                         .build() )
                                 .collect(Collectors.toList()));
     }
@@ -87,6 +89,7 @@ public class UsuarioController {
                 .direccion(u.getDomicilio())
                 .fecharegistro(u.getFechaDeRegistro() != null ? u.getFechaDeRegistro().toString() : null)
                 .password( u.getPassword())
+                .zona(u.getZona()).fotoUrl(u.getFotoUrl())
                 .build( ) );
     }
 
@@ -101,6 +104,7 @@ public class UsuarioController {
                 .domicilio(usuarioDto.getDireccion())
                 .fechaDeRegistro(usuarioDto.getFecharegistro() != null ? LocalDate.parse(usuarioDto.getFecharegistro()) : null)
                 .password( usuarioDto.getPassword() )
+                .zona(usuarioDto.getZona()).fotoUrl(usuarioDto.getFotoUrl())
                 .build( );
         usuarioService.save( u );
 
@@ -113,6 +117,7 @@ public class UsuarioController {
                 .direccion(u.getDomicilio())
                 .fecharegistro(u.getFechaDeRegistro() != null ? u.getFechaDeRegistro().toString() : null)
                 .password( u.getPassword())
+                .zona(u.getZona()).fotoUrl(u.getFotoUrl())
                 .build( ) );
     }
 
@@ -135,6 +140,7 @@ public class UsuarioController {
                 .telefono(usuarioDto.getTelefono())
                 .domicilio(usuarioDto.getDireccion())
                 .fechaDeRegistro(usuarioDto.getFecharegistro() != null ? LocalDate.parse(usuarioDto.getFecharegistro()) : null)
+                .zona(usuarioDto.getZona()).fotoUrl(usuarioDto.getFotoUrl())
                 .build( ) );
 
         return ResponseEntity.ok(UsuarioDto.builder()
@@ -146,6 +152,7 @@ public class UsuarioController {
                 .direccion(aux.getDomicilio())
                 .fecharegistro( aux.getFechaDeRegistro() != null ? aux.getFechaDeRegistro().toString() : null)
                 .password( aux.getPassword( ) )
+                .zona(aux.getZona()).fotoUrl(aux.getFotoUrl())
                 .build( ) );
     }
 }

@@ -1,42 +1,23 @@
 package com.example.RoyServices.controller;
-import com.example.RoyServices.dto.ImagenRequest;
+
 import com.example.RoyServices.model.ImagenObjeto;
-import com.example.RoyServices.service.ImagenObjetoService;
+import com.example.RoyServices.repository.ImagenObjetoRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/imagenes")
+@RequestMapping("/api/imagen")
+@AllArgsConstructor
 public class ImagenObjetoController {
 
-    private final ImagenObjetoService imagenObjetoService;
+    private final ImagenObjetoRepository imagenObjetoRepository;
 
-    public ImagenObjetoController(ImagenObjetoService imagenObjetoService) {
-        this.imagenObjetoService = imagenObjetoService;
-    }
-
-    @PostMapping
-    public ResponseEntity<ImagenObjeto> crearImagen(@RequestBody ImagenRequest request) {
-        ImagenObjeto imagen = imagenObjetoService.crearImagen(request);
-        return ResponseEntity.ok(imagen);
-    }
-
-
-    @GetMapping("/objeto/{idObjeto}")
-    public ResponseEntity<List<ImagenObjeto>> listarPorObjeto(@PathVariable Integer idObjeto) {
-        return ResponseEntity.ok(imagenObjetoService.obtenerImagenesPorObjeto(idObjeto));
-    }
-
-    @PatchMapping("/{idImagen}/principal")
-    public ResponseEntity<ImagenObjeto> marcarPrincipal(@PathVariable Integer idImagen) {
-        return ResponseEntity.ok(imagenObjetoService.marcarComoPrincipal(idImagen));
-    }
-
-    @DeleteMapping("/{idImagen}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer idImagen) {
-        imagenObjetoService.eliminarImagen(idImagen);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/objeto/{objetoId}")
+    public ResponseEntity<List<ImagenObjeto>> getImagenesObjeto(@PathVariable Integer objetoId) {
+        List<ImagenObjeto> imagenes = imagenObjetoRepository.findByIdObjeto(objetoId);
+        return ResponseEntity.ok(imagenes);
     }
 }

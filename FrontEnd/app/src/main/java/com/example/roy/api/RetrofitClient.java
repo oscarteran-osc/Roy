@@ -4,23 +4,24 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
+    private static final String BASE_URL = "http://10.0.2.2:8080";
 
-    // Cambia esta URL a la dirección de tu servidor Spring Boot
-    // Si usas el emulador de Android y tu backend está en localhost:8080, usa 10.0.2.2
-    private static final String BASE_URL = "http://10.0.2.2:8080/api/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
 
-            // Interceptor para ver las peticiones y respuestas en Logcat (útil para debug)
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(interceptor)
+                    .connectTimeout(30, TimeUnit.SECONDS)  // Timeout de conexión
+                    .readTimeout(30, TimeUnit.SECONDS)     // Timeout de lectura
+                    .writeTimeout(30, TimeUnit.SECONDS)    // Timeout de escritura
                     .build();
 
             retrofit = new Retrofit.Builder()
@@ -29,6 +30,7 @@ public class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
+
         return retrofit;
     }
 }

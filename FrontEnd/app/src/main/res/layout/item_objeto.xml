@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E5E7EB"
+    app:cardBackgroundColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- TOP: imagen + info + eliminar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgobj"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="12dp"
+                app:shapeAppearanceOverlay="@drawable/bg_rounded_corners"
+                tools:src="@drawable/casacampania" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nomobj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111827"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Casa de campaña" />
+
+                <!-- Chip categoría -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/catChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Exteriores"
+                    android:textSize="12sp"
+                    app:chipCornerRadius="999dp"
+                    app:chipBackgroundColor="#EEF2FF"
+                    app:chipStrokeColor="#C7D2FE"
+                    app:chipStrokeWidth="1dp" />
+
+                <TextView
+                    android:id="@+id/precioobj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="#E06C00"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_bold"
+                    tools:text="$350 / día" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!-- BOTÓN DETALLES -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btndetalles"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:text="Ver Detalles"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_info_details"
+            app:iconPadding="6dp"
+            style="@style/Widget.Material3.Button.TonalButton" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

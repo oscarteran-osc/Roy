@@ -5,47 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/FavoritoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ImagenObjetoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/MensajeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/NotificacionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/ReporteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/FavoritoRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/ImagenRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/MensajeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/dto/ReporteDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Favorito.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/ImagenObjeto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Mensaje.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Notificacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Reporte.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/FavoritoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ImagenObjetoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/MensajeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/NotificacionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/ReporteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/FavoritoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ImagenObjetoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/MensajeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/NotificacionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/ReporteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/AuthServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/FavoritoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ImagenObjetoServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/MensajeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/NotificacionServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/ReporteServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/SolicitudRentaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/controller/SolicitudRentaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/login/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/login/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PayPalPaymentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PayPalPaymentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/ofertante.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/ofertante.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solis.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solicitudes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solicitudes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis2.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,8 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -106,35 +78,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.RoyServicesApplication.executor": "Run",
-    "git-widget-placeholder": "jamara",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.RoyServicesApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;agregarzonaobjeto&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.RoyServices.model" />
@@ -170,6 +142,10 @@
       <workItem from="1763088477356" duration="9501000" />
       <workItem from="1763100412342" duration="307000" />
       <workItem from="1763132022095" duration="19524000" />
+      <workItem from="1765037971670" duration="1636000" />
+      <workItem from="1768396647983" duration="631000" />
+      <workItem from="1768399326832" duration="689000" />
+      <workItem from="1768513327882" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="Reseña y solicitud de renta">
       <option name="closed" value="true" />

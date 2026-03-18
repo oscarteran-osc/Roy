@@ -27,14 +27,6 @@
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txtSubtitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Canon EOS M50 marca 2 cámara"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"/>
 
     <!-- Ejemplo de tarjetas -->
     <LinearLayout
@@ -43,22 +35,15 @@
         android:orientation="vertical"
         android:layout_marginTop="15dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@drawable/bg_card"
-            android:text="Natanael Ramírez\n12/10/25"
-            android:textColor="@color/black"/>
+       <ListView
+           android:id="@+id/listSolicitudes"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:divider="@android:color/transparent"
+           android:dividerHeight="10dp"
+           android:padding="12dp"
+           android:background="@color/white"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@drawable/bg_card"
-            android:layout_marginTop="10dp"
-            android:text="Sara Domínguez\n10/10/25"
-            android:textColor="@color/black"/>
     </LinearLayout>
 
 </LinearLayout>
