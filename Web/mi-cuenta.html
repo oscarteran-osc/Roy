@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROY – Mi Cuenta</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-page">
+
+  <nav class="navbar-dashboard">
+    <a href="dashboard.html" class="logo-dash">
+      <img src="img/roy_blanco.png" alt="ROY" class="logo-img-dash"/>
+    </a>
+    <div class="dash-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="dash-search-input" id="searchInput" placeholder="¿Qué necesitas rentar hoy?"/>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    </div>
+    <div class="dash-nav-links">
+      <a href="dashboard.html"   class="dash-nav-link">Inicio</a>
+      <a href="mis-objetos.html" class="dash-nav-link">Mis Objetos</a>
+      <a href="solicitudes.html" class="dash-nav-link">Solicitudes</a>
+      <a href="mi-cuenta.html"   class="dash-nav-link active">Mi Cuenta</a>
+    </div>
+  </nav>
+
+  <nav class="cat-navbar">
+    <button class="cat-nav-btn" data-cat="todas">Todo</button>
+    <button class="cat-nav-btn" data-cat="eventos">Eventos</button>
+    <button class="cat-nav-btn" data-cat="tecnologia">Tecnología</button>
+    <button class="cat-nav-btn" data-cat="transporte">Transporte</button>
+    <button class="cat-nav-btn" data-cat="herramientas">Herramientas</button>
+    <button class="cat-nav-btn" data-cat="deporte">Deporte</button>
+    <button class="cat-nav-btn" data-cat="instrumentos">Instrumentos musicales</button>
+  </nav>
+
+  <main class="dash-main">
+    <div class="cuenta-layout">
+
+      <!-- SIDEBAR IZQUIERDO -->
+      <div class="cuenta-sidebar">
+        <div class="cuenta-avatar">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="#fff" opacity=".8"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </div>
+        <p class="cuenta-sidebar-nombre">Nombre de Usuario</p>
+        <p class="cuenta-sidebar-zona">CDMX</p>
+        <div class="cuenta-sidebar-rating">⭐ 4.5</div>
+
+        <hr class="cuenta-sidebar-divider"/>
+
+        <button class="cuenta-sidebar-link active" onclick="cambiarPanel('info')">Información personal</button>
+        <button class="cuenta-sidebar-link" onclick="cambiarPanel('historial')">Historial</button>
+
+        <a href="index.html" class="cuenta-cerrar-sesion">Cerrar sesión</a>
+      </div>
+
+      <!-- CONTENIDO DERECHO -->
+      <div class="cuenta-content">
+
+        <h2 class="cuenta-content-title">Mi cuenta</h2>
+
+        <!-- PANEL INFO PERSONAL -->
+        <div id="panel-info">
+          <p class="cuenta-subtitulo">Información personal</p>
+          <hr class="cuenta-hr"/>
+
+          <div class="cuenta-campo-info">
+            <p class="cuenta-campo-label">Télefono</p>
+            <p class="cuenta-campo-valor">5525708306</p>
+          </div>
+          <div class="cuenta-campo-info">
+            <p class="cuenta-campo-label">Email</p>
+            <p class="cuenta-campo-valor">prueba@gmail.com</p>
+          </div>
+          <div class="cuenta-campo-info">
+            <p class="cuenta-campo-label">Contraseña</p>
+            <p class="cuenta-campo-valor">••••••••••</p>
+          </div>
+
+          <button class="btn-editar-perfil" onclick="abrirModalEditar()">Editar perfil</button>
+        </div>
+
+        <!-- PANEL HISTORIAL -->
+        <div id="panel-historial" style="display:none;">
+          <p class="cuenta-subtitulo">Historial</p>
+          <hr class="cuenta-hr"/>
+
+          <div class="historial-item">
+            <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=80&q=80" alt="Tienda"/>
+            <div>
+              <p class="historial-nombre">Tienda de campaña 4 - 5 personas</p>
+              <p class="historial-fechas">12/10/25 - 20/10/25</p>
+            </div>
+          </div>
+
+          <div class="historial-item">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=80&q=80" alt="Cámara"/>
+            <div>
+              <p class="historial-nombre">Cámara Canon EOS</p>
+              <p class="historial-fechas">01/09/25 - 05/09/25</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL EDITAR PERFIL -->
+  <div class="modal-overlay" id="modal-editar" style="display:none;">
+    <div class="modal-editar">
+      <div class="modal-editar-header">
+        <h3>Editar perfil</h3>
+        <button class="modal-close" onclick="cerrarModalEditar()">✕</button>
+      </div>
+      <div class="modal-editar-body">
+        <div class="form-row-dash">
+          <div class="form-group-dash">
+            <label class="form-label-dash">Nombre</label>
+            <input type="text" class="form-input-dash" value="Nombre"/>
+          </div>
+          <div class="form-group-dash">
+            <label class="form-label-dash">Apellido</label>
+            <input type="text" class="form-input-dash" value="de Usuario"/>
+          </div>
+        </div>
+        <div class="form-group-dash">
+          <label class="form-label-dash">Teléfono</label>
+          <input type="tel" class="form-input-dash" value="5525708306"/>
+        </div>
+        <div class="form-group-dash">
+          <label class="form-label-dash">Email</label>
+          <input type="email" class="form-input-dash" value="prueba@gmail.com"/>
+        </div>
+        <div class="form-group-dash">
+          <label class="form-label-dash">Zona / Ciudad</label>
+          <input type="text" class="form-input-dash" value="CDMX"/>
+        </div>
+        <div class="form-group-dash">
+          <label class="form-label-dash">Nueva contraseña</label>
+          <input type="password" class="form-input-dash" placeholder="Ingresa una nueva contraseña"/>
+        </div>
+      </div>
+      <div class="modal-editar-footer">
+        <button class="btn-guardar-modal" onclick="guardarPerfil()">Guardar cambios</button>
+        <button class="btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="mi-cuenta.js"></script>
+</body>
+</html>

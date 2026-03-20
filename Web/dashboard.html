@@ -9,33 +9,231 @@
 </head>
 <body class="dashboard-page">
 
-  <!-- NAVBAR DASHBOARD -->
+  <!-- NAVBAR AZUL -->
   <nav class="navbar-dashboard">
-    <a href="dashboard.html" class="logo">
-      <img src="img/royazul.png" alt="ROY Logo" class="logo-img-dash"
-           onerror="this.onerror=null; this.style='color:#fff;font-family:Poppins,sans-serif;font-weight:700;font-size:1.5rem;'; this.outerHTML='<span style=\'color:#fff;font-family:Poppins,sans-serif;font-weight:700;font-size:1.5rem;\'>&#x1F6D2;OY</span>'"/>
+    <a href="dashboard.html" class="logo-dash">
+      <img src="img/roy_blanco.png" alt="ROY" class="logo-img-dash"/>
     </a>
-
-    <!-- BUSCADOR -->
     <div class="dash-search">
-      <span class="dash-search-icon">🔍</span>
-      <input type="text" class="dash-search-input" placeholder="¿Qué necesitas hoy?"/>
-      <span class="dash-search-filter">☰</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="dash-search-input" id="searchInput" placeholder="¿Qué necesitas rentar hoy?"/>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
     </div>
-
-    <!-- LINKS -->
     <div class="dash-nav-links">
-      <a href="dashboard.html" class="dash-nav-link active">Inicio</a>
-      <a href="#mis-objetos"   class="dash-nav-link">Mis Objetos</a>
-      <a href="#solicitudes"   class="dash-nav-link">Solicitudes</a>
-      <a href="#mi-cuenta"     class="dash-nav-link">Mi Cuenta</a>
+      <a href="dashboard.html"   class="dash-nav-link active">Inicio</a>
+      <a href="mis-objetos.html" class="dash-nav-link">Mis Objetos</a>
+      <a href="solicitudes.html" class="dash-nav-link">Solicitudes</a>
+      <a href="mi-cuenta.html"   class="dash-nav-link">Mi Cuenta</a>
     </div>
   </nav>
 
-  <!-- CONTENIDO PRINCIPAL (vacío por ahora, se irá llenando) -->
+  <!-- BARRA NARANJA -->
+  <nav class="cat-navbar">
+    <button class="cat-nav-btn active" data-cat="todas">Todo</button>
+    <button class="cat-nav-btn" data-cat="eventos">Eventos</button>
+    <button class="cat-nav-btn" data-cat="tecnologia">Tecnología</button>
+    <button class="cat-nav-btn" data-cat="transporte">Transporte</button>
+    <button class="cat-nav-btn" data-cat="herramientas">Herramientas</button>
+    <button class="cat-nav-btn" data-cat="deporte">Deporte</button>
+    <button class="cat-nav-btn" data-cat="instrumentos">Instrumentos musicales</button>
+  </nav>
+
   <main class="dash-main">
-    <!-- Aquí irán las tarjetas de objetos, categorías, etc. -->
+
+    <!-- BANNER -->
+    <div class="dash-banner">
+      <div class="dash-banner-imgs">
+        <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=120&q=80" class="banner-img b1" alt="Guitarra"/>
+        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=120&q=80" class="banner-img b2" alt="Cámara"/>
+        <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=120&q=80" class="banner-img b3" alt="Taladro"/>
+        <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=140&q=80" class="banner-img b4" alt="Bici"/>
+      </div>
+      <div class="dash-banner-text">
+        <h2 class="banner-title">Renta, usa, devuelve.<br/><span>¡Así de fácil!</span></h2>
+        <p class="banner-sub">Descubre todas nuestras opciones.<br/>Encuentra lo que necesitas.</p>
+        <a href="#cerca" class="banner-link">EXPLORA OBJETOS CERCA DE TI →</a>
+      </div>
+    </div>
+
+    <!-- QUIZÁS TE INTERESA -->
+    <section class="dash-section">
+      <h3 class="dash-section-title-blue">Quizás te interesa...</h3>
+      <div class="interesa-grid">
+        <div class="interesa-card">
+          <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=200&q=80" alt="Carpa"/>
+          <div class="interesa-info">
+            <h4>La carpa perfecta para un fin de semana...</h4>
+            <p>Carpas disponibles desde 1 día. Encuentra la ideal para tu ocasión.</p>
+            <a href="resultados.html?q=carpa" class="interesa-link">ver más</a>
+          </div>
+        </div>
+        <div class="interesa-card">
+          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=200&q=80" alt="Cámara"/>
+          <div class="interesa-info">
+            <h4>Una cámara para capturar momentos inolvidables</h4>
+            <p>Cámaras disponibles de calidad. Encuentra la cámara ideal.</p>
+            <a href="resultados.html?q=camara" class="interesa-link">ver más</a>
+          </div>
+        </div>
+        <div class="interesa-card">
+          <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=200&q=80" alt="Taladro"/>
+          <div class="interesa-info">
+            <h4>Herramientas para cualquier proyecto</h4>
+            <p>Taladros, sierras, niveles. Todo lo que necesitas para renovar.</p>
+            <a href="resultados.html?q=herramientas" class="interesa-link">ver más</a>
+          </div>
+        </div>
+        <div class="interesa-card">
+          <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=200&q=80" alt="Bici"/>
+          <div class="interesa-info">
+            <h4>Bicicletas para explorar la ciudad</h4>
+            <p>Elige entre montaña, carretera o urbana. Renta por días.</p>
+            <a href="resultados.html?q=bicicleta" class="interesa-link">ver más</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TE PUEDE SERVIR PARA -->
+    <section class="dash-section">
+      <h3 class="dash-section-title-blue">Te puede servir para...</h3>
+      <div class="servir-grid">
+        <a href="resultados.html?q=proyecto" class="servir-card">
+          <p class="servir-label">Tu próximo proyecto</p>
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=160&q=80" alt="Proyecto"/>
+        </a>
+        <a href="resultados.html?q=camping" class="servir-card">
+          <p class="servir-label">Escapada de fin de semana</p>
+          <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=160&q=80" alt="Camping"/>
+        </a>
+        <a href="resultados.html?q=herramientas" class="servir-card">
+          <p class="servir-label">Reparar algo sin gastar de más</p>
+          <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=160&q=80" alt="Herramientas"/>
+        </a>
+        <a href="resultados.html?q=evento" class="servir-card">
+          <p class="servir-label">Ese evento especial</p>
+          <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" alt="Evento"/>
+        </a>
+      </div>
+      </section>
+
+    <!-- LO MEJOR PARA EL CALOR — imágenes locales de tu carpeta img/ -->
+    <section class="dash-section">
+      <h3 class="dash-section-title-blue">Lo mejor para el calor</h3>
+      <div class="calor-grid">
+        <a href="resultados.html?q=alberca" class="calor-card">
+          <div class="calor-img-wrap"><img src="img/alberca.png" alt="Alberca"/></div>
+          <p>Albercas inflables</p>
+        </a>
+        <a href="resultados.html?q=sombrilla" class="calor-card">
+          <div class="calor-img-wrap"><img src="img/sombrilla.png" alt="Sombrilla"/></div>
+          <p>Sombrillas</p>
+        </a>
+        <a href="resultados.html?q=ventilador" class="calor-card">
+          <div class="calor-img-wrap"><img src="img/ventilador.png" alt="Ventilador"/></div>
+          <p>Ventiladores</p>
+        </a>
+        <a href="resultados.html?q=hielera" class="calor-card">
+          <div class="calor-img-wrap"><img src="img/hielera.png" alt="Hielera"/></div>
+          <p>Hieleras</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- OBJETOS CERCA DE TI -->
+    <section class="dash-section" id="cerca">
+      <h3 class="dash-section-title-blue">Objetos cerca de ti</h3>
+      <!--
+        TODO: Conectar a la API
+        fetch('http://localhost:8080/api/objeto/objeto')
+          .then(res => res.json())
+          .then(data => renderCerca(data))
+      -->
+      <div class="cerca-scroll" id="cerca-grid">
+
+        <div class="cerca-card" data-cat="tecnologia">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=300&q=80" alt="Cámara"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Electrónica</span>
+            <h4>Cámara Canon EOS</h4>
+            <p class="cerca-zona">📍 CDMX</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$250<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=C%C3%A1mara+Canon+EOS&precio=250&cat=tecnologia&zona=CDMX&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1516035069371-29a1b244cc32%3Fw%3D600%26q%3D80&desc=C%C3%A1mara+r%C3%A9flex+digital+de+24.1+megap%C3%ADxeles.+Incluye+lente+18-55mm.+Ideal+para+fotograf%C3%ADa+y+video+HD." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cerca-card" data-cat="transporte">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=300&q=80" alt="Bici"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Transporte</span>
+            <h4>Bicicleta de montaña</h4>
+            <p class="cerca-zona">📍 Guadalajara</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$120<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=Bicicleta+de+Monta%C3%B1a&precio=120&cat=transporte&zona=Guadalajara&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1507035895480-2b3156c31fc8%3Fw%3D600%26q%3D80&desc=Bicicleta+de+monta%C3%B1a+21+velocidades.+Marco+de+aluminio+ligero.+Lista+para+usar+en+cualquier+terreno." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cerca-card" data-cat="herramientas">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=300&q=80" alt="Taladro"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Herramientas</span>
+            <h4>Taladro Bosch</h4>
+            <p class="cerca-zona">📍 Monterrey</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$80<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=Taladro+Bosch&precio=80&cat=herramientas&zona=Monterrey&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1504148455328-c376907d081c%3Fw%3D600%26q%3D80&desc=Taladro+percutor+500W+con+velocidad+variable.+Incluye+set+de+brocas.+Perfecto+para+proyectos+de+construcci%C3%B3n." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cerca-card" data-cat="tecnologia">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=300&q=80" alt="Drone"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Electrónica</span>
+            <h4>Drone DJI Mini</h4>
+            <p class="cerca-zona">📍 CDMX</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$400<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=Drone+DJI+Mini&precio=400&cat=tecnologia&zona=CDMX&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1473968512647-3e447244af8f%3Fw%3D600%26q%3D80&desc=Drone+compacto+con+c%C3%A1mara+4K.+Autonom%C3%ADa+de+30+minutos.+Incluye+2+bater%C3%ADas+y+control+remoto." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cerca-card" data-cat="tecnologia">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&q=80" alt="Proyector"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Electrónica</span>
+            <h4>Proyector Epson</h4>
+            <p class="cerca-zona">📍 CDMX</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$200<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=Proyector+Epson&precio=200&cat=tecnologia&zona=CDMX&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1478720568477-152d9b164e26%3Fw%3D600%26q%3D80&desc=Proyector+Full+HD+3000+l%C3%BAmenes.+Conectividad+HDMI+y+USB.+Ideal+para+presentaciones+y+pel%C3%ADculas." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cerca-card" data-cat="herramientas">
+          <div class="cerca-img"><img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=300&q=80" alt="Sierra"/></div>
+          <div class="cerca-info">
+            <span class="cerca-cat">Herramientas</span>
+            <h4>Sierra circular Makita</h4>
+            <p class="cerca-zona">📍 Monterrey</p>
+            <div class="cerca-footer">
+              <span class="cerca-precio">$110<small>/día</small></span>
+              <a href="detalle-objeto.html?nombre=Sierra+Circular+Makita&precio=110&cat=herramientas&zona=Monterrey&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1572981779307-38b8cabb2407%3Fw%3D600%26q%3D80&desc=Sierra+circular+1200W+con+disco+de+7+pulgadas.+Gu%C3%ADa+l%C3%A1ser+incluida.+Para+cortes+precisos+en+madera." class="obj-btn">Ver más</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
+  <script src="dashboard.js"></script>
 </body>
 </html>

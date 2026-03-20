@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROY – Mis Objetos</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-page">
+
+  <nav class="navbar-dashboard">
+    <a href="dashboard.html" class="logo-dash">
+      <img src="img/roy_blanco.png" alt="ROY" class="logo-img-dash"/>
+    </a>
+    <div class="dash-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="dash-search-input" id="searchInput" placeholder="¿Qué necesitas rentar hoy?"/>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    </div>
+    <div class="dash-nav-links">
+      <a href="dashboard.html"   class="dash-nav-link">Inicio</a>
+      <a href="mis-objetos.html" class="dash-nav-link active">Mis Objetos</a>
+      <a href="solicitudes.html" class="dash-nav-link">Solicitudes</a>
+      <a href="mi-cuenta.html"   class="dash-nav-link">Mi Cuenta</a>
+    </div>
+  </nav>
+
+  <nav class="cat-navbar">
+    <button class="cat-nav-btn" data-cat="todas">Todo</button>
+    <button class="cat-nav-btn" data-cat="eventos">Eventos</button>
+    <button class="cat-nav-btn" data-cat="tecnologia">Tecnología</button>
+    <button class="cat-nav-btn" data-cat="transporte">Transporte</button>
+    <button class="cat-nav-btn" data-cat="herramientas">Herramientas</button>
+    <button class="cat-nav-btn" data-cat="deporte">Deporte</button>
+    <button class="cat-nav-btn" data-cat="instrumentos">Instrumentos musicales</button>
+  </nav>
+
+  <main class="dash-main">
+
+    <div class="misobjetos-header">
+      <h2 class="dash-welcome-title">Mis objetos</h2>
+      <a href="agregar-objeto.html" class="btn-agregar">+ Agregar</a>
+    </div>
+
+    <!-- TABLA HEADER -->
+    <div class="misobjetos-table-header">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span class="col-precio">Precio</span>
+    </div>
+
+    <!-- LISTA DE OBJETOS -->
+    <div class="misobjetos-list">
+
+      <!-- OBJETO 1 -->
+      <div class="miobjeto-row">
+        <img class="miobjeto-img"
+             src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=120&q=80"
+             alt="Taladro"/>
+        <div class="miobjeto-info">
+          <p class="miobjeto-nombre">Taladro Truper</p>
+          <p class="miobjeto-cat">Herramientas</p>
+          <div class="miobjeto-btns">
+            <button class="btn-ver-detalles"
+                    onclick="abrirDetalles('Taladro Truper','300','herramientas','Monterrey','https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&q=80','Taladro percutor 500W. Incluye set de brocas. Perfecto para proyectos de construcción.')">
+              Ver detalles
+            </button>
+            <button class="btn-ver-solicitudes"
+                    onclick="abrirSolicitudes('Taladro Truper')">
+              Solicitudes
+            </button>
+            <button class="btn-eliminar" onclick="eliminarObjeto(this)">🗑</button>
+          </div>
+        </div>
+        <div class="miobjeto-precio">$300</div>
+      </div>
+
+      <!-- OBJETO 2 -->
+      <div class="miobjeto-row">
+        <img class="miobjeto-img"
+             src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=120&q=80"
+             alt="Cámara"/>
+        <div class="miobjeto-info">
+          <p class="miobjeto-nombre">Canon EOS M50 marca 2 cámara</p>
+          <p class="miobjeto-cat">Tecnología</p>
+          <div class="miobjeto-btns">
+            <button class="btn-ver-detalles"
+                    onclick="abrirDetalles('Canon EOS M50 marca 2 cámara','1500','tecnologia','CDMX','https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80','Cámara mirrorless de 24.1 megapíxeles. Grabación de video 4K. Incluye lente 15-45mm y dos baterías.')">
+              Ver detalles
+            </button>
+            <button class="btn-ver-solicitudes"
+                    onclick="abrirSolicitudes('Canon EOS M50')">
+              Solicitudes
+            </button>
+            <button class="btn-eliminar" onclick="eliminarObjeto(this)">🗑</button>
+          </div>
+        </div>
+        <div class="miobjeto-precio">$1500</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL DETALLES -->
+  <div class="modal-overlay" id="modal-detalles" style="display:none;">
+    <div class="modal-detalles">
+      <div class="modal-detalles-header">
+        <a href="#" class="modal-back" onclick="cerrarModal('modal-detalles')">‹ Detalles</a>
+      </div>
+      <div class="modal-detalles-body">
+        <!-- Galería -->
+        <div class="modal-galeria">
+          <div class="modal-img-main">
+            <img id="modal-img-principal" src="" alt="Objeto"/>
+          </div>
+          <div class="modal-thumbs">
+            <img class="modal-thumb active" id="modal-thumb-1" src="" onclick="cambiarModalImg(this)"/>
+            <img class="modal-thumb" id="modal-thumb-2" src="" onclick="cambiarModalImg(this)"/>
+            <button class="modal-thumb-add">+</button>
+          </div>
+        </div>
+        <!-- Info -->
+        <div class="modal-detalles-info">
+          <div class="modal-campo">
+            <label>Nombre del producto:</label>
+            <input type="text" id="modal-nombre" class="modal-input"/>
+          </div>
+          <div class="modal-campo">
+            <label>Precio:</label>
+            <input type="text" id="modal-precio" class="modal-input"/>
+          </div>
+          <div class="modal-campo">
+            <label>Categoría</label>
+            <select class="modal-input" id="modal-cat">
+              <option>Selecciona</option>
+              <option>Herramientas</option>
+              <option>Tecnología</option>
+              <option>Transporte</option>
+              <option>Eventos</option>
+              <option>Deporte</option>
+            </select>
+          </div>
+          <div class="modal-campo">
+            <label>Descripción</label>
+            <textarea class="modal-input modal-textarea" id="modal-desc"></textarea>
+          </div>
+        </div>
+        <!-- Botones -->
+        <div class="modal-detalles-btns">
+          <button class="btn-guardar-modal" onclick="cerrarModal('modal-detalles')">Guardar</button>
+          <button class="btn-cancelar-modal" onclick="cerrarModal('modal-detalles')">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SOLICITUDES -->
+  <div class="modal-overlay" id="modal-solicitudes" style="display:none;">
+    <div class="modal-solicitudes">
+      <div class="modal-sol-header">
+        <h3 id="modal-sol-titulo">Solicitudes</h3>
+        <button class="modal-close" onclick="cerrarModal('modal-solicitudes')">✕</button>
+      </div>
+      <div class="modal-sol-grid">
+        <div class="sol-persona-card">
+          <div class="sol-avatar">👤</div>
+          <p class="sol-nombre">Natanael Ramírez</p>
+          <p class="sol-fecha">12/10/25</p>
+        </div>
+        <div class="sol-persona-card">
+          <div class="sol-avatar">👤</div>
+          <p class="sol-nombre">Sara Dominguez</p>
+          <p class="sol-fecha">10/10/25</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="mis-objetos.js"></script>
+</body>
+</html>
