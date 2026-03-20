@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PayPalService {
@@ -26,6 +28,23 @@ public class PayPalService {
     @Autowired
     private TransaccionRepository transaccionRepository;
 
+    // Helper: PayPal casi siempre espera "123.45" (punto y 2 decimales)
+    private String toPayPalTotal(Double total) {
+        if (total == null) throw new IllegalArgumentException("total is null");
+
+        BigDecimal bd = BigDecimal.valueOf(total).setScale(2, RoundingMode.HALF_UP);
+
+        // Forzamos punto decimal aunque tu PC esté en español
+        String formatted = String.format(Locale.US, "%.2f", bd);
+
+        // Validación simple (te ayuda a detectar rápido si algo raro se coló)
+        if (!formatted.matches("^\\d+(\\.\\d{2})$")) {
+            throw new IllegalArgumentException("Invalid PayPal total format: " + formatted);
+        }
+
+        return formatted;
+    }
+
     public Payment crearPago(
             Double total,
             String moneda,
@@ -35,8 +54,8 @@ public class PayPalService {
     ) throws PayPalRESTException {
 
         Amount amount = new Amount();
-        amount.setCurrency(moneda);
-        amount.setTotal(String.format("%.2f", total));
+        amount.setCurrency(moneda); // ej "MXN" o "USD"
+        amount.setTotal(toPayPalTotal(total));
 
         Transaction transaction = new Transaction();
         transaction.setDescription(descripcion);
@@ -58,6 +77,9 @@ public class PayPalService {
         redirectUrls.setReturnUrl(successUrl);
         payment.setRedirectUrls(redirectUrls);
 
+        // Log útil para ver EXACTO qué monto está saliendo
+        logger.info("🧾 PayPal crearPago -> currency={}, total={}", moneda, amount.getTotal());
+
         return payment.create(apiContext);
     }
 
@@ -70,8 +92,7 @@ public class PayPalService {
 
         Payment executedPayment = payment.execute(apiContext, paymentExecution);
 
-        // Guardar en base de datos
-        if (executedPayment.getState().equals("approved")) {
+        if ("approved".equalsIgnoreCase(executedPayment.getState())) {
             guardarTransaccion(executedPayment, idSolicitud);
         }
 
@@ -82,10 +103,12 @@ public class PayPalService {
         try {
             Transaccion transaccion = new Transaccion();
 
-            // Obtener el monto
             String amountStr = payment.getTransactions().get(0).getAmount().getTotal();
-            transaccion.setMontoTotal(new BigDecimal(amountStr));
 
+            // Por si acaso viniera con coma (no debería, pero mejor blindado)
+            amountStr = amountStr.replace(",", ".");
+
+            transaccion.setMontoTotal(new BigDecimal(amountStr));
             transaccion.setFechaPago(LocalDate.now());
             transaccion.setMetodoPago("PayPal");
             transaccion.setEstatusPago("Pagado");
@@ -97,8 +120,7 @@ public class PayPalService {
                     idSolicitud, amountStr);
 
         } catch (Exception e) {
-            logger.error("❌ Error al guardar transacción: {}", e.getMessage());
-            e.printStackTrace();
+            logger.error("❌ Error al guardar transacción: {}", e.getMessage(), e);
         }
     }
 }

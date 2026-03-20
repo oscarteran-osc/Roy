@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/ApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/api/RetrofitClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/login/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/login/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PayPalPaymentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/PayPalPaymentActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/SolicitudesArrendatarioFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/ofertante.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/ofertante.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/solicitudes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solis.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solicitudes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solicitudes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/res/layout/fragment_solis2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/network/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/network/RetrofitClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/PayPalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/PayPalService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Roy">
@@ -87,11 +88,17 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.RoyServicesApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;agregarzonaobjeto&quot;,
+    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/julia/IdeaProjects/RoyServices&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -146,6 +153,10 @@
       <workItem from="1768396647983" duration="631000" />
       <workItem from="1768399326832" duration="689000" />
       <workItem from="1768513327882" duration="25000" />
+      <workItem from="1769175256550" duration="6557000" />
+      <workItem from="1769197171527" duration="619000" />
+      <workItem from="1769381891277" duration="12000" />
+      <workItem from="1774012940348" duration="2108000" />
     </task>
     <task id="LOCAL-00001" summary="Reseña y solicitud de renta">
       <option name="closed" value="true" />

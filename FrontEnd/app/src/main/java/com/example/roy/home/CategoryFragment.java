@@ -1,5 +1,6 @@
 package com.example.roy.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -126,17 +127,13 @@ public class CategoryFragment extends Fragment {
             tvPillCategoria.setText(category);
         }
 
-        // Banner text (con Transporte oculto)
         configurarTextoBanner(rootView, category);
+        adapter = new ObjetosCategoriaAdapter(requireContext(), listaFiltrada, objeto -> {
+            Intent i = new Intent(requireContext(), Objetoo.class);
+            i.putExtra("objetoId", objeto.getIdObjeto());
+            startActivity(i);
+        });
 
-        // Adapter (ListView)
-        adapter = new ObjetosCategoriaAdapter(
-                requireContext(),
-                listaFiltrada,
-                objeto -> {
-                    // TODO: abrir detalles
-                }
-        );
         listView.setAdapter(adapter);
 
         listView.setVerticalScrollBarEnabled(true);
@@ -146,13 +143,11 @@ public class CategoryFragment extends Fragment {
         );
 
         btnFiltros.setOnClickListener(v -> {
-            // TODO
         });
 
         configurarChips();
-        configurarBuscador(); // watcher + enter
+        configurarBuscador();
 
-        // Si viene búsqueda: metemos el texto pero sin disparar filtros antes de cargar data
         if (!queryBusqueda.isEmpty()) {
             searchBar.removeTextChangedListener(searchWatcher);
             searchBar.setText(queryBusqueda);

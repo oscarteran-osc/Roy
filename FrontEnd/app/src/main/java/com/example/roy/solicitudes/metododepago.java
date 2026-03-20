@@ -33,7 +33,6 @@ public class metododepago extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metododepago);
 
-        // Obtener datos del intent
         idSolicitud = getIntent().getIntExtra("idSolicitud", -1);
         monto = getIntent().getDoubleExtra("monto", 0.0);
         nombreObjeto = getIntent().getStringExtra("nombreObjeto");
