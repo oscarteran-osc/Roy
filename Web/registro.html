@@ -9,7 +9,6 @@
 </head>
 <body class="auth-page">
 
-  <!-- NAVBAR mínima -->
   <nav class="navbar navbar-auth">
     <a href="index.html" class="logo">
       <img src="img/royazul.png" alt="ROY Logo" class="logo-img"/>
@@ -17,83 +16,47 @@
     <span class="nav-tagline">ACCESS MORE, OWN LESS.</span>
   </nav>
 
-  <!-- HERO WAVE -->
   <div class="auth-hero">
     <div class="auth-wave"></div>
 
-    <!-- CARD FORMULARIO -->
     <div class="auth-card">
       <h2 class="auth-title"><em>Regístrate en <strong>ROY</strong></em></h2>
       <p class="auth-sub">Crea una nueva cuenta y empieza a disfrutar de nuestros servicios</p>
 
+      <div id="error-msg" class="auth-error" style="display:none;"></div>
+
       <div class="form-group">
-        <input type="text" class="form-input" placeholder="Nombre" id="nombre"/>
+        <input type="text"     class="form-input" placeholder="Nombre"              id="nombre"/>
       </div>
       <div class="form-group">
-        <input type="text" class="form-input" placeholder="Apellido" id="apellido"/>
+        <input type="text"     class="form-input" placeholder="Apellido"            id="apellido"/>
       </div>
       <div class="form-group">
-        <input type="tel" class="form-input" placeholder="Número telefónico" id="telefono"/>
+        <input type="tel"      class="form-input" placeholder="Número telefónico"   id="telefono"/>
       </div>
       <div class="form-group">
-        <input type="text" class="form-input" placeholder="Domicilio" id="domicilio"/>
+        <input type="text"     class="form-input" placeholder="Zona / Ciudad"       id="zona"/>
       </div>
       <div class="form-group">
-        <input type="email" class="form-input" placeholder="Correo electrónico" id="correo"/>
+        <input type="text"     class="form-input" placeholder="Domicilio (opcional)" id="domicilio"/>
       </div>
       <div class="form-group">
-        <input type="password" class="form-input" placeholder="Contraseña" id="contra"/>
+        <input type="email"    class="form-input" placeholder="Correo electrónico"  id="correo"/>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-input" placeholder="Contraseña"          id="contra"/>
       </div>
       <div class="form-group">
         <input type="password" class="form-input" placeholder="Confirmar contraseña" id="checkcontra"/>
       </div>
 
-      <button class="btn-form" onclick="crearCuenta()">Crear cuenta</button>
-
+      <button class="btn-form" id="btn-registro" onclick="crearCuenta()">Crear cuenta</button>
       <p class="auth-link">¿Ya estás en ROY? <a href="login.html">Inicia Sesión</a></p>
     </div>
 
-    <!-- Decoración lateral -->
     <div class="auth-deco auth-deco-left">📦</div>
     <div class="auth-deco auth-deco-right">🌿</div>
   </div>
-
-  <script>
-    // ── JS MUY SENCILLO ──
-    // Esta función se llama cuando el usuario hace clic en "Crear cuenta".
-    // Por ahora solo valida que los campos no estén vacíos y que las
-    // contraseñas coincidan. Cuando conectes el backend, aquí harías
-    // un fetch() a tu API Spring Boot.
-
-    function crearCuenta() {
-      const nombre    = document.getElementById('nombre').value.trim();
-      const apellido  = document.getElementById('apellido').value.trim();
-      const telefono  = document.getElementById('telefono').value.trim();
-      const domicilio = document.getElementById('domicilio').value.trim();
-      const correo    = document.getElementById('correo').value.trim();
-      const contra    = document.getElementById('contra').value;
-      const check     = document.getElementById('checkcontra').value;
-
-      if (!nombre || !apellido || !telefono || !domicilio || !correo || !contra) {
-        alert('Por favor llena todos los campos.');
-        return;
-      }
-      if (contra !== check) {
-        alert('Las contraseñas no coinciden.');
-        return;
-      }
-
-      // ── AQUÍ iría el fetch a tu API ──
-      // fetch('http://localhost:8080/Roy/api/usuario', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ nombre, apellido, telefono,
-      //                          domicilio, correo, password: contra })
-      // }).then(...).catch(...);
-
-      alert('¡Cuenta creada con éxito!');
-      window.location.href = 'dashboard.html';
-    }
-  </script>
+  <script src="registro.js"></script>
 </body>
 </html>

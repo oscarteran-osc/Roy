@@ -23,6 +23,8 @@
       <h2 class="auth-title"><em>Inicia sesión en <strong>ROY</strong></em></h2>
       <p class="auth-sub">Ingresa a tu cuenta y continúa disfrutando de nuestros servicios.</p>
 
+      <div id="error-msg" class="auth-error" style="display:none;"></div>
+
       <div class="form-group">
         <input type="email" class="form-input" placeholder="Correo electrónico" id="correo"/>
       </div>
@@ -30,46 +32,13 @@
         <input type="password" class="form-input" placeholder="Contraseña" id="contra"/>
       </div>
 
-      <button class="btn-form" onclick="iniciarSesion()">Iniciar Sesión</button>
-
+      <button class="btn-form" id="btn-login" onclick="iniciarSesion()">Iniciar Sesión</button>
       <p class="auth-link">¿Nuevo en ROY? <a href="registro.html">Regístrate</a></p>
     </div>
 
     <div class="auth-deco auth-deco-left">📦</div>
     <div class="auth-deco auth-deco-right">🌿</div>
   </div>
-
-  <script>
-    // ── JS MUY SENCILLO ──
-    // Valida que los campos no estén vacíos.
-    // Cuando conectes el backend, aquí harías un fetch() POST a tu API
-    // para verificar el correo y contraseña.
-
-    function iniciarSesion() {
-      const correo = document.getElementById('correo').value.trim();
-      const contra = document.getElementById('contra').value;
-
-      if (!correo || !contra) {
-        alert('Por favor ingresa tu correo y contraseña.');
-        return;
-      }
-
-      // ── AQUÍ iría el fetch a tu API ──
-      // fetch('http://localhost:8080/Roy/api/usuario/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ correo, password: contra })
-      // }).then(res => res.json()).then(data => {
-      //   if (data.idUsuario) {
-      //     window.location.href = 'dashboard.html';
-      //   } else {
-      //     alert('Credenciales incorrectas.');
-      //   }
-      // });
-
-      alert('¡Sesión iniciada!');
-      window.location.href = 'dashboard.html';
-    }
-  </script>
+  <script src="login.js"></script>
 </body>
 </html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROY – Agregar Objeto</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-page">
+
+  <nav class="navbar-dashboard">
+    <a href="dashboard.html" class="logo-dash">
+      <img src="img/roy_blanco.png" alt="ROY" class="logo-img-dash"/>
+    </a>
+    <div class="dash-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="dash-search-input" id="searchInput" placeholder="¿Qué necesitas rentar hoy?"/>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    </div>
+    <div class="dash-nav-links">
+      <a href="dashboard.html"   class="dash-nav-link">Inicio</a>
+      <a href="mis-objetos.html" class="dash-nav-link active">Mis Objetos</a>
+      <a href="solicitudes.html" class="dash-nav-link">Solicitudes</a>
+      <a href="mi-cuenta.html"   class="dash-nav-link">Mi Cuenta</a>
+    </div>
+  </nav>
+
+  <nav class="cat-navbar">
+    <button class="cat-nav-btn" data-cat="todas">Todo</button>
+    <button class="cat-nav-btn" data-cat="eventos">Eventos</button>
+    <button class="cat-nav-btn" data-cat="tecnologia">Tecnología</button>
+    <button class="cat-nav-btn" data-cat="transporte">Transporte</button>
+    <button class="cat-nav-btn" data-cat="herramientas">Herramientas</button>
+    <button class="cat-nav-btn" data-cat="deporte">Deporte</button>
+    <button class="cat-nav-btn" data-cat="instrumentos">Instrumentos musicales</button>
+  </nav>
+
+  <main class="dash-main">
+
+    <div class="agregar-layout">
+
+      <!-- IZQUIERDA: galería -->
+      <div class="agregar-galeria">
+        <a href="mis-objetos.html" class="breadcrumb-back">‹ Agregar objeto</a>
+
+        <!-- Imagen principal -->
+        <div class="agregar-img-main" id="dropZone" onclick="document.getElementById('fileInput').click()">
+          <img id="preview-img" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;"/>
+          <div id="upload-placeholder">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <path d="M3 15l4-4 4 4 4-6 4 6"/>
+              <circle cx="8.5" cy="8.5" r="1.5" fill="#aaa"/>
+              <path d="M12 3v4M10 5h4" stroke="#aaa" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none"/>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="agregar-thumbs">
+          <button class="agregar-thumb-add" onclick="document.getElementById('fileInput').click()">+</button>
+          <button class="agregar-thumb-add">+</button>
+        </div>
+      </div>
+
+      <!-- CENTRO: formulario -->
+      <div class="agregar-form">
+        <div class="modal-campo">
+          <label>Nombre del producto:</label>
+          <input type="text" class="modal-input" id="ag-nombre" placeholder="Ingrese nombre del producto"/>
+        </div>
+        <div class="modal-campo">
+          <label>Precio:</label>
+          <input type="number" class="modal-input" id="ag-precio" placeholder="$MXN"/>
+        </div>
+        <div class="modal-campo">
+          <label>Categoría</label>
+          <select class="modal-input" id="ag-cat">
+            <option value="">Selecciona ▾</option>
+            <option>Herramientas</option>
+            <option>Tecnología</option>
+            <option>Transporte</option>
+            <option>Eventos</option>
+            <option>Deporte</option>
+            <option>Instrumentos musicales</option>
+          </select>
+        </div>
+        <div class="modal-campo">
+          <label>Descripción</label>
+          <textarea class="modal-input modal-textarea" id="ag-desc" placeholder="Descripción del producto..."></textarea>
+        </div>
+      </div>
+
+      <!-- DERECHA: botones -->
+      <div class="agregar-btns">
+        <button class="btn-guardar-modal" onclick="agregarObjeto()">Agregar</button>
+        <a href="mis-objetos.html" class="btn-cancelar-modal" style="text-align:center; text-decoration:none; display:block;">Cancelar</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="agregar-objeto.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROY – Mis Solicitudes</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-page">
+
+  <nav class="navbar-dashboard">
+    <a href="dashboard.html" class="logo-dash">
+      <img src="img/roy_blanco.png" alt="ROY" class="logo-img-dash"/>
+    </a>
+    <div class="dash-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="dash-search-input" id="searchInput" placeholder="¿Qué necesitas rentar hoy?"/>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    </div>
+    <div class="dash-nav-links">
+      <a href="dashboard.html"   class="dash-nav-link">Inicio</a>
+      <a href="mis-objetos.html" class="dash-nav-link">Mis Objetos</a>
+      <a href="solicitudes.html" class="dash-nav-link active">Solicitudes</a>
+      <a href="mi-cuenta.html"   class="dash-nav-link">Mi Cuenta</a>
+    </div>
+  </nav>
+
+  <nav class="cat-navbar">
+    <button class="cat-nav-btn" data-cat="todas">Todo</button>
+    <button class="cat-nav-btn" data-cat="eventos">Eventos</button>
+    <button class="cat-nav-btn" data-cat="tecnologia">Tecnología</button>
+    <button class="cat-nav-btn" data-cat="transporte">Transporte</button>
+    <button class="cat-nav-btn" data-cat="herramientas">Herramientas</button>
+    <button class="cat-nav-btn" data-cat="deporte">Deporte</button>
+    <button class="cat-nav-btn" data-cat="instrumentos">Instrumentos musicales</button>
+  </nav>
+
+  <main class="dash-main">
+
+    <h2 class="dash-welcome-title" style="margin-bottom:20px;">Mis Solicitudes</h2>
+
+    <!-- TOGGLE RENTADOR / OFERTANTE -->
+    <div class="sol-toggle">
+      <button class="sol-toggle-btn active" id="btn-rentador" onclick="cambiarTab('rentador')">Rentador</button>
+      <button class="sol-toggle-btn" id="btn-ofertante" onclick="cambiarTab('ofertante')">Ofertante</button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="sol-tabla">
+
+      <!-- HEADER -->
+      <div class="sol-tabla-header">
+        <span>Artículo</span>
+        <span>Detalles de Solicitud</span>
+        <span>Acciones</span>
+      </div>
+
+      <!-- PANEL RENTADOR -->
+      <div id="panel-rentador">
+
+        <div class="sol-fila">
+          <div class="sol-articulo">
+            <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=100&q=80" alt="Tienda"/>
+            <div>
+              <p class="sol-art-nombre">Tienda de campaña 4 - 5 personas</p>
+              <p class="sol-art-de">De: <span>José Alberto</span></p>
+              <a href="detalle-objeto.html" class="sol-ver-detalles">Ver detalles</a>
+            </div>
+          </div>
+          <div class="sol-detalles">
+            <p><strong>Fecha de solicitud:</strong> 5/10/25</p>
+            <p><strong>Estado:</strong> <span class="sol-estado aceptada">Aceptada</span></p>
+            <p><strong>Fecha de respuesta:</strong> 10/09/25</p>
+          </div>
+          <div class="sol-acciones">
+            <a href="pagar.html" class="btn-pagar">Pagar</a>
+          </div>
+        </div>
+
+        <div class="sol-fila">
+          <div class="sol-articulo">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&q=80" alt="Silla"/>
+            <div>
+              <p class="sol-art-nombre">Silla plegable doble</p>
+              <p class="sol-art-de">De: <span>Alejandra Montes</span></p>
+              <a href="detalle-objeto.html" class="sol-ver-detalles">Ver detalles</a>
+            </div>
+          </div>
+          <div class="sol-detalles">
+            <p><strong>Fecha de solicitud:</strong> 9/10/25</p>
+            <p><strong>Estado:</strong> <span class="sol-estado pendiente">Pendiente</span></p>
+            <p><strong>Fecha de respuesta:</strong> -</p>
+          </div>
+          <div class="sol-acciones">
+            <button class="btn-cancelar-sol">Cancelar</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PANEL OFERTANTE -->
+      <div id="panel-ofertante" style="display:none;">
+
+        <div class="sol-fila">
+          <div class="sol-articulo">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100&q=80" alt="Cámara"/>
+            <div>
+              <p class="sol-art-nombre">Cámara Canon EOS</p>
+              <p class="sol-art-de">Para: <span>Luis Hernández</span></p>
+              <a href="detalle-objeto.html" class="sol-ver-detalles">Ver detalles</a>
+            </div>
+          </div>
+          <div class="sol-detalles">
+            <p><strong>Fecha de solicitud:</strong> 2/10/25</p>
+            <p><strong>Estado:</strong> <span class="sol-estado pendiente">Pendiente</span></p>
+            <p><strong>Fecha de respuesta:</strong> -</p>
+          </div>
+          <div class="sol-acciones">
+            <button class="btn-pagar">Aceptar</button>
+            <button class="btn-cancelar-sol" style="margin-top:8px;">Rechazar</button>
+          </div>
+        </div>
+
+        <div class="sol-fila">
+          <div class="sol-articulo">
+            <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=100&q=80" alt="Taladro"/>
+            <div>
+              <p class="sol-art-nombre">Taladro Bosch</p>
+              <p class="sol-art-de">Para: <span>María García</span></p>
+              <a href="detalle-objeto.html" class="sol-ver-detalles">Ver detalles</a>
+            </div>
+          </div>
+          <div class="sol-detalles">
+            <p><strong>Fecha de solicitud:</strong> 1/10/25</p>
+            <p><strong>Estado:</strong> <span class="sol-estado rechazada">Rechazada</span></p>
+            <p><strong>Fecha de respuesta:</strong> 3/10/25</p>
+          </div>
+          <div class="sol-acciones">
+            —
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script src="solicitudes.js"></script>
+</body>
+</html>
