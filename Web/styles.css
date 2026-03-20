@@ -1755,3 +1755,56 @@ a.btn-pagar {
 @media (max-width: 768px) {
   .cuenta-layout { grid-template-columns: 1fr; }
 }
+
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+.footer {
+  background: var(--azul);
+  margin-top: 48px;
+  padding: 36px 80px;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logo y tagline */
+.footer-logo    { height: 40px; object-fit: contain; filter: brightness(0) invert(1); margin-bottom: 8px; }
+.footer-tagline { font-size: .82rem; color: rgba(255,255,255,.7); font-weight: 500; }
+
+/* Info empresa */
+.footer-empresa { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.footer-correo  { font-size: .85rem; color: rgba(255,255,255,.8); text-decoration: none; display: block; margin-bottom: 10px; transition: color .2s; }
+.footer-correo:hover { color: var(--naranja); }
+.footer-copy    { font-size: .75rem; color: rgba(255,255,255,.5); }
+
+/* Links */
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-link  { font-size: .82rem; color: rgba(255,255,255,.75); text-decoration: none; transition: color .2s; }
+.footer-link:hover { color: var(--naranja); }
+
+@media (max-width: 768px) {
+  .footer         { padding: 32px 24px; }
+  .footer-content { flex-direction: column; gap: 24px; }
+}
+
+/* Footer ATP */
+.footer-atp {
+  display: flex; align-items: center; gap: 14px;
+}
+.footer-atp-logo {
+  height: 100px; object-fit: contain;
+}
+.footer-atp-nombre {
+  font-size: .88rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+.footer-atp-slogan {
+  font-size: .8rem; color: var(--naranja); font-style: italic; font-weight: 500;
+}
