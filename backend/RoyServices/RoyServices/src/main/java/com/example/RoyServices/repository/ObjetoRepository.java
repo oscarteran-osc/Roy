@@ -33,7 +33,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario
@@ -51,7 +51,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario
@@ -69,7 +69,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario
@@ -89,7 +89,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario
@@ -108,7 +108,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario
@@ -127,7 +127,7 @@ public interface ObjetoRepository extends JpaRepository<Objeto, Integer> {
             o.categoria AS categoria,
             o.descripcion AS descripcion,
             o.imagen_url AS imagenUrl,
-            u.zona AS zona,
+            COALESCE(o.zona, u.zona) AS zona,
             CONCAT(u.nombre_us, ' ', u.apellido_us) AS nomArrendador
         FROM objeto o
         LEFT JOIN usuario u ON o.id_us_arrendador = u.id_usuario

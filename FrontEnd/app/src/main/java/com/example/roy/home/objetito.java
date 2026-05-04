@@ -270,6 +270,33 @@ public class objetito extends Fragment {
 
         // Cargar fragment de reseñas
         cargarFragmentResenas(objetoId, objeto.getIdUsArrendador());
+
+        // ✅ Cargar promedio de calificación del objeto desde sus reseñas
+        cargarPromedioCalificacion(objetoId);
+    }
+
+    private void cargarPromedioCalificacion(int objetoId) {
+        apiService.getResenasPorObjeto(objetoId).enqueue(new Callback<List<com.example.roy.models.Resena>>() {
+            @Override
+            public void onResponse(Call<List<com.example.roy.models.Resena>> call, Response<List<com.example.roy.models.Resena>> response) {
+                if (!isAdded()) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    List<com.example.roy.models.Resena> resenas = response.body();
+                    if (!resenas.isEmpty()) {
+                        float suma = 0;
+                        for (com.example.roy.models.Resena r : resenas) {
+                            if (r.getCalificacion() != null) suma += r.getCalificacion();
+                        }
+                        float promedio = suma / resenas.size();
+                        if (rating != null) rating.setRating(promedio);
+                    } else {
+                        if (rating != null) rating.setRating(0);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<com.example.roy.models.Resena>> call, Throwable t) { }
+        });
     }
 
     private void cargarFragmentResenas(int objetoId, int idUsReceptor) {
@@ -312,5 +339,10 @@ public class objetito extends Fragment {
         args.putInt("objetoId", objetoId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /** Llamado desde el fragment hijo de reseñas para actualizar el promedio */
+    public void recargarPromedioCalificacion() {
+        if (objetoId != -1) cargarPromedioCalificacion(objetoId);
     }
 }

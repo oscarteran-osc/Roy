@@ -1,5 +1,6 @@
 package com.example.roy.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -134,10 +135,22 @@ public class CategoryFragment extends Fragment {
                 requireContext(),
                 listaFiltrada,
                 objeto -> {
-                    // TODO: abrir detalles
+                    // ✅ Abrir detalle del objeto con botón de solicitud
+                    Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+                    intent.putExtra("objetoId", objeto.getIdObjeto());
+                    startActivity(intent);
                 }
         );
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            com.example.roy.models.Objeto obj = (com.example.roy.models.Objeto) adapter.getItem(position);
+            if (obj != null) {
+                Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+                intent.putExtra("objetoId", obj.getIdObjeto());
+                startActivity(intent);
+            }
+        });
 
         listView.setVerticalScrollBarEnabled(true);
 

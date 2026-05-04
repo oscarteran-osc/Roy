@@ -145,10 +145,10 @@ public class Home extends Fragment {
 
         safeClick(explorarMasBtn, () -> loadDetailFragment("Explorar"));
 
-        safeClick(serviceItem1, () -> loadDetailFragment("Proyecto"));
-        safeClick(serviceItem2, () -> loadDetailFragment("Escapada"));
-        safeClick(serviceItem3, () -> loadDetailFragment("Reparar"));
-        safeClick(serviceItem4, () -> loadDetailFragment("Evento"));
+        safeClick(serviceItem1, () -> loadCategoryFragment("Tecnología"));
+        safeClick(serviceItem2, () -> loadCategoryFragment("Eventos"));
+        safeClick(serviceItem3, () -> loadCategoryFragment("Herramientas"));
+        safeClick(serviceItem4, () -> loadCategoryFragment("Eventos"));
 
         if (menuIcon != null) {
             menuIcon.setOnClickListener(v ->

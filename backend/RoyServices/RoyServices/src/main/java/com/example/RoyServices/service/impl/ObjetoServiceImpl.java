@@ -48,6 +48,7 @@ public class ObjetoServiceImpl implements ObjetoService {
         existente.setCategoria(objeto.getCategoria());
         existente.setDescripcion(objeto.getDescripcion());
         existente.setImagenUrl(objeto.getImagenUrl());
+        if (objeto.getZona() != null) existente.setZona(objeto.getZona());
 
         return objetoRepository.save(existente);
     }

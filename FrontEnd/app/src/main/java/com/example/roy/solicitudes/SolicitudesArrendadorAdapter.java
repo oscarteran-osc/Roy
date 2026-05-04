@@ -1,6 +1,7 @@
 package com.example.roy.solicitudes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.roy.R;
+import com.example.roy.home.Objetoo;
 import com.example.roy.models.SolicitudRenta;
 
 import java.util.ArrayList;
@@ -64,6 +66,15 @@ public class SolicitudesArrendadorAdapter extends BaseAdapter {
         }
 
         SolicitudRenta solicitud = solicitudes.get(position);
+
+        // ✅ CLICK en imagen o nombre → abrir detalle del objeto
+        View.OnClickListener abrirDetalle = v -> {
+            Intent intent = new Intent(context, Objetoo.class);
+            intent.putExtra("objetoId", solicitud.getIdObjeto());
+            context.startActivity(intent);
+        };
+        holder.ivImagen.setOnClickListener(abrirDetalle);
+        holder.tvNombreObjeto.setOnClickListener(abrirDetalle);
 
         // ✅ Mostrar nombre real del objeto
         String nombreObjeto = solicitud.getNombreObjeto();

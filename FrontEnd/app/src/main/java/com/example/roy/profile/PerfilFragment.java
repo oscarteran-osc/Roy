@@ -25,7 +25,9 @@ import com.example.roy.api.ApiService;
 import com.example.roy.api.RetrofitClient;
 import com.example.roy.login.LoginActivity;
 import com.example.roy.login.MainActivity;
+import com.example.roy.home.Objetoo;
 import com.example.roy.models.Objeto;
+import com.example.roy.models.SolicitudRenta;
 import com.example.roy.models.UserProfileResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -216,28 +218,61 @@ public class PerfilFragment extends Fragment {
     }
 
     private void cargarHistorialObjetos() {
-        apiService.getObjetosPorUsuario(userId).enqueue(new Callback<List<Objeto>>() {
+        // ✅ Cargar solicitudes PAGADAS del usuario (objetos que ha rentado a otros)
+        apiService.getSolicitudesArrendatario(userId).enqueue(new Callback<List<SolicitudRenta>>() {
             @Override
-            public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
+            public void onResponse(Call<List<SolicitudRenta>> call, Response<List<SolicitudRenta>> response) {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Objeto> objetos = response.body();
-                    Log.d("PERFIL_DEBUG", "📦 Objetos cargados: " + objetos.size());
-                    mostrarHistorial(objetos);
+                    List<SolicitudRenta> solicitudes = response.body();
+                    Log.d("PERFIL_DEBUG", "📦 Solicitudes cargadas: " + solicitudes.size());
+
+                    // Filtrar solo las que fueron pagadas (historial real de rentas)
+                    List<ItemHistorial> historial = new ArrayList<>();
+                    for (SolicitudRenta s : solicitudes) {
+                        if ("PAGADA".equalsIgnoreCase(s.getEstado())) {
+                            historial.add(new ItemHistorial(
+                                    s.getNombreObjeto() != null ? s.getNombreObjeto() : "Objeto #" + s.getIdObjeto(),
+                                    "$" + s.getMonto(),
+                                    s.getImagenObjeto(),
+                                    s.getIdObjeto()
+                            ));
+                        }
+                    }
+                    mostrarHistorialDesdeItems(historial);
                 } else {
-                    Log.e("PERFIL_DEBUG", "❌ Error al cargar objetos: " + response.code());
+                    Log.e("PERFIL_DEBUG", "❌ Error al cargar solicitudes: " + response.code());
                     mostrarHistorialVacio();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Objeto>> call, Throwable t) {
+            public void onFailure(Call<List<SolicitudRenta>> call, Throwable t) {
                 if (!isAdded()) return;
                 Log.e("PERFIL_DEBUG", "💥 Error de conexión: " + t.getMessage());
                 mostrarHistorialVacio();
             }
         });
+    }
+
+    private void mostrarHistorialDesdeItems(List<ItemHistorial> historial) {
+        if (historial == null || historial.isEmpty()) {
+            mostrarHistorialVacio();
+            return;
+        }
+
+        rvHistorial.setVisibility(View.VISIBLE);
+        tvSinHistorial.setVisibility(View.GONE);
+
+        HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
+            // ✅ Navegar al detalle del objeto al hacer click
+            Intent intent = new Intent(requireContext(), Objetoo.class);
+            intent.putExtra("objetoId", item.getObjetoId());
+            startActivity(intent);
+        });
+
+        rvHistorial.setAdapter(adapter);
     }
 
     private void mostrarHistorial(List<Objeto> objetos) {
@@ -246,29 +281,17 @@ public class PerfilFragment extends Fragment {
             return;
         }
 
-        // Convertir objetos a ItemHistorial
         List<ItemHistorial> historial = new ArrayList<>();
         for (Objeto objeto : objetos) {
-            ItemHistorial item = new ItemHistorial(
+            historial.add(new ItemHistorial(
                     objeto.getNombreObjeto(),
                     "$" + objeto.getPrecio(),
-                    objeto.getImagenUrl()
-            );
-            historial.add(item);
+                    objeto.getImagenUrl(),
+                    objeto.getIdObjeto()
+            ));
         }
 
-        // Mostrar el RecyclerView
-        rvHistorial.setVisibility(View.VISIBLE);
-        tvSinHistorial.setVisibility(View.GONE);
-
-        HistorialAdapter adapter = new HistorialAdapter(historial, item -> {
-            Toast.makeText(requireContext(),
-                    "Ver detalles de: " + item.getNombre(),
-                    Toast.LENGTH_SHORT).show();
-            // TODO: Navegar a detalle del objeto
-        });
-
-        rvHistorial.setAdapter(adapter);
+        mostrarHistorialDesdeItems(historial);
     }
 
     private void mostrarHistorialVacio() {
@@ -318,16 +341,19 @@ public class PerfilFragment extends Fragment {
         private String nombre;
         private String precio;
         private String imagenUrl;
+        private int objetoId;
 
-        public ItemHistorial(String nombre, String precio, String imagenUrl) {
+        public ItemHistorial(String nombre, String precio, String imagenUrl, int objetoId) {
             this.nombre = nombre;
             this.precio = precio;
             this.imagenUrl = imagenUrl;
+            this.objetoId = objetoId;
         }
 
         public String getNombre() { return nombre; }
         public String getPrecio() { return precio; }
         public String getImagenUrl() { return imagenUrl; }
+        public int getObjetoId() { return objetoId; }
     }
 
     public interface OnHistorialClickListener {
