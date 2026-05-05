@@ -94,7 +94,7 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void verificarPropietario() {
-        SharedPreferences prefs = getSharedPreferences("ROY_PREFS", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         int miUsuarioId = prefs.getInt("userId", -1);
 
         // Si el objeto es del usuario actual, ocultar el botón de solicitud
