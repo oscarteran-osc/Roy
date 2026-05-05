@@ -426,7 +426,7 @@ public class Home extends Fragment {
 
     private String getZonaUsuario() {
         try {
-            SharedPreferences prefs = requireContext().getSharedPreferences("ROY_PREFS", 0);
+            SharedPreferences prefs = requireContext().getSharedPreferences("RoyPrefs", 0);
             return prefs.getString("zona", null);
         } catch (Exception e) {
             return null;

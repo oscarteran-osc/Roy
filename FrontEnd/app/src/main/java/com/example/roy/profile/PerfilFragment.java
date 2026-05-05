@@ -164,7 +164,12 @@ public class PerfilFragment extends Fragment {
         tvNombre.setText(nombreCompleto.isEmpty() ? "Usuario" : nombreCompleto);
 
         // Región/Zona
-        tvRegion.setText(obtenerTextoSeguro(perfil.getZona(), "CDMX"));
+        String zona = obtenerTextoSeguro(perfil.getZona(), "CDMX");
+        tvRegion.setText(zona);
+
+        // ✅ Guardar zona en SharedPreferences para el filtro "Cerca de ti"
+        requireActivity().getSharedPreferences("RoyPrefs", MODE_PRIVATE)
+                .edit().putString("zona", zona).apply();
 
         // Reputación
         Double reputacion = perfil.getReputacion();

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SessionManager {
-    private static final String PREF_NAME = "ROY_PREFS"; // ✅ Un solo nombre
+    private static final String PREF_NAME = "RoyPrefs"; // ✅ Mismo nombre que usa LoginActivity
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_TOKEN = "token";
 
