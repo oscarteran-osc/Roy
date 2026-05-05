@@ -141,6 +141,8 @@ public class PerfilFragment extends Fragment {
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     mostrarDatosPerfil(response.body());
+                    // ✅ Cargar promedio real de calificaciones recibidas
+                    cargarPromedioCalificacion();
                 } else {
                     manejarErrorCarga(response.code());
                 }
@@ -151,6 +153,30 @@ public class PerfilFragment extends Fragment {
                 Toast.makeText(requireContext(),
                         "Error de conexión: " + t.getMessage(),
                         Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void cargarPromedioCalificacion() {
+        apiService.getPromedioCalificacionUsuario(userId).enqueue(new Callback<java.util.Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<java.util.Map<String, Object>> call,
+                                   Response<java.util.Map<String, Object>> response) {
+                if (!isAdded()) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    java.util.Map<String, Object> data = response.body();
+                    double promedio = 0.0;
+                    Object promedioObj = data.get("promedioCalificacion");
+                    if (promedioObj instanceof Number) {
+                        promedio = ((Number) promedioObj).doubleValue();
+                    }
+                    chipReputacion.setText("⭐ " + String.format(java.util.Locale.US, "%.1f", promedio));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<java.util.Map<String, Object>> call, Throwable t) {
+                Log.e("PERFIL", "Error al cargar promedio: " + t.getMessage());
             }
         });
     }
@@ -171,12 +197,8 @@ public class PerfilFragment extends Fragment {
         requireActivity().getSharedPreferences("RoyPrefs", MODE_PRIVATE)
                 .edit().putString("zona", zona).apply();
 
-        // Reputación
-        Double reputacion = perfil.getReputacion();
-        if (reputacion == null) {
-            reputacion = 0.0;
-        }
-        chipReputacion.setText("⭐ " + String.format(java.util.Locale.US, "%.1f", reputacion));
+        // Reputación — se actualiza con cargarPromedioCalificacion()
+        chipReputacion.setText("⭐ 0.0");
 
         // Teléfono - formateado
         String telefono = obtenerTextoSeguro(perfil.getTelefono(), "No registrado");

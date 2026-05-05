@@ -119,6 +119,12 @@ public interface ApiService {
     @DELETE("api/resenas/{resenaId}")
     Call<Void> eliminarResena(@Path("resenaId") int resenaId, @Header("Authorization") String token);
 
+    @GET("api/resenas/promedio/{idUsuario}")
+    Call<java.util.Map<String, Object>> getPromedioCalificacionUsuario(@Path("idUsuario") int idUsuario);
+
+    @GET("api/resenas/receptor/{idReceptor}")
+    Call<List<Resena>> getResenasPorReceptor(@Path("idReceptor") int idReceptor);
+
     // ==================== PERFIL ====================
     @GET("Roy/api/usuario/{id}")
     Call<UserProfileResponse> getPerfil(

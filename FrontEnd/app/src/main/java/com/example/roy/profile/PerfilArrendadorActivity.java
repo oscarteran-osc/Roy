@@ -22,6 +22,7 @@ import com.example.roy.api.RetrofitClient;
 import com.example.roy.home.ObjetosArrendadorAdapter;
 import com.example.roy.home.Objetoo;
 import com.example.roy.models.Objeto;
+import com.example.roy.models.Resena;
 import com.example.roy.models.UserProfileResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -29,6 +30,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,19 +64,13 @@ public class PerfilArrendadorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_arrendador);
 
-        // Inicializar API
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Vincular vistas
         initViews();
-
-        // Obtener datos de sesión
         obtenerDatosSesion();
 
-        // Obtener ID del arrendador desde el Intent
         if (getIntent() != null) {
             arrendadorId = getIntent().getIntExtra("arrendadorId", -1);
-            Log.d(TAG, "ArrendadorId recibido: " + arrendadorId);
         }
 
         if (arrendadorId == -1) {
@@ -83,11 +79,9 @@ public class PerfilArrendadorActivity extends AppCompatActivity {
             return;
         }
 
-        // Configurar listeners
         setupListeners();
-
-        // Cargar datos del arrendador
         cargarPerfilArrendador();
+        cargarPromedioCalificacion();
         cargarObjetosArrendador();
     }
 
@@ -125,45 +119,69 @@ public class PerfilArrendadorActivity extends AppCompatActivity {
                     perfilArrendador = response.body();
                     mostrarDatosPerfil(perfilArrendador);
                 } else {
-                    Toast.makeText(PerfilArrendadorActivity.this,
-                            "Error al cargar el perfil del arrendador",
-                            Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Error: " + response.code());
+                    Log.e(TAG, "Error al cargar perfil: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfileResponse> call, Throwable t) {
-                Toast.makeText(PerfilArrendadorActivity.this,
-                        "Error de conexión: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, "Error: ", t);
+                Log.e(TAG, "Error de conexión: " + t.getMessage());
+            }
+        });
+    }
+
+    /** Carga el promedio real desde el endpoint de reseñas */
+    private void cargarPromedioCalificacion() {
+        apiService.getPromedioCalificacionUsuario(arrendadorId).enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Object> data = response.body();
+
+                    double promedio = 0.0;
+                    long total = 0;
+
+                    Object promedioObj = data.get("promedioCalificacion");
+                    if (promedioObj instanceof Number) {
+                        promedio = ((Number) promedioObj).doubleValue();
+                    }
+
+                    Object totalObj = data.get("totalResenas");
+                    if (totalObj instanceof Number) {
+                        total = ((Number) totalObj).longValue();
+                    }
+
+                    final double promedioFinal = promedio;
+                    final long totalFinal = total;
+
+                    runOnUiThread(() -> {
+                        if (tvReputacionPromedioArr != null) {
+                            tvReputacionPromedioArr.setText(
+                                    String.format(Locale.US, "⭐ %.1f", promedioFinal));
+                        }
+                        if (tvTotalResenasArr != null) {
+                            tvTotalResenasArr.setText(
+                                    totalFinal + (totalFinal == 1 ? " reseña" : " reseñas"));
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.e(TAG, "Error al cargar promedio: " + t.getMessage());
             }
         });
     }
 
     private void mostrarDatosPerfil(UserProfileResponse perfil) {
-        // Nombre completo
-        String nombre = obtenerTextoSeguro(perfil.getNombre());
-        String apellido = obtenerTextoSeguro(perfil.getApellido());
+        String nombre = perfil.getNombre() != null ? perfil.getNombre().trim() : "";
+        String apellido = perfil.getApellido() != null ? perfil.getApellido().trim() : "";
         String nombreCompleto = (nombre + " " + apellido).trim();
 
         tvNombreArr.setText(nombreCompleto.isEmpty() ? "Arrendador" : nombreCompleto);
+        tvRegionArr.setText(perfil.getZona() != null ? perfil.getZona() : "CDMX");
 
-        // Región/Zona
-        tvRegionArr.setText(obtenerTextoSeguro(perfil.getZona(), "CDMX"));
-
-        // Reputación (calificación promedio)
-        Double reputacion = perfil.getReputacion();
-        if (reputacion == null) {
-            reputacion = 0.0;
-        }
-        tvReputacionPromedioArr.setText(String.format(Locale.US, "⭐ %.1f", reputacion));
-
-        // Total de reseñas
-        tvTotalResenasArr.setText("");
-
-        // Foto de perfil con Glide
         cargarFotoPerfil(perfil.getFotoUrl());
     }
 
@@ -183,50 +201,27 @@ public class PerfilArrendadorActivity extends AppCompatActivity {
         apiService.getObjetosPorArrendador(arrendadorId).enqueue(new Callback<List<Objeto>>() {
             @Override
             public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Objeto> objetos = response.body();
-                    Log.d(TAG, "Objetos del arrendador cargados: " + objetos.size());
-                    mostrarObjetosArrendador(objetos);
-                } else {
-                    Log.e(TAG, "Error al cargar objetos: " + response.code());
-                    mostrarObjetosArrendador(new ArrayList<>());
-                }
+                List<Objeto> objetos = (response.isSuccessful() && response.body() != null)
+                        ? response.body() : new ArrayList<>();
+                mostrarObjetosArrendador(objetos);
             }
 
             @Override
             public void onFailure(Call<List<Objeto>> call, Throwable t) {
-                Log.e(TAG, "Error de conexión al cargar objetos: " + t.getMessage());
                 mostrarObjetosArrendador(new ArrayList<>());
             }
         });
     }
 
     private void mostrarObjetosArrendador(List<Objeto> objetos) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                this,
-                LinearLayoutManager.HORIZONTAL,
-                false
+        rvObjetosArrendador.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        ObjetosArrendadorAdapter adapter = new ObjetosArrendadorAdapter(objetos, objeto ->
+                startActivity(new Intent(this, Objetoo.class)
+                        .putExtra("objetoId", objeto.getIdObjeto()))
         );
-        rvObjetosArrendador.setLayoutManager(layoutManager);
-
-        if (objetos.isEmpty()) {
-            Toast.makeText(this,
-                    "Este arrendador no tiene objetos publicados",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        ObjetosArrendadorAdapter adapter = new ObjetosArrendadorAdapter(objetos, objeto -> {
-            // Click en un objeto - abrir Activity de detalles
-            navigateToObjetoDetalle(objeto.getIdObjeto());
-        });
-
         rvObjetosArrendador.setAdapter(adapter);
-    }
-
-    private void navigateToObjetoDetalle(int objetoId) {
-        Intent intent = new Intent(this, Objetoo.class);
-        intent.putExtra("objetoId", objetoId);
-        startActivity(intent);
     }
 
     private void enviarCalificacion() {
@@ -234,47 +229,62 @@ public class PerfilArrendadorActivity extends AppCompatActivity {
         String comentario = etComentarioArr.getText().toString().trim();
 
         if (calificacion == 0) {
-            Toast.makeText(this,
-                    "Por favor selecciona una calificación",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Por favor selecciona una calificación", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (currentUserId == -1 || token == null) {
-            Toast.makeText(this,
-                    "Debes iniciar sesión para calificar",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Debes iniciar sesión para calificar", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (currentUserId == arrendadorId) {
-            Toast.makeText(this,
-                    "No puedes calificarte a ti mismo",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No puedes calificarte a ti mismo", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // TODO: Implementar el endpoint para enviar la calificación
-        Toast.makeText(this,
-                "Calificación enviada: " + calificacion + " estrellas",
-                Toast.LENGTH_SHORT).show();
+        // ✅ Construir la reseña de usuario (idObjeto = null, idUsReceptor = arrendadorId)
+        Resena resena = new Resena();
+        resena.setIdObjeto(null);          // Es calificación de usuario, no de objeto
+        resena.setIdUsAutor(currentUserId);
+        resena.setIdUsReceptor(arrendadorId);
+        resena.setCalificacion((int) calificacion);
+        resena.setComentario(comentario.isEmpty() ? null : comentario);
 
-        // Limpiar el formulario
-        rbCalificarArr.setRating(0);
-        etComentarioArr.setText("");
+        btnEnviarCalificacionArr.setEnabled(false);
+        btnEnviarCalificacionArr.setText("Enviando...");
 
-        // Recargar el perfil
-        cargarPerfilArrendador();
-    }
+        apiService.crearResena(resena).enqueue(new Callback<Resena>() {
+            @Override
+            public void onResponse(Call<Resena> call, Response<Resena> response) {
+                btnEnviarCalificacionArr.setEnabled(true);
+                btnEnviarCalificacionArr.setText("Enviar calificación");
 
-    private String obtenerTextoSeguro(String texto) {
-        return texto == null ? "" : texto.trim();
-    }
+                if (response.isSuccessful()) {
+                    Toast.makeText(PerfilArrendadorActivity.this,
+                            "✅ Calificación enviada", Toast.LENGTH_SHORT).show();
 
-    private String obtenerTextoSeguro(String texto, String valorPorDefecto) {
-        if (texto == null || texto.trim().isEmpty()) {
-            return valorPorDefecto;
-        }
-        return texto.trim();
+                    rbCalificarArr.setRating(0);
+                    etComentarioArr.setText("");
+
+                    // ✅ Recargar el promedio actualizado
+                    cargarPromedioCalificacion();
+                } else {
+                    String msg = response.code() == 400
+                            ? "Ya calificaste a este usuario"
+                            : "Error al enviar: " + response.code();
+                    Toast.makeText(PerfilArrendadorActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Error al calificar: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Resena> call, Throwable t) {
+                btnEnviarCalificacionArr.setEnabled(true);
+                btnEnviarCalificacionArr.setText("Enviar calificación");
+                Toast.makeText(PerfilArrendadorActivity.this,
+                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
