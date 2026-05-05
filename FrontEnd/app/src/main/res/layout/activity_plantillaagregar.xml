@@ -334,14 +334,16 @@
                     android:layout_height="wrap_content"
                     android:hint="Ciudad o Estado donde se encuentra"
                     android:layout_marginTop="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/zonaobj"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
-                        android:inputType="textCapWords" />
+                        android:inputType="none"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

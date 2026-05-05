@@ -41,7 +41,8 @@ import retrofit2.Response;
 
 public class plantillaagregar extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputEditText etNombre, etPrecio, etDescripcion, etZona;
+    private TextInputEditText etNombre, etPrecio, etDescripcion;
+    private android.widget.AutoCompleteTextView etZona;
     private Spinner spinnerCategoria;
     private MaterialButton btnAgregar, btnCancelar;
     private ImageView mainImg, mini1, mini2, mini3;
@@ -93,6 +94,18 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         mini1 = findViewById(R.id.mini1);
         mini2 = findViewById(R.id.mini2);
         mini3 = findViewById(R.id.mini3);
+
+        // ✅ Configurar dropdown de zonas (mismas que en registro y editar perfil)
+        String[] zonas = new String[]{
+                "CDMX", "Guadalajara, Jalisco", "Monterrey, Nuevo León",
+                "Puebla, Puebla", "Querétaro, Querétaro", "Mérida, Yucatán",
+                "Tijuana, Baja California", "Toluca, Estado de México"
+        };
+        ArrayAdapter<String> zonaAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, zonas);
+        etZona.setAdapter(zonaAdapter);
+        etZona.setThreshold(0);
+        etZona.setOnClickListener(v -> etZona.showDropDown());
     }
 
     private void configurarSpinner() {

@@ -3,6 +3,7 @@ import com.example.RoyServices.service.UsuarioService;
 import com.example.RoyServices.repository.UsuarioRepository;
 import com.example.RoyServices.model.Usuario;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,9 @@ import java.util.List;
 
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-
     public List<Usuario> getAll() {
         return usuarioRepository.findAll();
     }
@@ -39,13 +40,19 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario aux = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        aux.setNombre(usuario.getNombre());
-        aux.setApellido(usuario.getApellido());
-        aux.setCorreo(usuario.getCorreo());
-        aux.setTelefono(usuario.getTelefono());
-        aux.setDomicilio(usuario.getDomicilio());
-        aux.setFechaDeRegistro(usuario.getFechaDeRegistro());
-        aux.setPassword(usuario.getPassword());
+        if (usuario.getNombre() != null) aux.setNombre(usuario.getNombre());
+        if (usuario.getApellido() != null) aux.setApellido(usuario.getApellido());
+        if (usuario.getCorreo() != null) aux.setCorreo(usuario.getCorreo());
+        if (usuario.getTelefono() != null) aux.setTelefono(usuario.getTelefono());
+        if (usuario.getDomicilio() != null) aux.setDomicilio(usuario.getDomicilio());
+        if (usuario.getFechaDeRegistro() != null) aux.setFechaDeRegistro(usuario.getFechaDeRegistro());
+        if (usuario.getZona() != null) aux.setZona(usuario.getZona());
+        if (usuario.getFotoUrl() != null) aux.setFotoUrl(usuario.getFotoUrl());
+
+        // ✅ Encodear contraseña con BCrypt antes de guardar
+        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+            aux.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        }
 
         return usuarioRepository.save(aux);
     }
