@@ -38,4 +38,6 @@ public class Objeto {
 
     @Column(name = "imagen_url")
     private String imagenUrl;
-}
+
+    @Column(name = "zona")
+    private String zona;}

@@ -41,6 +41,7 @@ public class ObjetoController {
                     .categoria(dto.getCategoria())
                     .descripcion(dto.getDescripcion())
                     .imagenUrl(dto.getImagenUrl())
+                    .zona(dto.getZona())
                     .build();
 
             objetoService.save(o);

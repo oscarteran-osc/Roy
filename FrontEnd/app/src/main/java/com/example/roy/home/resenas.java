@@ -224,6 +224,10 @@ public class resenas extends Fragment {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Reseña agregada exitosamente", Toast.LENGTH_SHORT).show();
                     cargarResenas();
+                    // ✅ Notificar al fragment padre para actualizar el promedio
+                    if (getParentFragment() instanceof objetito) {
+                        ((objetito) getParentFragment()).recargarPromedioCalificacion();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Error al agregar reseña: " + response.code(),
                             Toast.LENGTH_SHORT).show();

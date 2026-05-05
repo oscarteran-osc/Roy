@@ -120,7 +120,6 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        // Verificar disponibilidad
         boolean disponible = esDisponible(objetoActual.getEstado());
         if (!disponible) {
             Toast.makeText(this, "Este objeto no está disponible actualmente",
@@ -128,7 +127,6 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        // Obtener datos del usuario logeado
         SharedPreferences prefs = getSharedPreferences("RoyPrefs", MODE_PRIVATE);
         int miUsuarioId = prefs.getInt("userId", -1);
 
@@ -137,42 +135,108 @@ public class Objetoo extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        // Verificar que no sea el propio objeto del usuario
         if (objetoActual.getIdUsArrendador() == miUsuarioId) {
             Toast.makeText(this, "No puedes solicitar tu propio objeto",
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // ✅ Crear la solicitud
+        // ✅ Mostrar diálogo para elegir fechas
+        mostrarDialogoFechas(miUsuarioId);
+    }
+
+    private void mostrarDialogoFechas(int miUsuarioId) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        android.view.View dialogView = android.view.LayoutInflater.from(this).inflate(
+                android.R.layout.simple_list_item_2, null);
+
+        // Crear layout programáticamente para las fechas
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(48, 32, 48, 16);
+
+        android.widget.TextView tvFechaInicio = new android.widget.TextView(this);
+        tvFechaInicio.setText("📅 Fecha de inicio: (sin seleccionar)");
+        tvFechaInicio.setPadding(0, 8, 0, 8);
+        tvFechaInicio.setTextSize(14);
+
+        android.widget.Button btnPickInicio = new android.widget.Button(this);
+        btnPickInicio.setText("Elegir fecha de inicio");
+
+        android.widget.TextView tvFechaFin = new android.widget.TextView(this);
+        tvFechaFin.setText("📅 Fecha de devolución: (sin seleccionar)");
+        tvFechaFin.setPadding(0, 8, 0, 8);
+        tvFechaFin.setTextSize(14);
+
+        android.widget.Button btnPickFin = new android.widget.Button(this);
+        btnPickFin.setText("Elegir fecha de devolución");
+
+        layout.addView(tvFechaInicio);
+        layout.addView(btnPickInicio);
+        layout.addView(tvFechaFin);
+        layout.addView(btnPickFin);
+
+        builder.setView(layout);
+        builder.setTitle("Selecciona las fechas de renta");
+
+        final String[] fechaInicioFinal = {null};
+        final String[] fechaFinFinal = {null};
+
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        int anio = cal.get(java.util.Calendar.YEAR);
+        int mes = cal.get(java.util.Calendar.MONTH);
+        int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
+
+        btnPickInicio.setOnClickListener(v -> {
+            new android.app.DatePickerDialog(this, (view, y, m, d) -> {
+                fechaInicioFinal[0] = String.format("%04d-%02d-%02d", y, m + 1, d);
+                tvFechaInicio.setText("📅 Fecha de inicio: " + fechaInicioFinal[0]);
+            }, anio, mes, dia).show();
+        });
+
+        btnPickFin.setOnClickListener(v -> {
+            new android.app.DatePickerDialog(this, (view, y, m, d) -> {
+                fechaFinFinal[0] = String.format("%04d-%02d-%02d", y, m + 1, d);
+                tvFechaFin.setText("📅 Fecha de devolución: " + fechaFinFinal[0]);
+            }, anio, mes, dia).show();
+        });
+
+        builder.setPositiveButton("Enviar solicitud", (dialog, which) -> {
+            if (fechaInicioFinal[0] == null || fechaFinFinal[0] == null) {
+                Toast.makeText(this, "⚠️ Debes seleccionar ambas fechas", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            confirmarEnvioSolicitud(miUsuarioId, fechaInicioFinal[0], fechaFinFinal[0]);
+        });
+        builder.setNegativeButton("Cancelar", null);
+        builder.show();
+    }
+
+    private void confirmarEnvioSolicitud(int miUsuarioId, String fechaInicio, String fechaFin) {
         SolicitudRentaRequest solicitud = new SolicitudRentaRequest();
-        solicitud.setIdUsArrendatario(miUsuarioId); // Quien solicita
-        solicitud.setIdUsArrendador(objetoActual.getIdUsArrendador()); // Dueño del objeto
-        solicitud.setIdObjeto(objetoId); // ID del objeto
-        solicitud.setEstado("PENDIENTE"); // Estado inicial
-
-        // Fechas de ejemplo (deberías pedirle al usuario que las seleccione)
-        solicitud.setFechaInicio("2026-02-01");
-        solicitud.setFechaFin("2026-02-05");
-
-        solicitud.setMonto(objetoActual.getPrecio()); // Precio del objeto
+        solicitud.setIdUsArrendatario(miUsuarioId);
+        solicitud.setIdUsArrendador(objetoActual.getIdUsArrendador());
+        solicitud.setIdObjeto(objetoId);
+        solicitud.setEstado("PENDIENTE");
+        solicitud.setFechaInicio(fechaInicio);
+        solicitud.setFechaFin(fechaFin);
+        solicitud.setMonto(objetoActual.getPrecio());
 
         Log.d(TAG, "📤 Enviando solicitud - Arrendatario: " + miUsuarioId +
                 ", Arrendador: " + objetoActual.getIdUsArrendador() +
-                ", Objeto: " + objetoId);
+                ", Objeto: " + objetoId +
+                ", Inicio: " + fechaInicio + ", Fin: " + fechaFin);
 
-        // ✅ Enviar al backend
         apiService.crearSolicitudRenta(solicitud).enqueue(new Callback<SolicitudRenta>() {
             @Override
             public void onResponse(Call<SolicitudRenta> call, Response<SolicitudRenta> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     SolicitudRenta creada = response.body();
                     Log.d(TAG, "✅ Solicitud creada con ID: " + creada.getIdSolicitud());
-
                     Toast.makeText(Objetoo.this,
                             "✅ Solicitud enviada correctamente",
                             Toast.LENGTH_LONG).show();
-                    finish(); // Volver atrás
+                    finish();
                 } else {
                     Log.e(TAG, "❌ Error al crear solicitud: " + response.code());
                     Toast.makeText(Objetoo.this,

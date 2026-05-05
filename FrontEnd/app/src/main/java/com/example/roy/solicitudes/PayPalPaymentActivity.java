@@ -77,6 +77,12 @@ public class PayPalPaymentActivity extends AppCompatActivity {
         Button payButton = findViewById(R.id.paypalButton);
         payButton.setOnClickListener(v -> iniciarPago());
 
+        // ✅ Botón cancelar cierra la pantalla
+        Button btnCancelar = findViewById(R.id.btnCancelar);
+        if (btnCancelar != null) {
+            btnCancelar.setOnClickListener(v -> finish());
+        }
+
         handleDeepLink(getIntent());
     }
 
@@ -195,8 +201,13 @@ public class PayPalPaymentActivity extends AppCompatActivity {
         Log.d(TAG, "🔄 Iniciando proceso de pago...");
 
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+
+        // ✅ PayPal Sandbox solo acepta USD. Convertimos MXN → USD (tipo de cambio aprox. 17)
+        double montoUSD = montoAPagar / 17.0;
+        montoUSD = Math.round(montoUSD * 100.0) / 100.0; // redondear a 2 decimales
+
         Call<PayPalOrderResponse> call = apiService.crearOrdenPayPal(
-                montoAPagar,
+                montoUSD,
                 "USD",
                 "Pago de renta - Solicitud #" + idSolicitud
         );

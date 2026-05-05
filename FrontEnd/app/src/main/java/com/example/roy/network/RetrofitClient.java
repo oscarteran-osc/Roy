@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
 
-    // ⚠️ Cambia esta IP por la de tu PC
-    private static final String BASE_URL = "http://10.107.108.63:8080/";
+    // ✅ 10.0.2.2 es el localhost del PC visto desde el emulador Android
+    // Si usas dispositivo físico en la misma red, cambia a la IP local de tu PC (ej: 192.168.x.x)
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static Retrofit retrofit = null;
 

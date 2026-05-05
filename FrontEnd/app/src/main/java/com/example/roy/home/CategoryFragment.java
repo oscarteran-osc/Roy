@@ -127,14 +127,30 @@ public class CategoryFragment extends Fragment {
             tvPillCategoria.setText(category);
         }
 
+        // Banner text (con Transporte oculto)
         configurarTextoBanner(rootView, category);
-        adapter = new ObjetosCategoriaAdapter(requireContext(), listaFiltrada, objeto -> {
-            Intent i = new Intent(requireContext(), Objetoo.class);
-            i.putExtra("objetoId", objeto.getIdObjeto());
-            startActivity(i);
-        });
 
+        // Adapter (ListView)
+        adapter = new ObjetosCategoriaAdapter(
+                requireContext(),
+                listaFiltrada,
+                objeto -> {
+                    // ✅ Abrir detalle del objeto con botón de solicitud
+                    Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+                    intent.putExtra("objetoId", objeto.getIdObjeto());
+                    startActivity(intent);
+                }
+        );
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            com.example.roy.models.Objeto obj = (com.example.roy.models.Objeto) adapter.getItem(position);
+            if (obj != null) {
+                Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+                intent.putExtra("objetoId", obj.getIdObjeto());
+                startActivity(intent);
+            }
+        });
 
         listView.setVerticalScrollBarEnabled(true);
 
@@ -143,11 +159,13 @@ public class CategoryFragment extends Fragment {
         );
 
         btnFiltros.setOnClickListener(v -> {
+            // TODO
         });
 
         configurarChips();
-        configurarBuscador();
+        configurarBuscador(); // watcher + enter
 
+        // Si viene búsqueda: metemos el texto pero sin disparar filtros antes de cargar data
         if (!queryBusqueda.isEmpty()) {
             searchBar.removeTextChangedListener(searchWatcher);
             searchBar.setText(queryBusqueda);

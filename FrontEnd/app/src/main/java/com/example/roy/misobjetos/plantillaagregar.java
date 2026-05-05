@@ -41,7 +41,7 @@ import retrofit2.Response;
 
 public class plantillaagregar extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputEditText etNombre, etPrecio, etDescripcion;
+    private TextInputEditText etNombre, etPrecio, etDescripcion, etZona;
     private Spinner spinnerCategoria;
     private MaterialButton btnAgregar, btnCancelar;
     private ImageView mainImg, mini1, mini2, mini3;
@@ -84,6 +84,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         etNombre = findViewById(R.id.nomobj);
         etPrecio = findViewById(R.id.precioobj);
         etDescripcion = findViewById(R.id.descobj);
+        etZona = findViewById(R.id.zonaobj);
         spinnerCategoria = findViewById(R.id.catobj);
         btnAgregar = findViewById(R.id.agregarobj);
         btnCancelar = findViewById(R.id.cancelar);
@@ -417,6 +418,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
         String precioStr = etPrecio.getText().toString().trim();
         String descripcion = etDescripcion.getText().toString().trim();
         String categoria = spinnerCategoria.getSelectedItem().toString();
+        String zona = etZona != null ? etZona.getText().toString().trim() : "";
 
         // Validaciones
         if (currentUserId == -1) {
@@ -470,6 +472,7 @@ public class plantillaagregar extends AppCompatActivity implements View.OnClickL
             nuevoObjeto.setCategoria(categoria);
             nuevoObjeto.setDescripcion(descripcion);
             nuevoObjeto.setImagenUrl(imagen1Url); // Imagen principal
+            if (!zona.isEmpty()) nuevoObjeto.setZona(zona);
 
             // Agregar imágenes adicionales
             List<String> imagenes = new ArrayList<>();
