@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SQL/roy_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL/roy_schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/agregar-objeto.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/agregar-objeto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/agregar-objeto.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/agregar-objeto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/detalle-objeto.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/detalle-objeto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/detalle-objeto.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/detalle-objeto.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/pagar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/pagar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/pagar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/pagar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/solicitudes.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/solicitudes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Objeto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Objeto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/SolicitudRentaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/SolicitudRentaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/SolicitudRentaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/SolicitudRentaServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/mi-cuenta.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/mi-cuenta.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/mi-cuenta.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/mi-cuenta.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

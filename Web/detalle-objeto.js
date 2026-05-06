@@ -44,8 +44,11 @@ function pintarDetalle(obj) {
   document.getElementById('detalle-desc-list').innerHTML =
     descItems.map(d => `<li>${d.trim().replace(/\.$/, '')}.</li>`).join('');
   const img = obj.imagenUrl || placeholder;
-  document.getElementById('img-principal').src = img;
-  document.querySelectorAll('.thumb').forEach(t => { t.src = img; });
+    document.getElementById('img-principal').src = img;
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    if (i === 0) { t.src = img; t.style.display = 'block'; }
+    else { t.style.display = 'none'; }
+  });
   document.getElementById('breadcrumb-cat').textContent = catNombre;
   document.getElementById('breadcrumb-cat').href        = 'resultados.html?cat=' + (obj.categoria || '');
   document.getElementById('breadcrumb-nombre').textContent = obj.nombreObjeto;

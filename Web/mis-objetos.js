@@ -121,7 +121,7 @@ async function abrirSolicitudes(idObjeto, nombre) {
   document.getElementById('modal-solicitudes').style.display = 'flex';
 
   try {
-    const res        = await fetch(`${API}/api/solicitudes/objeto/${idObjeto}`);
+    const res = await fetch(`${API}/api/solicitudes/objeto/${idObjeto}`);
     const solicitudes = res.ok ? await res.json() : [];
 
     if (!solicitudes.length) {
@@ -129,7 +129,19 @@ async function abrirSolicitudes(idObjeto, nombre) {
       return;
     }
 
-    grid.innerHTML = solicitudes.map(s => `
+    // Traer nombre de cada arrendatario
+    const conNombres = await Promise.all(solicitudes.map(async s => {
+      try {
+        const uRes = await fetch(`${API}/Roy/api/usuario/${s.idUsArrendatario}`);
+        if (uRes.ok) {
+          const u = await uRes.json();
+          s.nombreArrendatario = `${u.nombre} ${u.apellido}`;
+        }
+      } catch (e) {}
+      return s;
+    }));
+
+    grid.innerHTML = conNombres.map(s => `
       <div class="sol-persona-card">
         <div class="sol-avatar">👤</div>
         <p class="sol-nombre">${s.nombreArrendatario || 'Usuario'}</p>
