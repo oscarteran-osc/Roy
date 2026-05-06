@@ -84,6 +84,16 @@
           <p class="detalle-desc-title">Descripción</p>
           <ul class="detalle-desc-list" id="detalle-desc-list"></ul>
         </div>
+        <div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+          <div>
+            <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:4px;">Fecha inicio</label>
+            <input type="date" id="fecha-inicio" style="padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9rem;"/>
+          </div>
+          <div>
+            <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:4px;">Fecha fin</label>
+            <input type="date" id="fecha-fin" style="padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:.9rem;"/>
+          </div>
+        </div>
         <button class="btn-solicitud">Enviar Solicitud</button>
       </div>
     </div>
@@ -167,6 +177,7 @@
 
   </main>
 
+  <script src="api.js"></script>
   <script src="detalle-objeto.js"></script>
 </body>
 

@@ -44,8 +44,8 @@
         <div class="cuenta-avatar">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="#fff" opacity=".8"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
         </div>
-        <p class="cuenta-sidebar-nombre">Nombre de Usuario</p>
-        <p class="cuenta-sidebar-zona">CDMX</p>
+        <p class="cuenta-sidebar-nombre" id="sidebar-nombre">Nombre de Usuario</p>
+        <p class="cuenta-sidebar-zona" id="sidebar-zona">CDMX</p>
         <div class="cuenta-sidebar-rating">⭐ 4.5</div>
 
         <hr class="cuenta-sidebar-divider"/>
@@ -68,11 +68,11 @@
 
           <div class="cuenta-campo-info">
             <p class="cuenta-campo-label">Télefono</p>
-            <p class="cuenta-campo-valor">5525708306</p>
+            <p class="cuenta-campo-valor" id="cuenta-telefono">—</p>
           </div>
           <div class="cuenta-campo-info">
             <p class="cuenta-campo-label">Email</p>
-            <p class="cuenta-campo-valor">prueba@gmail.com</p>
+            <p class="cuenta-campo-valor" id="cuenta-correo">—</p>
           </div>
           <div class="cuenta-campo-info">
             <p class="cuenta-campo-label">Contraseña</p>
@@ -120,37 +120,39 @@
         <div class="form-row-dash">
           <div class="form-group-dash">
             <label class="form-label-dash">Nombre</label>
-            <input type="text" class="form-input-dash" value="Nombre"/>
+            <input type="text" class="form-input-dash" id="edit-nombre"/>
           </div>
           <div class="form-group-dash">
             <label class="form-label-dash">Apellido</label>
-            <input type="text" class="form-input-dash" value="de Usuario"/>
+            <input type="text" class="form-input-dash" id="edit-apellido"/>
           </div>
         </div>
         <div class="form-group-dash">
           <label class="form-label-dash">Teléfono</label>
-          <input type="tel" class="form-input-dash" value="5525708306"/>
+          <input type="tel" class="form-input-dash" id="edit-telefono"/>
         </div>
         <div class="form-group-dash">
           <label class="form-label-dash">Email</label>
-          <input type="email" class="form-input-dash" value="prueba@gmail.com"/>
+          <input type="email" class="form-input-dash" id="edit-correo"/>
         </div>
         <div class="form-group-dash">
           <label class="form-label-dash">Zona / Ciudad</label>
-          <input type="text" class="form-input-dash" value="CDMX"/>
+          <input type="text" class="form-input-dash" id="edit-zona"/>
         </div>
         <div class="form-group-dash">
           <label class="form-label-dash">Nueva contraseña</label>
-          <input type="password" class="form-input-dash" placeholder="Ingresa una nueva contraseña"/>
+          <input type="password" class="form-input-dash" id="edit-password" placeholder="Ingresa una nueva contraseña"/>
         </div>
       </div>
       <div class="modal-editar-footer">
         <button class="btn-guardar-modal" onclick="guardarPerfil()">Guardar cambios</button>
+
         <button class="btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
       </div>
     </div>
   </div>
 
+  <script src="api.js"></script>
   <script src="mi-cuenta.js"></script>
 </body>
 
