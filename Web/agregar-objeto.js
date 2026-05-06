@@ -1,28 +1,49 @@
-document.getElementById('fileInput').addEventListener('change', function() {
-  const file = this.files[0];
-  if (!file) return;
-  const reader  = new FileReader();
-  reader.onload = e => {
-    const preview     = document.getElementById('preview-img');
-    const placeholder = document.getElementById('upload-placeholder');
-    preview.src            = e.target.result;
-    preview.style.display  = 'block';
+let slotActual = 0;
+const urls = [null, null, null];
+
+function abrirPanelUrl(slot) {
+  slotActual = slot;
+  const panel = document.getElementById('panel-url');
+  document.getElementById('url-input').value = urls[slot] || '';
+  panel.style.display = 'flex';
+  setTimeout(() => document.getElementById('url-input').focus(), 50);
+}
+
+function cerrarPanelUrl() {
+  document.getElementById('panel-url').style.display = 'none';
+}
+
+function confirmarUrl() {
+  const url = document.getElementById('url-input').value.trim();
+  urls[slotActual] = url || null;
+
+  const preview     = document.getElementById(`preview-img-${slotActual}`);
+  const placeholder = document.getElementById(`placeholder-${slotActual}`);
+
+  if (url) {
+    preview.src           = url;
+    preview.style.display = 'block';
     placeholder.style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+    preview.onerror = () => {
+      preview.style.display     = 'none';
+      placeholder.style.display = slotActual === 0 ? 'flex' : 'inline';
+      urls[slotActual] = null;
+    };
+  } else {
+    preview.style.display     = 'none';
+    placeholder.style.display = slotActual === 0 ? 'flex' : 'inline';
+  }
+
+  cerrarPanelUrl();
+}
+
+document.getElementById('panel-url').addEventListener('click', function(e) {
+  if (e.target === this) cerrarPanelUrl();
 });
 
-const zone = document.getElementById('dropZone');
-zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = 'var(--azul)'; });
-zone.addEventListener('dragleave', () => zone.style.borderColor = '#C0D0E8');
-zone.addEventListener('drop', e => {
-  e.preventDefault();
-  zone.style.borderColor = '#C0D0E8';
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    document.getElementById('fileInput').files = e.dataTransfer.files;
-    document.getElementById('fileInput').dispatchEvent(new Event('change'));
-  }
+document.getElementById('url-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') confirmarUrl();
+  if (e.key === 'Escape') cerrarPanelUrl();
 });
 
 async function agregarObjeto() {
@@ -46,7 +67,7 @@ async function agregarObjeto() {
     categoria:      cat,
     descripcion:    desc,
     estado:         'disponible',
-    imagenUrl:      null
+    imagenUrl:      urls[0] || urls[1] || urls[2] || null
   };
 
   try {

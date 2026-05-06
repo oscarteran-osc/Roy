@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `imagen_objeto`;
 CREATE TABLE `imagen_objeto` (
   `id_imagen` int NOT NULL AUTO_INCREMENT,
   `id_objeto` int NOT NULL,
-  `url_imagen` varchar(255) NOT NULL,
+  `url_imagen` MEDIUMTEXT NOT NULL,
   `es_principal` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_imagen`),
   KEY `id_objeto` (`id_objeto`),

@@ -31,31 +31,19 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
 
     @Override
     public SolicitudRenta save(SolicitudRenta solicitud) {
-        // Validaciones
         if (solicitud.getFechaInicio().isAfter(solicitud.getFechaFin())) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha fin");
         }
-
         if (solicitud.getFechaInicio().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser anterior a hoy");
         }
-
         if (solicitud.getIdUsArrendador().equals(solicitud.getIdUsArrendatario())) {
             throw new IllegalArgumentException("El arrendador y arrendatario no pueden ser la misma persona");
         }
-
-        // Verificar disponibilidad
-        if (!verificarDisponibilidad(solicitud.getIdObjeto(),
-                solicitud.getFechaInicio(),
-                solicitud.getFechaFin())) {
+        if (!verificarDisponibilidad(solicitud.getIdObjeto(), solicitud.getFechaInicio(), solicitud.getFechaFin())) {
             throw new IllegalArgumentException("El objeto no está disponible en las fechas seleccionadas");
         }
-
-        // Asignar estado inicial si no tiene
-        if (solicitud.getEstado() == null || solicitud.getEstado().isEmpty()) {
-            solicitud.setEstado("PENDIENTE");
-        }
-
+        solicitud.setEstado("PENDIENTE");
         return solicitudRepository.save(solicitud);
     }
 
@@ -68,15 +56,13 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
     public SolicitudRenta update(Integer id, SolicitudRenta solicitud) {
         SolicitudRenta existente = solicitudRepository.findById(id).orElse(null);
         if (existente != null) {
-            // Solo actualizar fechas si no está aprobada
-            if (!"APROBADA".equals(existente.getEstado())) {
+            if (!"APROBADA".equalsIgnoreCase(existente.getEstado())) {
                 if (solicitud.getFechaInicio().isAfter(solicitud.getFechaFin())) {
                     throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha fin");
                 }
                 existente.setFechaInicio(solicitud.getFechaInicio());
                 existente.setFechaFin(solicitud.getFechaFin());
             }
-
             existente.setEstado(solicitud.getEstado());
             return solicitudRepository.save(existente);
         }
@@ -106,7 +92,7 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
     @Override
     public SolicitudRenta aprobarSolicitud(Integer idSolicitud) {
         SolicitudRenta solicitud = solicitudRepository.findById(idSolicitud).orElse(null);
-        if (solicitud != null && "PENDIENTE".equals(solicitud.getEstado())) {
+        if (solicitud != null && "PENDIENTE".equalsIgnoreCase(solicitud.getEstado())) {
             solicitud.setEstado("APROBADA");
             return solicitudRepository.save(solicitud);
         }
@@ -116,7 +102,7 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
     @Override
     public SolicitudRenta rechazarSolicitud(Integer idSolicitud) {
         SolicitudRenta solicitud = solicitudRepository.findById(idSolicitud).orElse(null);
-        if (solicitud != null && "PENDIENTE".equals(solicitud.getEstado())) {
+        if (solicitud != null && "PENDIENTE".equalsIgnoreCase(solicitud.getEstado())) {
             solicitud.setEstado("RECHAZADA");
             return solicitudRepository.save(solicitud);
         }
@@ -126,7 +112,7 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
     @Override
     public SolicitudRenta completarSolicitud(Integer idSolicitud) {
         SolicitudRenta solicitud = solicitudRepository.findById(idSolicitud).orElse(null);
-        if (solicitud != null && "APROBADA".equals(solicitud.getEstado())) {
+        if (solicitud != null && "APROBADA".equalsIgnoreCase(solicitud.getEstado())) {
             solicitud.setEstado("COMPLETADA");
             return solicitudRepository.save(solicitud);
         }
@@ -135,9 +121,7 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
 
     @Override
     public boolean verificarDisponibilidad(Integer idObjeto, LocalDate fechaInicio, LocalDate fechaFin) {
-        List<SolicitudRenta> conflictivas = solicitudRepository.findSolicitudesConflictivas(
-                idObjeto, fechaInicio, fechaFin
-        );
+        List<SolicitudRenta> conflictivas = solicitudRepository.findSolicitudesConflictivas(idObjeto, fechaInicio, fechaFin);
         return conflictivas.isEmpty();
     }
 
@@ -153,17 +137,6 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
         return solicitudRepository.countByIdUsArrendadorAndEstado(idUsArrendador, "PENDIENTE");
     }
 
-    // ============================================
-    // ✅ NUEVOS MÉTODOS
-    // ============================================
-
-    private String obtenerImagenUrl(String imagenUrl) {
-        if (imagenUrl == null || imagenUrl.isEmpty()) {
-            return "https://picsum.photos/200/200?random=" + System.currentTimeMillis();
-        }
-        return imagenUrl;
-    }
-
     @Override
     public List<SolicitudRentaDto> getSolicitudesArrendadorConDetalles(Integer idArrendador) {
         List<Object[]> resultados = solicitudRepository.findSolicitudesArrendadorConDetalles(idArrendador);
@@ -176,22 +149,16 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
         return mapearResultadosADto(resultados);
     }
 
-    // ✅ MÉTODO AUXILIAR: Mapear Object[] a SolicitudRentaDto
     private List<SolicitudRentaDto> mapearResultadosADto(List<Object[]> resultados) {
         List<SolicitudRentaDto> solicitudes = new ArrayList<>();
-
         for (Object[] row : resultados) {
             try {
-                // Convertir fechas SQL a LocalDate
                 LocalDate fechaInicio = row[5] != null ? ((Date) row[5]).toLocalDate() : null;
-                LocalDate fechaFin = row[6] != null ? ((Date) row[6]).toLocalDate() : null;
-
-                // Calcular días de renta
+                LocalDate fechaFin    = row[6] != null ? ((Date) row[6]).toLocalDate() : null;
                 int diasRenta = 0;
                 if (fechaInicio != null && fechaFin != null) {
                     diasRenta = (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin) + 1;
                 }
-
                 SolicitudRentaDto dto = SolicitudRentaDto.builder()
                         .idSolicitud((Integer) row[0])
                         .idUsArrendatario((Integer) row[1])
@@ -208,14 +175,11 @@ public class SolicitudRentaServiceImpl implements SolicitudRentaService {
                         .nombreArrendador((String) row[13])
                         .diasRenta(diasRenta)
                         .build();
-
                 solicitudes.add(dto);
             } catch (Exception e) {
-                // Log del error (opcional)
                 System.err.println("Error al mapear solicitud: " + e.getMessage());
             }
         }
-
         return solicitudes;
     }
 }

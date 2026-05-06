@@ -6,6 +6,10 @@
   <title>ROY – Detalle del Objeto</title>
   <link rel="stylesheet" href="styles.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+  .estrella-input { color: #ddd; transition: color .15s; }
+  .estrella-input.filled { color: #f5a623; }
+</style>
 </head>
 <body class="dashboard-page">
 
@@ -68,14 +72,8 @@
         <h1 class="detalle-nombre" id="detalle-nombre"></h1>
         <p class="detalle-vendedor">De: <a href="#" class="detalle-vendedor-link" id="detalle-vendedor-link"></a></p>
         <div class="detalle-rating">
-          <div class="stars">
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star half">★</span>
-          </div>
-          <span class="rating-num">4.0</span>
+          <div class="stars" id="stars-header"></div>
+          <span class="rating-num" id="rating-num-header">0</span>
           <span class="detalle-estado disponible">Disponible</span>
         </div>
         <p class="detalle-precio" id="detalle-precio"></p>
@@ -98,83 +96,63 @@
       </div>
     </div>
 
-    <!-- RESEÑAS -->
+        <!-- RESEÑAS -->
     <section class="resenas-section">
       <h3 class="dash-section-title-blue">Reseñas</h3>
       <div class="resenas-layout">
         <div class="resenas-resumen">
           <div class="resenas-rating-big">
-            <div class="stars">
-              <span class="star filled">★</span><span class="star filled">★</span>
-              <span class="star filled">★</span><span class="star filled">★</span>
-              <span class="star half">★</span>
-            </div>
-            <span class="rating-num">4.0</span>
+            <div class="stars" id="stars-resumen"></div>
+            <span class="rating-num" id="resenas-promedio">0</span>
           </div>
-          <p class="resenas-total">5 opiniones</p>
+          <p class="resenas-total" id="resenas-total">0 opiniones</p>
           <div class="resenas-barras">
             <div class="barra-row">
               <span class="barra-label">5 estrellas</span>
-              <div class="barra-track"><div class="barra-fill naranja" style="width:60%"></div></div>
-              <span class="barra-pct">60%</span>
+              <div class="barra-track"><div class="barra-fill naranja" id="barra-fill-5" style="width:0%"></div></div>
+              <span class="barra-pct" id="barra-pct-5">0%</span>
             </div>
             <div class="barra-row">
               <span class="barra-label">4 estrellas</span>
-              <div class="barra-track"><div class="barra-fill naranja" style="width:20%"></div></div>
-              <span class="barra-pct">20%</span>
+              <div class="barra-track"><div class="barra-fill naranja" id="barra-fill-4" style="width:0%"></div></div>
+              <span class="barra-pct" id="barra-pct-4">0%</span>
             </div>
             <div class="barra-row">
               <span class="barra-label">3 estrellas</span>
-              <div class="barra-track"><div class="barra-fill" style="width:0%"></div></div>
-              <span class="barra-pct">0%</span>
+              <div class="barra-track"><div class="barra-fill naranja" id="barra-fill-3" style="width:0%"></div></div>
+              <span class="barra-pct" id="barra-pct-3">0%</span>
             </div>
             <div class="barra-row">
               <span class="barra-label">2 estrellas</span>
-              <div class="barra-track"><div class="barra-fill" style="width:0%"></div></div>
-              <span class="barra-pct">0%</span>
+              <div class="barra-track"><div class="barra-fill naranja" id="barra-fill-2" style="width:0%"></div></div>
+              <span class="barra-pct" id="barra-pct-2">0%</span>
             </div>
             <div class="barra-row">
               <span class="barra-label">1 estrella</span>
-              <div class="barra-track"><div class="barra-fill naranja" style="width:20%"></div></div>
-              <span class="barra-pct">20%</span>
+              <div class="barra-track"><div class="barra-fill naranja" id="barra-fill-1" style="width:0%"></div></div>
+              <span class="barra-pct" id="barra-pct-1">0%</span>
             </div>
           </div>
         </div>
-        <div class="resenas-lista">
-          <div class="resena-card">
-            <div class="resena-header">
-              <div class="resena-avatar">MG</div>
-              <div>
-                <p class="resena-nombre">Monse Gutierrez</p>
-                <div class="stars small">
-                  <span class="star filled">★</span><span class="star filled">★</span>
-                  <span class="star filled">★</span><span class="star filled">★</span>
-                  <span class="star filled">★</span>
-                </div>
-                <p class="resena-fecha">Publicado el 29 de diciembre 2025</p>
-              </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:16px;">
+          <div id="resenas-lista"></div>
+
+          <!-- Formulario nueva reseña -->
+          <div class="resena-card" style="border:2px dashed #C0D0E8;">
+            <p style="font-weight:600; margin-bottom:8px;">Deja tu reseña</p>
+            <div style="display:flex; gap:6px; margin-bottom:12px;">
+              <span class="estrella-input" onclick="seleccionarEstrella(1)" style="font-size:1.6rem;cursor:pointer;">★</span>
+              <span class="estrella-input" onclick="seleccionarEstrella(2)" style="font-size:1.6rem;cursor:pointer;">★</span>
+              <span class="estrella-input" onclick="seleccionarEstrella(3)" style="font-size:1.6rem;cursor:pointer;">★</span>
+              <span class="estrella-input" onclick="seleccionarEstrella(4)" style="font-size:1.6rem;cursor:pointer;">★</span>
+              <span class="estrella-input" onclick="seleccionarEstrella(5)" style="font-size:1.6rem;cursor:pointer;">★</span>
             </div>
-            <p class="resena-texto">Me gustó mucho el artículo, está en excelentes condiciones y cumple perfectamente con lo que necesitaba. Muy recomendable, el proceso fue sencillo y el arrendador muy amable.</p>
-          </div>
-          <div class="resena-card">
-            <div class="resena-header">
-              <div class="resena-avatar">AM</div>
-              <div>
-                <p class="resena-nombre">Abraham Medina</p>
-                <div class="stars small">
-                  <span class="star filled">★</span><span class="star filled">★</span>
-                  <span class="star filled">★</span><span class="star half">★</span>
-                  <span class="star">★</span>
-                </div>
-                <p class="resena-fecha">Publicado el 16 de noviembre 2025</p>
-              </div>
-            </div>
-            <p class="resena-texto">Muy buena opción por el precio. Cumple con lo que promete y se nota que ha sido bien cuidado. Útil para quien necesita algo confiable sin gastar demasiado.</p>
+            <textarea id="resena-comentario" class="modal-input modal-textarea" placeholder="Escribe tu comentario..." style="margin-bottom:10px;"></textarea>
+            <button id="btn-enviar-resena" class="btn-guardar-modal" onclick="enviarResena()">Publicar reseña</button>
           </div>
         </div>
       </div>
     </section>
-
   </main>
 
   <script src="api.js"></script>

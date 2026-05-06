@@ -37,13 +37,11 @@
   </nav>
 
   <main class="dash-main">
-
     <div class="pagar-layout">
 
       <!-- COLUMNA IZQUIERDA -->
       <div class="pagar-left">
 
-        <!-- Título -->
         <div style="margin-bottom:24px;">
           <a href="solicitudes.html" class="breadcrumb-back">‹ Solicitudes</a>
           <h2 class="dash-welcome-title" style="margin-top:12px;">Pagar</h2>
@@ -53,11 +51,12 @@
         <div class="pagar-seccion">
           <h3 class="pagar-seccion-title">Producto</h3>
           <div class="pagar-producto">
-            <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=120&q=80" alt="Tienda"/>
+            <img id="pagar-img" src="" alt="Producto"
+                 onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=120&q=80'"/>
             <div>
-              <p class="pagar-prod-nombre">Tienda de campaña 4 - 5 personas</p>
-              <p class="pagar-prod-de">De: <strong>José Alberto</strong></p>
-              <a href="detalle-objeto.html" class="sol-ver-detalles">Ver detalles</a>
+              <p class="pagar-prod-nombre" id="pagar-nombre">Cargando...</p>
+              <p class="pagar-prod-de">De: <strong id="pagar-arrendador">—</strong></p>
+              <a href="#" class="sol-ver-detalles" id="pagar-ver-detalles">Ver detalles</a>
             </div>
           </div>
         </div>
@@ -68,8 +67,7 @@
         <div class="pagar-seccion">
           <h3 class="pagar-seccion-title">Domicilio</h3>
           <div class="pagar-domicilio-row">
-            <input type="text" class="pagar-domicilio-input"
-                   value="Calle revolución #123, Col. Centro, Ciudad de México"/>
+            <input type="text" class="pagar-domicilio-input" id="pagar-domicilio" value=""/>
             <button class="pagar-edit-btn">✏️</button>
           </div>
         </div>
@@ -79,78 +77,31 @@
         <!-- Método de pago -->
         <div class="pagar-seccion">
           <h3 class="pagar-seccion-title">Método de pago</h3>
-
           <div class="metodo-lista">
-
-            <label class="metodo-row" onclick="seleccionarMetodo('tarjeta', this)">
-              <div class="metodo-logos">
-                <span class="logo-visa">VISA</span>
-                <span class="logo-mc">MC</span>
-              </div>
-              <span class="metodo-nombre">Tarjeta de Crédito/Débito</span>
-              <div class="metodo-radio active" id="radio-tarjeta"></div>
-            </label>
-
-            <label class="metodo-row" onclick="seleccionarMetodo('paypal', this)">
+            <label class="metodo-row">
               <div class="metodo-logos">
                 <span class="logo-paypal">PayPal</span>
               </div>
               <span class="metodo-nombre">Paypal</span>
-              <div class="metodo-radio" id="radio-paypal"></div>
+              <div class="metodo-radio active" id="radio-paypal"></div>
             </label>
-
-            <label class="metodo-row" onclick="seleccionarMetodo('gpay', this)">
-              <div class="metodo-logos">
-                <span class="logo-gpay">G Pay</span>
-              </div>
-              <span class="metodo-nombre">Google Pay</span>
-              <div class="metodo-radio" id="radio-gpay"></div>
-            </label>
-
           </div>
-
-          <!-- Formulario tarjeta -->
-          <div class="tarjeta-form" id="tarjeta-form">
-            <div class="pagar-campo">
-              <label>Nombre del Titular</label>
-              <input type="text" class="pagar-input" placeholder="Ingrese el nombre de la tarjeta"/>
-            </div>
-            <div class="pagar-campos-row">
-              <div class="pagar-campo" style="flex:2">
-                <label>Número de tarjeta</label>
-                <input type="text" class="pagar-input" placeholder="•••• •••• •••• ••••" maxlength="19" id="num-tarjeta"/>
-              </div>
-              <div class="pagar-campo">
-                <label>Fecha de Expiración</label>
-                <input type="text" class="pagar-input" placeholder="MM/YY" maxlength="5"/>
-              </div>
-              <div class="pagar-campo">
-                <label>CVV</label>
-                <input type="text" class="pagar-input" placeholder="•••" maxlength="3"/>
-              </div>
-            </div>
-          </div>
-
         </div>
 
       </div>
 
-      <!-- COLUMNA DERECHA — resumen -->
+      <!-- COLUMNA DERECHA -->
       <div class="pagar-right">
         <div class="pagar-resumen">
           <div class="pagar-total-row">
             <span class="pagar-total-label">Total</span>
-            <span class="pagar-total-num">$5058</span>
+            <span class="pagar-total-num" id="pagar-total">$—</span>
           </div>
           <button class="btn-pagar-final" onclick="procesarPago()">Pagar</button>
           <div class="pagar-terminos">
             <label class="termino-row">
-              <input type="checkbox" id="check-acepto" checked/>
+              <input type="checkbox" id="check-acepto"/>
               <span>He leído los términos y condiciones y estoy de acuerdo.</span>
-            </label>
-            <label class="termino-row">
-              <input type="checkbox" id="check-no"/>
-              <span>No estoy de acuerdo con los términos y condiciones</span>
             </label>
           </div>
         </div>
