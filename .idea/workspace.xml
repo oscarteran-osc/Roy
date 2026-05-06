@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="NONE" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f11a7ce-7fea-47ab-ac1c-dc90e75fe3e1" name="Changes" comment="Reseña y solicitud de renta">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/home/CategoryFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/network/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/network/RetrofitClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/app/src/main/java/com/example/roy/solicitudes/metododepago.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/PayPalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/PayPalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQL/roy_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL/roy_schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/agregar-objeto.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/agregar-objeto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/agregar-objeto.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/agregar-objeto.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/detalle-objeto.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/detalle-objeto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/detalle-objeto.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/detalle-objeto.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/pagar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Web/pagar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/pagar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/pagar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/solicitudes.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web/solicitudes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Objeto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/model/Objeto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/SolicitudRentaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/repository/SolicitudRentaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/SolicitudRentaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/RoyServices/RoyServices/src/main/java/com/example/RoyServices/service/impl/SolicitudRentaServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="ClangdSettings">
-    <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/Roy">
@@ -79,41 +79,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.RoyServicesApplication.executor&quot;: &quot;Run&quot;,
-    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/julia/IdeaProjects/RoyServices&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.RoyServicesApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.RoyServicesApplication.executor": "Run",
+    "git-widget-placeholder": "Zoecita",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Zoe/Desktop/ROY/Roy",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.RoyServices.model" />
@@ -134,8 +130,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
       </set>
     </attachedChunks>
   </component>
@@ -153,10 +148,6 @@
       <workItem from="1768396647983" duration="631000" />
       <workItem from="1768399326832" duration="689000" />
       <workItem from="1768513327882" duration="25000" />
-      <workItem from="1769175256550" duration="6557000" />
-      <workItem from="1769197171527" duration="619000" />
-      <workItem from="1769381891277" duration="12000" />
-      <workItem from="1774012940348" duration="2108000" />
     </task>
     <task id="LOCAL-00001" summary="Reseña y solicitud de renta">
       <option name="closed" value="true" />

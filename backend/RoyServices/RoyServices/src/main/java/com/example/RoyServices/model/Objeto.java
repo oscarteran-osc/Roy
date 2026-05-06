@@ -36,7 +36,7 @@ public class Objeto {
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(name = "imagen_url")
+    @Column(name = "imagen_url", columnDefinition = "MEDIUMTEXT")
     private String imagenUrl;
 
     @Column(name = "zona")

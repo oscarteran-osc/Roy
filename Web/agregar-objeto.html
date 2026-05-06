@@ -37,31 +37,33 @@
   </nav>
 
   <main class="dash-main">
-
     <div class="agregar-layout">
 
       <!-- IZQUIERDA: galería -->
       <div class="agregar-galeria">
         <a href="mis-objetos.html" class="breadcrumb-back">‹ Agregar objeto</a>
 
-        <!-- Imagen principal -->
-        <div class="agregar-img-main" id="dropZone" onclick="document.getElementById('fileInput').click()">
-          <img id="preview-img" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;"/>
-          <div id="upload-placeholder">
+        <div class="agregar-img-main" id="dropZone" onclick="abrirPanelUrl(0)">
+          <img id="preview-img-0" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;"/>
+          <div id="placeholder-0" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5">
               <rect x="3" y="3" width="18" height="18" rx="3"/>
               <path d="M3 15l4-4 4 4 4-6 4 6"/>
               <circle cx="8.5" cy="8.5" r="1.5" fill="#aaa"/>
-              <path d="M12 3v4M10 5h4" stroke="#aaa" stroke-width="1.5"/>
             </svg>
+            <p style="color:#aaa;font-size:.85rem;margin-top:8px;">Pegar URL de imagen</p>
           </div>
-          <input type="file" id="fileInput" accept="image/*" style="display:none"/>
         </div>
 
-        <!-- Thumbnails -->
         <div class="agregar-thumbs">
-          <button class="agregar-thumb-add" onclick="document.getElementById('fileInput').click()">+</button>
-          <button class="agregar-thumb-add">+</button>
+          <div class="agregar-thumb-add" onclick="abrirPanelUrl(1)">
+            <img id="preview-img-1" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:8px;"/>
+            <span id="placeholder-1">+</span>
+          </div>
+          <div class="agregar-thumb-add" onclick="abrirPanelUrl(2)">
+            <img id="preview-img-2" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:8px;"/>
+            <span id="placeholder-2">+</span>
+          </div>
         </div>
       </div>
 
@@ -102,11 +104,22 @@
     </div>
   </main>
 
+  <!-- Panel URL -->
+  <div id="panel-url" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:28px; width:420px; max-width:90vw; box-shadow:0 8px 32px rgba(0,0,0,.2);">
+      <p style="font-weight:600; margin-bottom:12px;">Pega la URL de la imagen</p>
+      <input type="text" id="url-input" class="modal-input" placeholder="https://..." style="width:100%; margin-bottom:16px;"/>
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button onclick="cerrarPanelUrl()" class="btn-cancelar-modal">Cancelar</button>
+        <button onclick="confirmarUrl()" class="btn-guardar-modal">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
   <script src="api.js"></script>
   <script src="agregar-objeto.js"></script>
-</body>
 
-<footer class="footer">
+  <footer class="footer">
     <div class="footer-content">
       <div class="footer-atp">
         <img src="img/ATP_LOGO.png" alt="ATP" class="footer-atp-logo"/>
@@ -122,5 +135,8 @@
       </div>
       <div class="footer-links">
         <a href="#" class="footer-link">Términos y condiciones</a>
-      </footer> 
+      </div>
+    </div>
+  </footer>
+</body>
 </html>

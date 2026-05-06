@@ -83,7 +83,7 @@ public interface SolicitudRentaRepository extends JpaRepository<SolicitudRenta, 
             "s.fecha_inicio, " +
             "s.fecha_fin, " +
             "s.monto, " +
-            "s.fecha_solicitud, " +
+            "NULL, " +
             "o.nombre_objeto, " +
             "o.imagen_url, " +
             "o.precio, " +
@@ -97,7 +97,6 @@ public interface SolicitudRentaRepository extends JpaRepository<SolicitudRenta, 
             "ORDER BY s.id_solicitud DESC",
             nativeQuery = true)
     List<Object[]> findSolicitudesArrendadorConDetalles(@Param("idArrendador") Integer idArrendador);
-
     /**
      * Obtener solicitudes del arrendatario con información completa del objeto y usuarios
      * ✅ CORREGIDO: Usa nombre_us y apellido_us en lugar de nombre y apellido
@@ -111,7 +110,7 @@ public interface SolicitudRentaRepository extends JpaRepository<SolicitudRenta, 
             "s.fecha_inicio, " +
             "s.fecha_fin, " +
             "s.monto, " +
-            "s.fecha_solicitud, " +
+            "NULL, " +
             "o.nombre_objeto, " +
             "o.imagen_url, " +
             "o.precio, " +

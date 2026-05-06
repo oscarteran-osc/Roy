@@ -1,25 +1,60 @@
-function seleccionarMetodo(metodo) {
-  document.querySelectorAll('.metodo-radio').forEach(r => r.classList.remove('active'));
-  document.getElementById('radio-' + metodo).classList.add('active');
-  document.getElementById('tarjeta-form').style.display = metodo === 'tarjeta' ? 'block' : 'none';
-}
+const idSolicitud = new URLSearchParams(window.location.search).get('id');
 
-document.getElementById('num-tarjeta').addEventListener('input', function() {
-  let val = this.value.replace(/\D/g, '').substring(0, 16);
-  this.value = val.replace(/(.{4})/g, '$1 ').trim();
-});
+async function cargarSolicitud() {
+  if (!idSolicitud) return;
+  try {
+    const res = await fetch(`${API}/api/solicitudes/${idSolicitud}`);
+    if (!res.ok) return;
+    const s = await res.json();
+
+    document.getElementById('pagar-total').textContent = s.monto ? `$${s.monto}` : '$—';
+
+    // Cargar datos del objeto
+    if (s.idObjeto) {
+      try {
+        const objRes = await fetch(`${API}/api/objeto/objeto/${s.idObjeto}`);
+        if (objRes.ok) {
+          const obj = await objRes.json();
+          document.getElementById('pagar-nombre').textContent = obj.nombreObjeto || 'Objeto';
+          document.getElementById('pagar-img').src = obj.imagenUrl || '';
+          document.getElementById('pagar-ver-detalles').href = `detalle-objeto.html?id=${s.idObjeto}`;
+        }
+      } catch (e) {}
+    }
+
+    // Cargar nombre del arrendador
+    if (s.idUsArrendador) {
+      try {
+        const uRes = await fetch(`${API}/Roy/api/usuario/${s.idUsArrendador}`);
+        if (uRes.ok) {
+          const u = await uRes.json();
+          document.getElementById('pagar-arrendador').textContent = `${u.nombre} ${u.apellido}`;
+        }
+      } catch (e) {}
+    }
+
+    // Cargar domicilio del usuario actual
+    const session = getSession();
+    if (session) {
+      try {
+        const uRes = await fetch(`${API}/Roy/api/usuario/${session.idUsuario}`);
+        if (uRes.ok) {
+          const u = await uRes.json();
+          document.getElementById('pagar-domicilio').value = u.direccion || '';
+        }
+      } catch (e) {}
+    }
+
+  } catch (e) {
+    console.warn('No se pudo cargar la solicitud.');
+  }
+}
 
 async function procesarPago() {
   const acepto = document.getElementById('check-acepto').checked;
-  if (!acepto) {
-    alert('Debes aceptar los términos y condiciones para continuar.');
-    return;
-  }
+  if (!acepto) { alert('Debes aceptar los términos y condiciones para continuar.'); return; }
 
-  const params      = new URLSearchParams(window.location.search);
-  const idSolicitud = params.get('id');
-  const btn         = document.querySelector('.btn-pagar-final');
-
+  const btn = document.querySelector('.btn-pagar-final');
   btn.disabled    = true;
   btn.textContent = 'Procesando...';
 
@@ -53,3 +88,5 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
     window.location.href = cat === 'todas' ? 'dashboard.html' : 'resultados.html?cat=' + encodeURIComponent(cat);
   });
 });
+
+cargarSolicitud();
