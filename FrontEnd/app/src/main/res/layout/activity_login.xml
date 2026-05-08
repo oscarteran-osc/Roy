@@ -56,14 +56,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_marginHorizontal="25dp"
-        android:hint="Contraseña">
+        android:hint="Contraseña"
+        app:passwordToggleEnabled="true"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/logincontra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_light"
-            android:inputType="textPersonName"/>
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 

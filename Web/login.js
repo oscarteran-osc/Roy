@@ -1,6 +1,12 @@
 document.getElementById('correo').addEventListener('keydown', e => { if (e.key === 'Enter') iniciarSesion(); });
 document.getElementById('contra').addEventListener('keydown', e => { if (e.key === 'Enter') iniciarSesion(); });
 
+function togglePassword(inputId, icon) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
+  else { input.type = 'password'; icon.textContent = '👁️'; }
+}
+
 async function iniciarSesion() {
   const correo = document.getElementById('correo').value.trim();
   const contra = document.getElementById('contra').value;

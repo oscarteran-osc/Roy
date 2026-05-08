@@ -43,11 +43,13 @@
       <div class="form-group">
         <input type="email"    class="form-input" placeholder="Correo electrónico"  id="correo"/>
       </div>
-      <div class="form-group">
-        <input type="password" class="form-input" placeholder="Contraseña"          id="contra"/>
+      <div class="form-group" style="position:relative;">
+        <input type="password" class="form-input" placeholder="Contraseña" id="contra" style="padding-right:42px;"/>
+        <span onclick="togglePassword('contra', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:18px;">👁️</span>
       </div>
-      <div class="form-group">
-        <input type="password" class="form-input" placeholder="Confirmar contraseña" id="checkcontra"/>
+      <div class="form-group" style="position:relative;">
+        <input type="password" class="form-input" placeholder="Confirmar contraseña" id="checkcontra" style="padding-right:42px;"/>
+        <span onclick="togglePassword('checkcontra', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:18px;">👁️</span>
       </div>
 
       <button class="btn-form" id="btn-registro" onclick="crearCuenta()">Crear cuenta</button>

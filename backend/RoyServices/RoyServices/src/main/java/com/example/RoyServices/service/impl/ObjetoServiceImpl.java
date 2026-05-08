@@ -2,10 +2,16 @@ package com.example.RoyServices.service.impl;
 
 import com.example.RoyServices.dto.ObjetoConZonaProjection;
 import com.example.RoyServices.model.Objeto;
+import com.example.RoyServices.model.SolicitudRenta;
+import com.example.RoyServices.repository.ImagenObjetoRepository;
+import com.example.RoyServices.repository.MensajeRepository;
 import com.example.RoyServices.repository.ObjetoRepository;
+import com.example.RoyServices.repository.SolicitudRentaRepository;
+import com.example.RoyServices.repository.TransaccionRepository;
 import com.example.RoyServices.service.ObjetoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +22,10 @@ import java.util.stream.Collectors;
 public class ObjetoServiceImpl implements ObjetoService {
 
     private final ObjetoRepository objetoRepository;
+    private final ImagenObjetoRepository imagenObjetoRepository;
+    private final SolicitudRentaRepository solicitudRentaRepository;
+    private final MensajeRepository mensajeRepository;
+    private final TransaccionRepository transaccionRepository;
 
     @Override
     public List<Objeto> getAll() {
@@ -33,7 +43,15 @@ public class ObjetoServiceImpl implements ObjetoService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
+        imagenObjetoRepository.deleteAll(imagenObjetoRepository.findByIdObjeto(id));
+        List<SolicitudRenta> solicitudes = solicitudRentaRepository.findByIdObjeto(id);
+        for (SolicitudRenta s : solicitudes) {
+            mensajeRepository.deleteAll(mensajeRepository.findByIdSolicitud(s.getIdSolicitud()));
+            transaccionRepository.deleteAll(transaccionRepository.findByIdSolicitud(s.getIdSolicitud()));
+        }
+        solicitudRentaRepository.deleteAll(solicitudes);
         objetoRepository.deleteById(id);
     }
 

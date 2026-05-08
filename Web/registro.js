@@ -1,5 +1,11 @@
 document.getElementById('checkcontra').addEventListener('keydown', e => { if (e.key === 'Enter') crearCuenta(); });
 
+function togglePassword(inputId, icon) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
+  else { input.type = 'password'; icon.textContent = '👁️'; }
+}
+
 async function crearCuenta() {
   const nombre    = document.getElementById('nombre').value.trim();
   const apellido  = document.getElementById('apellido').value.trim();
