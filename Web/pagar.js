@@ -54,7 +54,7 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
   });
 });
 
-// ✅ PayPal Sandbox integration
+// ✅ PayPal Sandbox integration - redirige a approvalUrl
 let montoSolicitud = 0;
 const idSolicitud = new URLSearchParams(window.location.search).get('id');
 
@@ -84,59 +84,76 @@ async function cargarDatosSolicitud() {
       } catch(e) {}
     }
   } catch(e) {}
-
-  iniciarPayPal();
 }
 
-function iniciarPayPal() {
-  if (typeof paypal === 'undefined') return;
+async function pagarConPayPal() {
+  const acepto = document.getElementById('check-acepto').checked;
+  if (!acepto) {
+    alert('Debes aceptar los términos y condiciones para continuar.');
+    return;
+  }
 
-  paypal.Buttons({
-    style: { layout: 'vertical', color: 'blue', shape: 'pill', label: 'pay' },
+  const btn = document.getElementById('btn-paypal');
+  btn.disabled = true;
+  btn.textContent = '⏳ Conectando con PayPal...';
 
-    createOrder: async function(data, actions) {
-      const acepto = document.getElementById('check-acepto').checked;
-      if (!acepto) {
-        alert('Debes aceptar los términos y condiciones para continuar.');
-        return Promise.reject(new Error('Términos no aceptados'));
-      }
-      const res = await fetch(
-        `${API}/api/paypal/crear-orden?total=${montoSolicitud}&moneda=USD&descripcion=Pago%20de%20renta%20-%20Solicitud%20%23${idSolicitud}`,
-        { method: 'POST' }
-      );
-      if (!res.ok) throw new Error('Error al crear orden');
-      const data2 = await res.json();
-      return data2.orderId || data2.id;
-    },
+  try {
+    const res = await fetch(
+      `${API}/api/paypal/crear-orden?total=${montoSolicitud}&moneda=USD&descripcion=Pago%20de%20renta%20-%20Solicitud%20%23${idSolicitud}&origen=web`,
+      { method: 'POST' }
+    );
+    if (!res.ok) throw new Error('Error al crear orden');
+    const data = await res.json();
 
-    onApprove: async function(data, actions) {
-      const msgEl = document.getElementById('paypal-msg');
-      if (msgEl) msgEl.textContent = '⏳ Confirmando pago...';
-      try {
-        await fetch(`${API}/api/paypal/capturar-pago`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderID: data.orderID })
-        });
-        await fetch(`${API}/api/solicitudes/${idSolicitud}/completar`, { method: 'PUT' });
+    // Guardar idSolicitud en sessionStorage para usarlo al volver
+    sessionStorage.setItem('paypal_idSolicitud', idSolicitud);
+
+    // Redirigir a PayPal Sandbox
+    if (data.approvalUrl) {
+      window.location.href = data.approvalUrl;
+    } else {
+      throw new Error('No se recibió URL de aprobación');
+    }
+  } catch(e) {
+    alert('❌ Error al conectar con PayPal: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = '💳 Pagar con PayPal';
+  }
+}
+
+// Verificar si regresamos de PayPal con pago aprobado
+async function verificarRetornoPayPal() {
+  const params = new URLSearchParams(window.location.search);
+  const paymentId = params.get('paymentId');
+  const payerId = params.get('PayerID');
+  const idSol = sessionStorage.getItem('paypal_idSolicitud') || idSolicitud;
+
+  if (paymentId && payerId) {
+    const msgEl = document.getElementById('paypal-msg');
+    if (msgEl) msgEl.textContent = '⏳ Confirmando pago...';
+
+    try {
+      const res = await fetch(`${API}/api/paypal/capturar-pago`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId, payerId, idSolicitud: parseInt(idSol) })
+      });
+
+      if (res.ok) {
+        sessionStorage.removeItem('paypal_idSolicitud');
         if (msgEl) msgEl.textContent = '✅ ¡Pago exitoso!';
         setTimeout(() => window.location.href = 'solicitudes.html', 1500);
-      } catch(e) {
+      } else {
         if (msgEl) msgEl.textContent = '❌ Error al confirmar el pago.';
       }
-    },
-
-    onCancel: function() {
-      const msgEl = document.getElementById('paypal-msg');
-      if (msgEl) msgEl.textContent = 'Pago cancelado.';
-    },
-
-    onError: function(err) {
-      const msgEl = document.getElementById('paypal-msg');
-      if (msgEl) msgEl.textContent = '❌ Ocurrió un error con PayPal.';
+    } catch(e) {
+      if (document.getElementById('paypal-msg'))
+        document.getElementById('paypal-msg').textContent = '❌ Error de conexión.';
     }
-
-  }).render('#paypal-button-container');
+  }
 }
 
 cargarDatosSolicitud();
+verificarRetornoPayPal();
+
+
