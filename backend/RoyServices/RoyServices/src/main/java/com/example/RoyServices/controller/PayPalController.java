@@ -26,22 +26,24 @@ public class PayPalController {
     @Autowired
     private SolicitudRentaRepository solicitudRentaRepository; // ✅ Inyección del repositorio
 
-    private static final String SUCCESS_URL = "com.example.roy://paypalpay";
-    private static final String CANCEL_URL = "com.example.roy://paypalcancel";
+    private static final String SUCCESS_URL_ANDROID = "com.example.roy://paypalpay";
+    private static final String CANCEL_URL_ANDROID = "com.example.roy://paypalcancel";
+    private static final String SUCCESS_URL_WEB = "http://127.0.0.1:5500/pagar.html";
+    private static final String CANCEL_URL_WEB = "http://127.0.0.1:5500/solicitudes.html";
 
     @PostMapping("/crear-orden")
     public ResponseEntity<?> crearOrden(
             @RequestParam Double total,
             @RequestParam(defaultValue = "MXN") String moneda,
-            @RequestParam(defaultValue = "Renta de objeto") String descripcion
+            @RequestParam(defaultValue = "Renta de objeto") String descripcion,
+            @RequestParam(defaultValue = "android") String origen
     ) {
         try {
+            String successUrl = origen.equals("web") ? SUCCESS_URL_WEB : SUCCESS_URL_ANDROID;
+            String cancelUrl  = origen.equals("web") ? CANCEL_URL_WEB  : CANCEL_URL_ANDROID;
+
             Payment payment = payPalService.crearPago(
-                    total,
-                    moneda,
-                    descripcion,
-                    CANCEL_URL,
-                    SUCCESS_URL
+                    total, moneda, descripcion, cancelUrl, successUrl
             );
 
             String approvalUrl = "";
