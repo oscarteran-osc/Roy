@@ -97,13 +97,15 @@
             <span class="pagar-total-label">Total</span>
             <span class="pagar-total-num" id="pagar-total">$—</span>
           </div>
-          <button class="btn-pagar-final" onclick="procesarPago()">Pagar</button>
-          <div class="pagar-terminos">
+          <div class="pagar-terminos" style="margin-bottom:16px;">
             <label class="termino-row">
               <input type="checkbox" id="check-acepto"/>
               <span>He leído los términos y condiciones y estoy de acuerdo.</span>
             </label>
           </div>
+          <!-- ✅ Botones PayPal Sandbox -->
+          <div id="paypal-button-container"></div>
+          <p id="paypal-msg" style="text-align:center;color:#888;font-size:13px;margin-top:8px;"></p>
         </div>
       </div>
 
@@ -111,6 +113,7 @@
   </main>
 
   <script src="api.js"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=Ad2Ti-cFyuNpJqkSu9EBQ21TlAjC3jhNtwXaujBU8NBX5t1cZeSIMe03RrTcnQMYzlZZmplVlRAkDxaL&currency=USD&intent=capture" data-sdk-integration-source="button-factory"></script>
   <script src="pagar.js"></script>
 </body>
 
