@@ -4,7 +4,7 @@ function seleccionarMetodo(metodo) {
   document.getElementById('tarjeta-form').style.display = metodo === 'tarjeta' ? 'block' : 'none';
 }
 
-document.getElementById('num-tarjeta').addEventListener('input', function() {
+document.getElementById('num-tarjeta')?.addEventListener('input', function() {
   let val = this.value.replace(/\D/g, '').substring(0, 16);
   this.value = val.replace(/(.{4})/g, '$1 ').trim();
 });
