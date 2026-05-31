@@ -417,7 +417,7 @@ public class PerfilFragment extends Fragment {
                         case "PAGADA":
                             pagadas++;
                             rentados++;
-                            if (s.getMonto() != null) gastado += s.getMonto();
+                            gastado += s.getMonto();
                             break;
                         case "RECHAZADA":  rechazadas++; break;
                     }
@@ -440,7 +440,7 @@ public class PerfilFragment extends Fragment {
                 if (!isAdded() || response.body() == null) return;
                 double ganado = 0;
                 for (SolicitudRenta s : response.body()) {
-                    if ("PAGADA".equalsIgnoreCase(s.getEstado()) && s.getMonto() != null)
+                    if ("PAGADA".equalsIgnoreCase(s.getEstado()))
                         ganado += s.getMonto();
                 }
                 double g = ganado;

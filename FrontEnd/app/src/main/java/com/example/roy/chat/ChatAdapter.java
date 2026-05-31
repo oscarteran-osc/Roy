@@ -35,7 +35,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensajeVH> {
     @Override
     public void onBindViewHolder(@NonNull MensajeVH holder, int position) {
         Mensaje m = mensajes.get(position);
-        boolean esMio = m.getIdRemitente() != null && m.getIdRemitente() == miUserId;
+        boolean esMio = m.getIdRemitente() != null && m.getIdRemitente().equals(miUserId);
 
         holder.tvContenido.setText(m.getContenido());
 
