@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,6 +44,7 @@ public class RecuperarPasswordController {
     }
 
     // POST /auth/recuperar-password  { "correo": "..." }
+    @Transactional
     @PostMapping("/recuperar-password")
     public ResponseEntity<?> solicitarRecuperacion(@RequestBody Map<String, String> body) {
         String correo = body.get("correo");
@@ -92,6 +94,7 @@ public class RecuperarPasswordController {
     }
 
     // POST /auth/resetear-password  { "token": "...", "nuevaPassword": "..." }
+    @Transactional
     @PostMapping("/resetear-password")
     public ResponseEntity<?> resetearPassword(@RequestBody Map<String, String> body) {
         String token          = body.get("token");
