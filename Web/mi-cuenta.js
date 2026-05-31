@@ -41,6 +41,46 @@ function cambiarPanel(panel) {
 
   document.querySelectorAll('.cuenta-sidebar-link').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
+
+  if (panel === 'historial') cargarHistorial();
+}
+
+async function cargarHistorial() {
+  const session = getSession();
+  if (!session) return;
+  const lista = document.getElementById('historial-lista');
+  if (!lista) return;
+
+  try {
+    const res = await fetch(`${API}/api/solicitudes/arrendatario/${session.idUsuario}`);
+    if (!res.ok) { lista.innerHTML = '<p style="color:#888;padding:20px;">No se pudo cargar el historial.</p>'; return; }
+    const solicitudes = await res.json();
+    const pagadas = solicitudes.filter(s => (s.estado || '').toUpperCase() === 'PAGADA');
+
+    if (pagadas.length === 0) {
+      lista.innerHTML = '<p style="color:#888;padding:20px;">No tienes rentas completadas aún.</p>';
+      return;
+    }
+
+    const placeholder = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=80&q=80';
+    lista.innerHTML = pagadas.map(s => `
+      <div class="historial-item" style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #eee;">
+        <img src="${s.imagenObjeto || placeholder}" alt="${s.nombreObjeto || 'Objeto'}"
+             onerror="this.src='${placeholder}'"
+             style="width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0;"/>
+        <div style="flex:1;">
+          <p style="margin:0 0 4px;font-weight:600;color:#1a1a2e;">${s.nombreObjeto || 'Objeto'}</p>
+          <p style="margin:0 0 2px;font-size:13px;color:#888;">De: ${s.nombreArrendador || '—'}</p>
+          <p style="margin:0;font-size:13px;color:#888;">${s.fechaInicio} → ${s.fechaFin}</p>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <p style="margin:0;font-weight:700;color:#134299;">$${s.monto || 0}</p>
+          <a href="detalle-objeto.html?id=${s.idObjeto}" style="font-size:12px;color:#3b6ef5;">Ver objeto</a>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    lista.innerHTML = '<p style="color:#888;padding:20px;">Error al cargar el historial.</p>';
+  }
 }
 
 function abrirModalEditar() {
@@ -200,6 +240,8 @@ async function cargarEstadisticas() {
       }
       const promedio = count > 0 ? (totalCalif / count).toFixed(1) : '—';
       document.getElementById('stat-calificacion').textContent = promedio;
+      const sideCalif = document.getElementById('sidebar-calificacion');
+      if (sideCalif) sideCalif.textContent = `⭐ ${promedio}`;
     }
   } catch(e) {}
 }
