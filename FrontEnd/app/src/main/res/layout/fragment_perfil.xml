@@ -278,7 +278,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📊 Mis estadísticas"
+                    android:text="Mis estadísticas"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="#134299"
@@ -365,7 +365,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⭐ Promedio"
+                            android:text="Promedio"
                             android:textSize="11sp"
                             android:textColor="#666"
                             android:fontFamily="@font/poppins_regular"/>
@@ -400,7 +400,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💰 Ganado"
+                            android:text="Ganado"
                             android:textSize="11sp"
                             android:textColor="#666"
                             android:fontFamily="@font/poppins_regular"/>
