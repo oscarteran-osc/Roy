@@ -58,6 +58,8 @@
             android:name=".solicitudes.metododepago"
             android:exported="false" />
         <activity
+            android:name=".chat.ChatsActivity" />
+        <activity
             android:name=".chat.ChatActivity"
             android:exported="false" />
         <activity
