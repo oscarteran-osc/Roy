@@ -39,6 +39,11 @@ async function cargarMensajes() {
     if (!res.ok) return;
     const mensajes = await res.json();
     renderMensajes(mensajes);
+    // Marcar mensajes dirigidos a mí como leídos
+    if (miUsuarioId) {
+      fetch(`${API}/api/mensajes/solicitud/${idSolicitud}/leidos/${miUsuarioId}`, { method: 'PUT' })
+        .catch(() => {});
+    }
   } catch(e) {}
 }
 
