@@ -137,16 +137,14 @@ public class Home extends Fragment {
     }
 
     private void setupChatbotButton(View view) {
-        // Buscar si hay un botón de chatbot en el layout (tag "fab_chatbot")
-        // Como el layout raíz es ScrollView no podemos meter FAB directamente
-        // Lo agregamos a la actividad padre si está disponible
         if (getActivity() != null) {
             android.widget.FrameLayout rootLayout =
                     getActivity().findViewById(android.R.id.content);
             if (rootLayout != null && rootLayout.findViewWithTag("fab_chatbot_added") == null) {
-                android.widget.ImageButton fab = new android.widget.ImageButton(requireContext());
+                android.widget.Button fab = new android.widget.Button(requireContext());
                 fab.setTag("fab_chatbot_added");
                 fab.setText("🤖");
+                fab.setTextSize(22);
                 fab.setBackgroundResource(R.drawable.bg_btn_enviar);
                 fab.setContentDescription("Asistente ROY");
 
@@ -159,6 +157,7 @@ public class Home extends Fragment {
                 int margin = (int)(24 * getResources().getDisplayMetrics().density);
                 params.setMargins(0, 0, margin, margin + 80);
                 fab.setLayoutParams(params);
+                fab.setPadding(0, 0, 0, 0);
                 fab.setOnClickListener(v -> {
                     android.content.Intent intent = new android.content.Intent(
                             requireContext(), com.example.roy.chat.ChatbotActivity.class);
