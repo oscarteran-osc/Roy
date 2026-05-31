@@ -78,6 +78,13 @@ public class Home extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // ✅ Botón flotante del chatbot IA
+        com.google.android.material.floatingactionbutton.FloatingActionButton fabChatbot =
+                view.findViewWithTag("fab_chatbot");
+        // Si no existe en el layout, lo creamos dinámicamente al hacer click en el ícono de chat
+        // Por ahora lo lanzamos desde el menú inferior si existe
+        setupChatbotButton(view);
+
         api = RetrofitClient.getClient().create(ApiService.class);
         sessionManager = new SessionManager(requireContext());
 
@@ -127,6 +134,39 @@ public class Home extends Fragment {
 
         recomendadosLoading = view.findViewById(R.id.recomendados_loading);
         recomendadosEmpty = view.findViewById(R.id.recomendados_empty);
+    }
+
+    private void setupChatbotButton(View view) {
+        // Buscar si hay un botón de chatbot en el layout (tag "fab_chatbot")
+        // Como el layout raíz es ScrollView no podemos meter FAB directamente
+        // Lo agregamos a la actividad padre si está disponible
+        if (getActivity() != null) {
+            android.widget.FrameLayout rootLayout =
+                    getActivity().findViewById(android.R.id.content);
+            if (rootLayout != null && rootLayout.findViewWithTag("fab_chatbot_added") == null) {
+                android.widget.ImageButton fab = new android.widget.ImageButton(requireContext());
+                fab.setTag("fab_chatbot_added");
+                fab.setText("🤖");
+                fab.setBackgroundResource(R.drawable.bg_btn_enviar);
+                fab.setContentDescription("Asistente ROY");
+
+                android.widget.FrameLayout.LayoutParams params =
+                        new android.widget.FrameLayout.LayoutParams(
+                                (int)(56 * getResources().getDisplayMetrics().density),
+                                (int)(56 * getResources().getDisplayMetrics().density)
+                        );
+                params.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.END;
+                int margin = (int)(24 * getResources().getDisplayMetrics().density);
+                params.setMargins(0, 0, margin, margin + 80);
+                fab.setLayoutParams(params);
+                fab.setOnClickListener(v -> {
+                    android.content.Intent intent = new android.content.Intent(
+                            requireContext(), com.example.roy.chat.ChatbotActivity.class);
+                    startActivity(intent);
+                });
+                rootLayout.addView(fab);
+            }
+        }
     }
 
     private void setupClicks() {

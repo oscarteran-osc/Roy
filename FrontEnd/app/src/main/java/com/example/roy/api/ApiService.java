@@ -196,4 +196,14 @@ public interface ApiService {
         public double getMonto() { return monto; }
         public void setMonto(double monto) { this.monto = monto; }
     }
+
+    // =================== MENSAJES / CHAT ===================
+    @GET("api/mensajes/solicitud/{idSolicitud}")
+    Call<List<com.example.roy.models.Mensaje>> getMensajesPorSolicitud(
+            @Path("idSolicitud") int idSolicitud);
+
+    @POST("api/mensajes/enviar/{idRemitente}")
+    Call<com.example.roy.models.Mensaje> enviarMensaje(
+            @Path("idRemitente") int idRemitente,
+            @Body com.example.roy.models.MensajeRequest request);
 }

@@ -19,13 +19,12 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
 
 const placeholder = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100&q=80';
 
-const estadoClass = { aprobada: 'aceptada', aceptada: 'aceptada', pendiente: 'pendiente', rechazada: 'rechazada', completada: 'aceptada' };
+const estadoClass = { aceptada: 'aceptada', pendiente: 'pendiente', rechazada: 'rechazada', completada: 'aceptada' };
 
 function renderSolicitudRentador(s) {
-  const estado = (s.estado || '').toLowerCase();
-  const btnAccion = estado === 'aprobada' || estado === 'aceptada'
+  const btnAccion = s.estado === 'aceptada'
     ? `<a href="pagar.html?id=${s.idSolicitud}" class="btn-pagar">Pagar</a>`
-    : estado === 'pendiente'
+    : s.estado === 'pendiente'
     ? `<button class="btn-cancelar-sol" onclick="cancelarSolicitud(${s.idSolicitud}, this)">Cancelar</button>`
     : `<span>—</span>`;
 
@@ -43,16 +42,15 @@ function renderSolicitudRentador(s) {
       <div class="sol-detalles">
         <p><strong>Fecha inicio:</strong> ${s.fechaInicio}</p>
         <p><strong>Fecha fin:</strong> ${s.fechaFin}</p>
-        <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[estado] || ''}">${s.estado}</span></p>
+        <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[s.estado] || ''}">${s.estado}</span></p>
         ${s.monto ? `<p><strong>Monto:</strong> $${s.monto}</p>` : ''}
       </div>
-      <div class="sol-acciones">${btnAccion}</div>
+      <div class="sol-acciones">
+        ${btnAccion}
+        <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendador}&nombre=${encodeURIComponent(s.nombreArrendador || 'Arrendador')}" class="btn-chat-sol">💬 Chat</a>
+      </div>
     </div>`;
-}
-
-function renderSolicitudOfertante(s) {
-  const estado = (s.estado || '').toLowerCase();
-  const btnAccion = estado === 'pendiente'
+  const btnAccion = s.estado === 'pendiente'
     ? `<button class="btn-pagar" onclick="accionSolicitud(${s.idSolicitud}, 'aprobar', this)">Aceptar</button>
        <button class="btn-cancelar-sol" style="margin-top:8px;" onclick="accionSolicitud(${s.idSolicitud}, 'rechazar', this)">Rechazar</button>`
     : `<span>—</span>`;
@@ -71,10 +69,14 @@ function renderSolicitudOfertante(s) {
       <div class="sol-detalles">
         <p><strong>Fecha inicio:</strong> ${s.fechaInicio}</p>
         <p><strong>Fecha fin:</strong> ${s.fechaFin}</p>
-        <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[estado] || ''}">${s.estado}</span></p>
+        <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[s.estado] || ''}">${s.estado}</span></p>
         ${s.monto ? `<p><strong>Monto:</strong> $${s.monto}</p>` : ''}
       </div>
-      <div class="sol-acciones">${btnAccion}</div>
+      <div class="sol-acciones">
+        ${btnAccion}
+        <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendatario}&nombre=${encodeURIComponent(s.nombreArrendatario || 'Arrendatario')}" class="btn-chat-sol">💬 Chat</a>
+      </div>
+    </div>`;
     </div>`;
 }
 

@@ -255,6 +255,312 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <!-- TARJETA: Estadísticas -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardEstadisticas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📊 Mis estadísticas"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="#134299"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Fila 1: Tarjetas de resumen -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Objetos publicados -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_card"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+                        <TextView
+                            android:id="@+id/tvStatPublicados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="22sp"
+                            android:textColor="#134299"
+                            android:fontFamily="@font/poppins_bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Publicados"
+                            android:textSize="11sp"
+                            android:textColor="#666"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+                    <!-- Objetos rentados -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_card"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+                        <TextView
+                            android:id="@+id/tvStatRentados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="22sp"
+                            android:textColor="#F57C00"
+                            android:fontFamily="@font/poppins_bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rentados"
+                            android:textSize="11sp"
+                            android:textColor="#666"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+                    <!-- Calificación -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_card"
+                        android:padding="10dp">
+                        <TextView
+                            android:id="@+id/tvStatCalif"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="22sp"
+                            android:textColor="#FFB300"
+                            android:fontFamily="@font/poppins_bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⭐ Promedio"
+                            android:textSize="11sp"
+                            android:textColor="#666"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Fila 2: Dinero -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_card"
+                        android:padding="10dp"
+                        android:layout_marginEnd="6dp">
+                        <TextView
+                            android:id="@+id/tvStatGanado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$0"
+                            android:textSize="18sp"
+                            android:textColor="#2E7D32"
+                            android:fontFamily="@font/poppins_bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💰 Ganado"
+                            android:textSize="11sp"
+                            android:textColor="#666"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_stat_card"
+                        android:padding="10dp">
+                        <TextView
+                            android:id="@+id/tvStatGastado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$0"
+                            android:textSize="18sp"
+                            android:textColor="#C62828"
+                            android:fontFamily="@font/poppins_bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💸 Gastado"
+                            android:textSize="11sp"
+                            android:textColor="#666"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Gráfica de barras: solicitudes por estado -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Solicitudes por estado"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="#444"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Barra: Pendientes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Pendiente"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                    <View
+                        android:id="@+id/barPendiente"
+                        android:layout_width="0dp"
+                        android:layout_height="16dp"
+                        android:layout_weight="0"
+                        android:background="#FF9800"
+                        android:layout_marginEnd="6dp"/>
+                    <TextView
+                        android:id="@+id/tvBarPendiente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                </LinearLayout>
+
+                <!-- Barra: Aprobadas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Aprobada"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                    <View
+                        android:id="@+id/barAprobada"
+                        android:layout_width="0dp"
+                        android:layout_height="16dp"
+                        android:layout_weight="0"
+                        android:background="#4CAF50"
+                        android:layout_marginEnd="6dp"/>
+                    <TextView
+                        android:id="@+id/tvBarAprobada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                </LinearLayout>
+
+                <!-- Barra: Pagadas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Pagada"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                    <View
+                        android:id="@+id/barPagada"
+                        android:layout_width="0dp"
+                        android:layout_height="16dp"
+                        android:layout_weight="0"
+                        android:background="#134299"
+                        android:layout_marginEnd="6dp"/>
+                    <TextView
+                        android:id="@+id/tvBarPagada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                </LinearLayout>
+
+                <!-- Barra: Rechazadas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Rechazada"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                    <View
+                        android:id="@+id/barRechazada"
+                        android:layout_width="0dp"
+                        android:layout_height="16dp"
+                        android:layout_weight="0"
+                        android:background="#F44336"
+                        android:layout_marginEnd="6dp"/>
+                    <TextView
+                        android:id="@+id/tvBarRechazada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="11sp"
+                        android:textColor="#666"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"

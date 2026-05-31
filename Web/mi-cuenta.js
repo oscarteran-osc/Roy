@@ -7,16 +7,19 @@ async function cargarPerfil() {
     if (!res.ok) return;
     const u = await res.json();
 
+    // Sidebar
     const sideNombre = document.getElementById('sidebar-nombre');
     const sideZona   = document.getElementById('sidebar-zona');
     if (sideNombre) sideNombre.textContent = `${u.nombre} ${u.apellido}`;
     if (sideZona)   sideZona.textContent   = u.zona || '—';
 
+    // Panel info
     const elTel    = document.getElementById('cuenta-telefono');
     const elCorreo = document.getElementById('cuenta-correo');
     if (elTel)    elTel.textContent    = u.telefono || '—';
     if (elCorreo) elCorreo.textContent = u.correo   || '—';
 
+    // Pre-cargar modal
     const iNombre   = document.getElementById('edit-nombre');
     const iApellido = document.getElementById('edit-apellido');
     const iTelefono = document.getElementById('edit-telefono');
@@ -30,57 +33,14 @@ async function cargarPerfil() {
   } catch (e) {
     console.warn('No se pudo cargar el perfil.');
   }
-
-  // Cargar promedio de estrellas
-  try {
-    const rRes = await fetch(`${API}/api/resenas/promedio/${session.idUsuario}`);
-    if (rRes.ok) {
-      const r = await rRes.json();
-      const el = document.getElementById('sidebar-rating');
-      if (el) el.textContent = r.promedioCalificacion
-        ? `⭐ ${parseFloat(r.promedioCalificacion).toFixed(1)}`
-        : '⭐ Sin reseñas';
-    }
-  } catch (e) {}
-}
-
-async function cargarHistorial() {
-  const session = getSession();
-  if (!session) return;
-  const lista = document.getElementById('historial-lista');
-  if (!lista) return;
-
-  try {
-    const res = await fetch(`${API}/api/solicitudes/arrendatario/${session.idUsuario}`);
-    const solicitudes = res.ok ? await res.json() : [];
-
-    if (!solicitudes.length) {
-      lista.innerHTML = '<p style="color:#888;">No tienes rentas en tu historial.</p>';
-      return;
-    }
-
-    const placeholder = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=80&q=80';
-    lista.innerHTML = solicitudes.map(s => `
-      <div class="historial-item">
-        <img src="${s.imagenObjeto || placeholder}" alt="${s.nombreObjeto || 'Objeto'}"
-             onerror="this.src='${placeholder}'"/>
-        <div>
-          <p class="historial-nombre">${s.nombreObjeto || 'Objeto'}</p>
-          <p class="historial-fechas">${s.fechaInicio || ''} — ${s.fechaFin || ''}</p>
-          <p style="font-size:.8rem;color:#888;">Estado: ${s.estado || ''}</p>
-        </div>
-      </div>`).join('');
-  } catch (e) {
-    lista.innerHTML = '<p style="color:#888;">No se pudo cargar el historial.</p>';
-  }
 }
 
 function cambiarPanel(panel) {
   document.getElementById('panel-info').style.display      = panel === 'info'      ? 'block' : 'none';
   document.getElementById('panel-historial').style.display = panel === 'historial' ? 'block' : 'none';
+
   document.querySelectorAll('.cuenta-sidebar-link').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
-  if (panel === 'historial') cargarHistorial();
 }
 
 function abrirModalEditar() {
@@ -94,12 +54,12 @@ async function guardarPerfil() {
   const session = getSession();
   if (!session) return;
 
-  const nombre   = document.getElementById('edit-nombre')?.value.trim()   || '';
-  const apellido = document.getElementById('edit-apellido')?.value.trim() || '';
-  const telefono = document.getElementById('edit-telefono')?.value.trim() || '';
-  const correo   = document.getElementById('edit-correo')?.value.trim()   || '';
-  const zona     = document.getElementById('edit-zona')?.value.trim()     || '';
-  const password = document.getElementById('edit-password')?.value        || '';
+  const nombre    = document.getElementById('edit-nombre')?.value.trim()   || '';
+  const apellido  = document.getElementById('edit-apellido')?.value.trim() || '';
+  const telefono  = document.getElementById('edit-telefono')?.value.trim() || '';
+  const correo    = document.getElementById('edit-correo')?.value.trim()   || '';
+  const zona      = document.getElementById('edit-zona')?.value.trim()     || '';
+  const password  = document.getElementById('edit-password')?.value        || '';
 
   const body = { nombre, apellido, telefono, correo, zona };
   if (password) body.password = password;
@@ -112,9 +72,11 @@ async function guardarPerfil() {
     });
 
     if (res.ok) {
+      // Actualizar nombre en sesión si cambió
       const updated = await res.json();
       const s = getSession();
       setSession({ ...s, nombre: updated.nombre, correo: updated.correo });
+
       cerrarModalEditar();
       cargarPerfil();
     } else {
@@ -141,6 +103,7 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
   });
 });
 
+// Cerrar sesión
 const btnCerrar = document.querySelector('.cuenta-cerrar-sesion');
 if (btnCerrar) {
   btnCerrar.addEventListener('click', function(e) {
@@ -151,3 +114,94 @@ if (btnCerrar) {
 }
 
 cargarPerfil();
+
+// ===== ESTADÍSTICAS =====
+async function cargarEstadisticas() {
+  const session = getSession();
+  if (!session) return;
+  const userId = session.idUsuario;
+
+  const COLORES = {
+    PENDIENTE: '#FF9800',
+    APROBADA:  '#4CAF50',
+    PAGADA:    '#134299',
+    RECHAZADA: '#F44336'
+  };
+
+  try {
+    // Objetos publicados
+    const objRes = await fetch(`${API}/api/objeto/arrendador/${userId}`);
+    if (objRes.ok) {
+      const objs = await objRes.json();
+      document.getElementById('stat-publicados').textContent = objs.length;
+    }
+  } catch(e) {}
+
+  try {
+    // Solicitudes como arrendatario
+    const res = await fetch(`${API}/api/solicitudes/arrendatario/${userId}`);
+    if (!res.ok) return;
+    const lista = await res.json();
+
+    const conteo = { PENDIENTE: 0, APROBADA: 0, PAGADA: 0, RECHAZADA: 0 };
+    let rentados = 0, gastado = 0;
+
+    lista.forEach(s => {
+      const estado = (s.estado || '').toUpperCase();
+      if (conteo[estado] !== undefined) conteo[estado]++;
+      if (estado === 'PAGADA') {
+        rentados++;
+        gastado += s.monto || 0;
+      }
+    });
+
+    document.getElementById('stat-rentados').textContent = rentados;
+    document.getElementById('stat-gastado').textContent  = '$' + Math.round(gastado);
+
+    // Gráfica de barras
+    const total = lista.length || 1;
+    const chart = document.getElementById('bar-chart');
+    if (chart) {
+      chart.innerHTML = Object.entries(conteo).map(([estado, n]) => `
+        <div class="bar-row">
+          <span class="bar-label">${estado.charAt(0) + estado.slice(1).toLowerCase()}</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${Math.max(2, (n/total)*100)}%;background:${COLORES[estado]};"></div>
+          </div>
+          <span class="bar-count">${n}</span>
+        </div>`).join('');
+    }
+  } catch(e) {}
+
+  try {
+    // Dinero ganado como arrendador
+    const res = await fetch(`${API}/api/solicitudes/arrendador/${userId}`);
+    if (res.ok) {
+      const lista = await res.json();
+      const ganado = lista
+        .filter(s => (s.estado || '').toUpperCase() === 'PAGADA')
+        .reduce((sum, s) => sum + (s.monto || 0), 0);
+      document.getElementById('stat-ganado').textContent = '$' + Math.round(ganado);
+    }
+  } catch(e) {}
+
+  try {
+    // Calificación promedio
+    const objRes = await fetch(`${API}/api/objeto/arrendador/${userId}`);
+    if (objRes.ok) {
+      const objs = await objRes.json();
+      let totalCalif = 0, count = 0;
+      for (const obj of objs.slice(0, 10)) {
+        const rRes = await fetch(`${API}/api/resenas/objeto/${obj.idObjeto}`);
+        if (rRes.ok) {
+          const resenas = await rRes.json();
+          resenas.forEach(r => { if (r.calificacion) { totalCalif += r.calificacion; count++; } });
+        }
+      }
+      const promedio = count > 0 ? (totalCalif / count).toFixed(1) : '—';
+      document.getElementById('stat-calificacion').textContent = promedio;
+    }
+  } catch(e) {}
+}
+
+cargarEstadisticas();
