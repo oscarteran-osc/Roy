@@ -80,7 +80,13 @@ public class RecuperarPasswordController {
             "– El equipo de ROY"
         );
 
-        mailSender.send(mensaje);
+        try {
+            mailSender.send(mensaje);
+            System.out.println("✅ Correo de recuperación enviado a: " + correo);
+        } catch (Exception emailEx) {
+            System.err.println("❌ Error al enviar correo: " + emailEx.getMessage());
+            emailEx.printStackTrace();
+        }
 
         return ResponseEntity.ok(Map.of("mensaje", "Si el correo está registrado, recibirás un enlace en breve."));
     }
