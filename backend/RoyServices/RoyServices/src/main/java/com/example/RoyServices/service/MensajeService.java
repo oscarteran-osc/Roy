@@ -17,6 +17,7 @@ public interface MensajeService {
     List<Mensaje> obtenerMensajesPorSolicitud(Integer idSolicitud);
 
     Mensaje marcarComoLeido(Integer idMensaje);
+    void marcarLeidosPorSolicitud(Integer idSolicitud, Integer idDestinatario);
 }
 
 
