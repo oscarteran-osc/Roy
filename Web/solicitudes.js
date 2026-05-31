@@ -154,3 +154,38 @@ async function cancelarSolicitud(idSolicitud, btn) {
 
 cargarSolicitudes();
 
+
+// ===== BOTÓN FLOTANTE DE CHATS =====
+(function() {
+  const fab = document.createElement('a');
+  fab.href = 'chats.html';
+  fab.title = 'Mis Chats';
+  fab.innerHTML = '💬';
+  fab.style.cssText = `
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #134299;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(19,66,153,.35);
+    z-index: 998;
+    transition: transform .2s, box-shadow .2s;
+  `;
+  fab.addEventListener('mouseenter', () => {
+    fab.style.transform = 'scale(1.1)';
+    fab.style.boxShadow = '0 6px 20px rgba(19,66,153,.5)';
+  });
+  fab.addEventListener('mouseleave', () => {
+    fab.style.transform = 'scale(1)';
+    fab.style.boxShadow = '0 4px 16px rgba(19,66,153,.35)';
+  });
+  document.body.appendChild(fab);
+})();

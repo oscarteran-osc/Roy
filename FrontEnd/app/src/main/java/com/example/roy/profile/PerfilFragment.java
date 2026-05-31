@@ -191,6 +191,7 @@ public class PerfilFragment extends Fragment {
                         promedio = ((Number) promedioObj).doubleValue();
                     }
                     chipReputacion.setText("⭐ " + String.format(java.util.Locale.US, "%.1f", promedio));
+                    if (tvStatCalif != null) tvStatCalif.setText(String.format(java.util.Locale.US, "%.1f", promedio));
                 }
             }
 
@@ -515,3 +516,4 @@ public class PerfilFragment extends Fragment {
         requireActivity().finish();
     }
 }
+
