@@ -67,7 +67,9 @@ async function agregarObjeto() {
     categoria:      cat,
     descripcion:    desc,
     estado:         'disponible',
-    imagenUrl:      urls[0] || urls[1] || urls[2] || null
+    imagenUrl:      urls[0] || null,
+    imagenUrl2:     urls[1] || null,
+    imagenUrl3:     urls[2] || null
   };
 
   try {
