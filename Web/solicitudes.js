@@ -19,12 +19,19 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
 
 const placeholder = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100&q=80';
 
-const estadoClass = { aceptada: 'aceptada', pendiente: 'pendiente', rechazada: 'rechazada', completada: 'aceptada' };
+const estadoClass = {
+  aceptada: 'aceptada', pendiente: 'pendiente', rechazada: 'rechazada',
+  completada: 'aceptada', pagada: 'aceptada'
+};
+function getEstadoClass(estado) {
+  return estadoClass[(estado || '').toLowerCase()] || '';
+}
 
 function renderSolicitudRentador(s) {
-  const btnAccion = s.estado === 'aceptada'
+  const estado = (s.estado || '').toLowerCase();
+  const btnAccion = estado === 'aceptada'
     ? `<a href="pagar.html?id=${s.idSolicitud}" class="btn-pagar">Pagar</a>`
-    : s.estado === 'pendiente'
+    : estado === 'pendiente'
     ? `<button class="btn-cancelar-sol" onclick="cancelarSolicitud(${s.idSolicitud}, this)">Cancelar</button>`
     : `<span>—</span>`;
 
@@ -53,7 +60,8 @@ function renderSolicitudRentador(s) {
 }
 
 function renderSolicitudOfertante(s) {
-  const btnAccion = s.estado === 'pendiente'
+  const estado = (s.estado || '').toLowerCase();
+  const btnAccion = estado === 'pendiente'
     ? `<button class="btn-pagar" onclick="accionSolicitud(${s.idSolicitud}, 'aprobar', this)">Aceptar</button>
        <button class="btn-cancelar-sol" style="margin-top:8px;" onclick="accionSolicitud(${s.idSolicitud}, 'rechazar', this)">Rechazar</button>`
     : `<span>—</span>`;
