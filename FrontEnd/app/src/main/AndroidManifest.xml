@@ -58,6 +58,12 @@
             android:name=".solicitudes.metododepago"
             android:exported="false" />
         <activity
+            android:name=".chat.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chat.ChatbotActivity"
+            android:exported="false" />
+        <activity
             android:name=".solicitudes.PayPalPaymentActivity"
             android:exported="true"
             android:launchMode="singleTop">

@@ -45,11 +45,11 @@ function renderSolicitudRentador(s) {
         <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[s.estado] || ''}">${s.estado}</span></p>
         ${s.monto ? `<p><strong>Monto:</strong> $${s.monto}</p>` : ''}
       </div>
-      <div class="sol-acciones">${btnAccion}</div>
+      <div class="sol-acciones">
+        ${btnAccion}
+        <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendador}&nombre=${encodeURIComponent(s.nombreArrendador || 'Arrendador')}" class="btn-chat-sol">💬 Chat</a>
+      </div>
     </div>`;
-}
-
-function renderSolicitudOfertante(s) {
   const btnAccion = s.estado === 'pendiente'
     ? `<button class="btn-pagar" onclick="accionSolicitud(${s.idSolicitud}, 'aprobar', this)">Aceptar</button>
        <button class="btn-cancelar-sol" style="margin-top:8px;" onclick="accionSolicitud(${s.idSolicitud}, 'rechazar', this)">Rechazar</button>`
@@ -72,7 +72,11 @@ function renderSolicitudOfertante(s) {
         <p><strong>Estado:</strong> <span class="sol-estado ${estadoClass[s.estado] || ''}">${s.estado}</span></p>
         ${s.monto ? `<p><strong>Monto:</strong> $${s.monto}</p>` : ''}
       </div>
-      <div class="sol-acciones">${btnAccion}</div>
+      <div class="sol-acciones">
+        ${btnAccion}
+        <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendatario}&nombre=${encodeURIComponent(s.nombreArrendatario || 'Arrendatario')}" class="btn-chat-sol">💬 Chat</a>
+      </div>
+    </div>`;
     </div>`;
 }
 

@@ -170,6 +170,18 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
                 break;
         }
 
+        // ✅ Botón Chat - disponible en todas las solicitudes
+        if (holder.btnChat != null) {
+            holder.btnChat.setOnClickListener(v -> {
+                Intent intent = new Intent(context, com.example.roy.chat.ChatActivity.class);
+                intent.putExtra("idSolicitud", solicitud.getIdSolicitud());
+                intent.putExtra("otroUserId", solicitud.getIdUsArrendador());
+                intent.putExtra("nombreOtroUsuario", solicitud.getNombreArrendador() != null
+                        ? solicitud.getNombreArrendador() : "Arrendador");
+                context.startActivity(intent);
+            });
+        }
+
         return convertView;
     }
 
@@ -187,6 +199,7 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
         TextView tvEstado;
         TextView tvFechaRespuesta;
         Button btnAccion;
+        Button btnChat;
 
         ViewHolder(View view) {
             ivImagen = view.findViewById(R.id.imgObjeto);
@@ -196,6 +209,7 @@ public class SolicitudesArrendatarioAdapter extends BaseAdapter {
             tvEstado = view.findViewById(R.id.tvEstado);
             tvFechaRespuesta = view.findViewById(R.id.tvFechaRespuesta);
             btnAccion = view.findViewById(R.id.btnAccion);
+            btnChat = view.findViewById(R.id.btnChat);
         }
     }
 }

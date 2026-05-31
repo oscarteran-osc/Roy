@@ -160,6 +160,7 @@ public class SolicitudesArrendadorAdapter extends BaseAdapter {
         LinearLayout layoutBotones;
         Button btnAceptar;
         Button btnRechazar;
+        Button btnChat;
 
         ViewHolder(View view) {
             ivImagen = view.findViewById(R.id.imgObjeto);
@@ -170,6 +171,7 @@ public class SolicitudesArrendadorAdapter extends BaseAdapter {
             layoutBotones = view.findViewById(R.id.layoutBotones);
             btnAceptar = view.findViewById(R.id.btnAceptar);
             btnRechazar = view.findViewById(R.id.btnRechazar);
+            btnChat = view.findViewById(R.id.btnChat);
         }
     }
 }
