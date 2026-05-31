@@ -19,7 +19,7 @@ document.querySelectorAll('.cat-nav-btn').forEach(btn => {
 });
 
 function getSession() {
-  try { return JSON.parse(sessionStorage.getItem('royUser')); } catch { return null; }
+  try { return JSON.parse(localStorage.getItem('roy_session')); } catch { return null; }
 }
 
 async function init() {
@@ -100,3 +100,4 @@ function escapeHtml(text) {
 window.addEventListener('beforeunload', () => { if (intervalId) clearInterval(intervalId); });
 
 init();
+
