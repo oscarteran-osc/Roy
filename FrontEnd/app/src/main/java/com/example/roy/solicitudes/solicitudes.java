@@ -53,6 +53,18 @@ public class solicitudes extends Fragment {
         btnOfertante.setOnClickListener(v ->
                 handleTabClick(new SolicitudesArrendadorFragment(), "OFERTANTE_TAG", btnOfertante, btnRentador)
         );
+
+        // FAB de Mis Chats
+        com.google.android.material.floatingactionbutton.FloatingActionButton fabChats =
+            view.findViewById(R.id.fabChats);
+        if (fabChats != null) {
+            fabChats.setOnClickListener(v -> {
+                if (!isAdded() || getActivity() == null) return;
+                android.content.Intent intent = new android.content.Intent(
+                    getActivity(), com.example.roy.chat.ChatsActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     /**
