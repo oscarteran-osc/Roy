@@ -159,10 +159,11 @@ public class Home extends Fragment {
                 fab.setLayoutParams(params);
                 fab.setPadding(0, 0, 0, 0);
                 fab.setOnClickListener(v -> {
-                    if (!isAdded() || getActivity() == null) return;
-                    android.content.Intent intent = new android.content.Intent(
-                            getActivity(), com.example.roy.chat.ChatbotActivity.class);
-                    startActivity(intent);
+                    android.content.Context ctx = v.getContext();
+                    if (ctx != null) {
+                        ctx.startActivity(new android.content.Intent(ctx,
+                                com.example.roy.chat.ChatbotActivity.class));
+                    }
                 });
                 rootLayout.addView(fab);
             }
