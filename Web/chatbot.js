@@ -36,12 +36,12 @@ function crearChatbotUI() {
   win.id = 'chatbot-window';
   win.classList.add('oculto');
   win.innerHTML = `
-    <div id="chatbot-header">
+    <div id="chatbot-header"><span>🤖 ROYer</span>
       <div><span>🤖</span> ROY Assistant</div>
       <button id="chatbot-close" onclick="toggleChatbot()">✕</button>
     </div>
     <div id="chatbot-mensajes">
-      <div class="cb-msg bot">¡Hola! Soy el asistente de ROY. ¿En qué puedo ayudarte? 😊</div>
+      <div class="cb-msg bot">¡Hola! Soy ROYer, tu asistente de ROY. ¿En qué puedo ayudarte? 😊</div>
     </div>
     <div id="chatbot-input">
       <input type="text" id="chatbot-texto" placeholder="Escribe tu pregunta..." maxlength="300"/>
