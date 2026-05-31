@@ -191,9 +191,10 @@ public class Home extends Fragment {
         safeClick(serviceItem4, () -> loadCategoryFragment("Eventos"));
 
         if (menuIcon != null) {
-            menuIcon.setOnClickListener(v ->
-                    if (isAdded() && getContext() != null) Toast.makeText(getContext(), "Menú (pendiente)", Toast.LENGTH_SHORT).show()
-            );
+            menuIcon.setOnClickListener(v -> {
+                    if (isAdded() && getContext() != null)
+                        Toast.makeText(getContext(), "Menú (pendiente)", Toast.LENGTH_SHORT).show();
+                });
         }
 
         // Click en la tarjeta completa del destacado
