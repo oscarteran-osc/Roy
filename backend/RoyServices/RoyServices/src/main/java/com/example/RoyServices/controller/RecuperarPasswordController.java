@@ -70,7 +70,7 @@ public class RecuperarPasswordController {
         String link = baseUrl + "/recuperar-password.html?token=" + token;
 
         SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setFrom(correoOrigen);
+        mensaje.setFrom("AdvancedTechProgramming@outlook.com");
         mensaje.setTo(correo);
         mensaje.setSubject("ROY – Recupera tu contraseña");
         mensaje.setText(
