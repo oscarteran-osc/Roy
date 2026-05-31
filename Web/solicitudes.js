@@ -29,7 +29,7 @@ function getEstadoClass(estado) {
 
 function renderSolicitudRentador(s) {
   const estado = (s.estado || '').toLowerCase();
-  const btnAccion = estado === 'aceptada'
+  const btnAccion = (estado === 'aceptada' || estado === 'aprobada')
     ? `<a href="pagar.html?id=${s.idSolicitud}" class="btn-pagar">Pagar</a>`
     : estado === 'pendiente'
     ? `<button class="btn-cancelar-sol" onclick="cancelarSolicitud(${s.idSolicitud}, this)">Cancelar</button>`
