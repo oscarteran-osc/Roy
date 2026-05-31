@@ -3,7 +3,6 @@ package com.example.roy.chat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +20,8 @@ import okhttp3.*;
 
 public class ChatbotActivity extends AppCompatActivity {
 
-    private static final String API_URL = "https://api.anthropic.com/v1/messages";
+    // Usa el backend de ROY como intermediario (evita problemas de red y seguridad)
+    private static final String BACKEND_URL = "http://10.0.2.2:8080/api/chatbot/mensaje";
     private static final String SYSTEM_PROMPT =
         "Eres ROY Assistant, el asistente virtual de ROY (plataforma de renta de objetos). " +
         "Responde SIEMPRE en español, de forma amable y breve. Solo responde preguntas sobre ROY.\n\n" +
@@ -83,38 +83,32 @@ public class ChatbotActivity extends AppCompatActivity {
                 for (JSONObject msg : historial) messages.put(msg);
 
                 JSONObject body = new JSONObject();
-                body.put("model", "claude-sonnet-4-20250514");
-                body.put("max_tokens", 400);
                 body.put("system", SYSTEM_PROMPT);
                 body.put("messages", messages);
 
                 Request request = new Request.Builder()
-                        .url(API_URL)
+                        .url(BACKEND_URL)
                         .post(RequestBody.create(
                                 MediaType.parse("application/json"),
                                 body.toString()
                         ))
                         .addHeader("Content-Type", "application/json")
-                        .addHeader("anthropic-version", "2023-06-01")
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {
                     String responseBody = response.body() != null ? response.body().string() : "";
                     JSONObject json = new JSONObject(responseBody);
-                    String respuesta = json.getJSONArray("content")
-                            .getJSONObject(0)
-                            .getString("text");
+                    String respuesta = json.getString("respuesta");
 
                     JSONObject assistantMsg = new JSONObject();
                     assistantMsg.put("role", "assistant");
                     assistantMsg.put("content", respuesta);
                     historial.add(assistantMsg);
 
-                    // Limitar historial
+                    // Limitar historial a últimos 10 mensajes
                     if (historial.size() > 10) historial.subList(0, historial.size() - 10).clear();
 
                     runOnUiThread(() -> {
-                        // Quitar "Escribiendo..."
                         String actual = tvMensajes.getText().toString();
                         int idx = actual.lastIndexOf("🤖 Escribiendo...");
                         if (idx >= 0) {

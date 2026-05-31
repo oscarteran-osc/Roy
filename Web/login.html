@@ -33,6 +33,10 @@
         <span onclick="togglePassword('contra', this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:18px;">👁️</span>
       </div>
 
+      <p style="text-align:right;margin:-8px 0 12px;">
+        <a href="#" onclick="abrirModalRecuperar()" style="font-size:13px;color:#3b6ef5;text-decoration:none;">¿Olvidaste tu contraseña?</a>
+      </p>
+
       <button class="btn-form" id="btn-login" onclick="iniciarSesion()">Iniciar Sesión</button>
       <p class="auth-link">¿Nuevo en ROY? <a href="registro.html">Regístrate</a></p>
     </div>
@@ -40,6 +44,20 @@
     <div class="auth-deco auth-deco-left">📦</div>
     <div class="auth-deco auth-deco-right">🌿</div>
   </div>
+
+  <!-- Modal recuperar contraseña -->
+  <div id="modal-recuperar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;padding:32px;max-width:400px;width:90%;position:relative;">
+      <button onclick="cerrarModalRecuperar()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#888;">✕</button>
+      <h3 style="margin:0 0 8px;font-family:Poppins,sans-serif;color:#1a1a2e;">Recuperar contraseña</h3>
+      <p style="margin:0 0 20px;font-size:14px;color:#666;font-family:Poppins,sans-serif;">Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
+      <div id="recuperar-error" style="display:none;background:#fff0f0;color:#c0392b;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;font-family:Poppins,sans-serif;"></div>
+      <div id="recuperar-exito" style="display:none;background:#f0fff4;color:#27ae60;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;font-family:Poppins,sans-serif;"></div>
+      <input type="email" id="correo-recuperar" placeholder="Correo electrónico" style="width:100%;padding:12px 16px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:Poppins,sans-serif;box-sizing:border-box;margin-bottom:14px;outline:none;"/>
+      <button id="btn-recuperar" onclick="enviarRecuperacion()" style="width:100%;padding:13px;background:#3b6ef5;color:#fff;border:none;border-radius:10px;font-size:15px;font-family:Poppins,sans-serif;font-weight:600;cursor:pointer;">Enviar enlace</button>
+    </div>
+  </div>
+
   <script src="api.js"></script>
   <script src="login.js"></script>
 </body>
@@ -59,5 +77,5 @@
       </div>
       <div class="footer-links">
         <a href="#" class="footer-link">Términos y condiciones</a>
-      </footer> 
+      </footer>
 </html>

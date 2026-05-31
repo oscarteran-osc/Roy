@@ -50,6 +50,9 @@ function renderSolicitudRentador(s) {
         <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendador}&nombre=${encodeURIComponent(s.nombreArrendador || 'Arrendador')}" class="btn-chat-sol">💬 Chat</a>
       </div>
     </div>`;
+}
+
+function renderSolicitudOfertante(s) {
   const btnAccion = s.estado === 'pendiente'
     ? `<button class="btn-pagar" onclick="accionSolicitud(${s.idSolicitud}, 'aprobar', this)">Aceptar</button>
        <button class="btn-cancelar-sol" style="margin-top:8px;" onclick="accionSolicitud(${s.idSolicitud}, 'rechazar', this)">Rechazar</button>`
@@ -77,7 +80,6 @@ function renderSolicitudRentador(s) {
         <a href="chat.html?idSolicitud=${s.idSolicitud}&otroUsuario=${s.idUsArrendatario}&nombre=${encodeURIComponent(s.nombreArrendatario || 'Arrendatario')}" class="btn-chat-sol">💬 Chat</a>
       </div>
     </div>`;
-    </div>`;
 }
 
 async function cargarSolicitudes() {
@@ -102,7 +104,7 @@ async function cargarSolicitudes() {
 
     panelO.innerHTML = ofertante.length
       ? ofertante.map(renderSolicitudOfertante).join('')
-      : '<p style="padding:20px;color:#888;">No tienes solicitudes como ofertante.</p>';
+      : '<p style="padding:20px;color:#888;">No tienes solicitudes como ofetante.</p>';
 
   } catch (e) {
     console.warn('No se pudieron cargar las solicitudes.');
@@ -126,8 +128,7 @@ async function accionSolicitud(idSolicitud, accion, btn) {
 }
 
 async function cancelarSolicitud(idSolicitud, btn) {
-  if (!confirm('¿Deseas cancelar esta solicitud?')) return;
-  btn.disabled = true;
+  if (!confirm('¿Deseas cancelar esta solicitud?')) return;\n  btn.disabled = true;
   try {
     const res = await fetch(`${API}/api/solicitudes/${idSolicitud}`, { method: 'DELETE' });
     if (res.ok) {
