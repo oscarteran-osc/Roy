@@ -91,8 +91,8 @@ public class ChatbotActivity extends AppCompatActivity {
                 Request request = new Request.Builder()
                         .url(API_URL)
                         .post(RequestBody.create(
-                                body.toString(),
-                                MediaType.parse("application/json")
+                                MediaType.parse("application/json"),
+                                body.toString()
                         ))
                         .addHeader("Content-Type", "application/json")
                         .addHeader("anthropic-version", "2023-06-01")
