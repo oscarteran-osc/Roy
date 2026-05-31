@@ -93,8 +93,8 @@ public class ChatsActivity extends AppCompatActivity {
                 item.setOnClickListener(v -> {
                     Intent intent = new Intent(ChatsActivity.this, ChatActivity.class);
                     intent.putExtra("idSolicitud", s.getIdSolicitud());
-                    intent.putExtra("otroUsuario", finalOtroUsuario);
-                    intent.putExtra("nombreOtro", finalOtroNombre);
+                    intent.putExtra("otroUserId", finalOtroUsuario);
+                    intent.putExtra("nombreOtroUsuario", finalOtroNombre);
                     startActivity(intent);
                 });
 
