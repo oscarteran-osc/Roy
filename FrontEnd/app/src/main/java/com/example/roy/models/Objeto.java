@@ -22,6 +22,8 @@ public class Objeto {
     private String categoria;
     private String descripcion;
     private String imagenUrl;
+    private String imagenUrl2;
+    private String imagenUrl3;
     private String zona;
     private List<String> imagenes;
 
