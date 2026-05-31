@@ -141,7 +141,7 @@ public class Home extends Fragment {
             android.widget.FrameLayout rootLayout =
                     getActivity().findViewById(android.R.id.content);
             if (rootLayout != null && rootLayout.findViewWithTag("fab_chatbot_added") == null) {
-                android.widget.Button fab = new android.widget.Button(requireContext());
+                android.widget.Button fab = new android.widget.Button(getActivity());
                 fab.setTag("fab_chatbot_added");
                 fab.setText("🤖");
                 fab.setTextSize(22);
@@ -159,8 +159,9 @@ public class Home extends Fragment {
                 fab.setLayoutParams(params);
                 fab.setPadding(0, 0, 0, 0);
                 fab.setOnClickListener(v -> {
+                    if (!isAdded() || getActivity() == null) return;
                     android.content.Intent intent = new android.content.Intent(
-                            requireContext(), com.example.roy.chat.ChatbotActivity.class);
+                            getActivity(), com.example.roy.chat.ChatbotActivity.class);
                     startActivity(intent);
                 });
                 rootLayout.addView(fab);
@@ -191,7 +192,7 @@ public class Home extends Fragment {
 
         if (menuIcon != null) {
             menuIcon.setOnClickListener(v ->
-                    Toast.makeText(requireContext(), "Menú (pendiente)", Toast.LENGTH_SHORT).show()
+                    if (isAdded() && getContext() != null) Toast.makeText(getContext(), "Menú (pendiente)", Toast.LENGTH_SHORT).show()
             );
         }
 
@@ -279,7 +280,8 @@ public class Home extends Fragment {
     }
 
     private void openObjetoActivity(int objetoId) {
-        Intent intent = new Intent(requireContext(), com.example.roy.home.Objetoo.class);
+        if (!isAdded() || getActivity() == null) return;
+        Intent intent = new Intent(getActivity(), com.example.roy.home.Objetoo.class);
         intent.putExtra("objetoId", objetoId);
         startActivity(intent);
     }
@@ -458,14 +460,15 @@ public class Home extends Fragment {
                 setEmptyState(true);
 
                 Log.e(TAG, "recomendados failure: " + t.getMessage(), t);
-                Toast.makeText(requireContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private String getZonaUsuario() {
         try {
-            SharedPreferences prefs = requireContext().getSharedPreferences("RoyPrefs", 0);
+            if (getContext() == null) return null;
+            SharedPreferences prefs = getContext().getSharedPreferences("RoyPrefs", 0);
             return prefs.getString("zona", null);
         } catch (Exception e) {
             return null;
