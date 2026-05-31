@@ -39,5 +39,11 @@ public class Objeto {
     @Column(name = "imagen_url", columnDefinition = "MEDIUMTEXT")
     private String imagenUrl;
 
+    @Column(name = "imagen_url2", columnDefinition = "MEDIUMTEXT")
+    private String imagenUrl2;
+
+    @Column(name = "imagen_url3", columnDefinition = "MEDIUMTEXT")
+    private String imagenUrl3;
+
     @Column(name = "zona")
     private String zona;}
