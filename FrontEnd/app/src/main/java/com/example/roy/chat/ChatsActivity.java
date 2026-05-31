@@ -145,7 +145,7 @@ public class ChatsActivity extends AppCompatActivity {
 
                             for (Mensaje m : mensajes) {
                                 // Contar no leídos dirigidos a mí
-                                if (m.getIdDestinatario() == userId && !m.isLeido()) {
+                                if (m.getIdDestinatario() != null && m.getIdDestinatario() == userId && !Boolean.TRUE.equals(m.getLeido())) {
                                     noLeidos++;
                                 }
                                 // Fecha del último mensaje
