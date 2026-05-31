@@ -84,12 +84,10 @@ async function enviarChatbot() {
   const typing = agregarMensajeChatbot('Escribiendo...', 'bot typing');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(`${API}/api/chatbot/mensaje`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
         system: SYSTEM_PROMPT,
         messages: chatbotHistorial
       })
@@ -103,7 +101,7 @@ async function enviarChatbot() {
     }
 
     const data = await res.json();
-    const respuesta = data.content?.[0]?.text || 'No pude generar una respuesta.';
+    const respuesta = data.respuesta || 'No pude generar una respuesta.';
     chatbotHistorial.push({ role: 'assistant', content: respuesta });
     agregarMensajeChatbot(respuesta, 'bot');
 
