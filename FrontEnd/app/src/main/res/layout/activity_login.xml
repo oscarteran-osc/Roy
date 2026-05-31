@@ -27,6 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@drawable/royazul"/>
     </FrameLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +43,6 @@
         android:layout_marginTop="35dp"
         android:layout_marginHorizontal="25dp"
         android:hint="Correo">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginmail"
             android:layout_width="match_parent"
@@ -59,7 +59,6 @@
         android:hint="Contraseña"
         app:passwordToggleEnabled="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/logincontra"
             android:layout_width="match_parent"
@@ -68,11 +67,25 @@
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Link de recuperar contraseña -->
+    <TextView
+        android:id="@+id/tvOlvideContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="8dp"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="#0349A5"
+        android:textSize="13sp"
+        android:fontFamily="@font/poppins_light"
+        android:clickable="true"
+        android:focusable="true"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnlogin"
         android:layout_width="287dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:background="@drawable/btnborde"
@@ -94,9 +107,10 @@
         android:id="@+id/backregister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:text="@string/textregister"
         android:padding="8dp"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>
