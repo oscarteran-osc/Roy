@@ -54,6 +54,11 @@ public class PerfilFragment extends Fragment {
     private RecyclerView rvHistorial;
     private TextView tvSinHistorial;
 
+    // Estadísticas
+    private TextView tvStatPublicados, tvStatRentados, tvStatCalif, tvStatGanado, tvStatGastado;
+    private TextView tvBarPendiente, tvBarAprobada, tvBarPagada, tvBarRechazada;
+    private View barPendiente, barAprobada, barPagada, barRechazada;
+
     // API
     private ApiService apiService;
     private Button btnLogout;
@@ -107,6 +112,21 @@ public class PerfilFragment extends Fragment {
         btnEditarPerfil = view.findViewById(R.id.btnEditarPerfil);
         rvHistorial = view.findViewById(R.id.rvHistorial);
         tvSinHistorial = view.findViewById(R.id.tvSinHistorial);
+
+        // Estadísticas
+        tvStatPublicados = view.findViewById(R.id.tvStatPublicados);
+        tvStatRentados   = view.findViewById(R.id.tvStatRentados);
+        tvStatCalif      = view.findViewById(R.id.tvStatCalif);
+        tvStatGanado     = view.findViewById(R.id.tvStatGanado);
+        tvStatGastado    = view.findViewById(R.id.tvStatGastado);
+        tvBarPendiente   = view.findViewById(R.id.tvBarPendiente);
+        tvBarAprobada    = view.findViewById(R.id.tvBarAprobada);
+        tvBarPagada      = view.findViewById(R.id.tvBarPagada);
+        tvBarRechazada   = view.findViewById(R.id.tvBarRechazada);
+        barPendiente     = view.findViewById(R.id.barPendiente);
+        barAprobada      = view.findViewById(R.id.barAprobada);
+        barPagada        = view.findViewById(R.id.barPagada);
+        barRechazada     = view.findViewById(R.id.barRechazada);
     }
 
     private boolean obtenerDatosSesion() {
@@ -242,6 +262,7 @@ public class PerfilFragment extends Fragment {
 
         // ✅ Cargar objetos desde el API
         cargarHistorialObjetos();
+        cargarEstadisticas();
     }
 
     private void cargarHistorialObjetos() {
@@ -362,6 +383,90 @@ public class PerfilFragment extends Fragment {
             return valorPorDefecto;
         }
         return texto.trim();
+    }
+
+    private void cargarEstadisticas() {
+        if (!isAdded() || userId == -1) return;
+
+        // Cargar objetos publicados
+        apiService.getObjetosPorUsuario(userId).enqueue(new Callback<List<Objeto>>() {
+            @Override
+            public void onResponse(Call<List<Objeto>> call, Response<List<Objeto>> response) {
+                if (!isAdded()) return;
+                int total = (response.isSuccessful() && response.body() != null) ? response.body().size() : 0;
+                if (tvStatPublicados != null) tvStatPublicados.setText(String.valueOf(total));
+            }
+            @Override public void onFailure(Call<List<Objeto>> call, Throwable t) {}
+        });
+
+        // Cargar solicitudes como arrendatario (lo que ha rentado)
+        apiService.getSolicitudesArrendatario(userId).enqueue(new Callback<List<SolicitudRenta>>() {
+            @Override
+            public void onResponse(Call<List<SolicitudRenta>> call, Response<List<SolicitudRenta>> response) {
+                if (!isAdded() || response.body() == null) return;
+                List<SolicitudRenta> lista = response.body();
+
+                int rentados = 0, pendientes = 0, aprobadas = 0, pagadas = 0, rechazadas = 0;
+                double gastado = 0;
+
+                for (SolicitudRenta s : lista) {
+                    String estado = s.getEstado() != null ? s.getEstado().toUpperCase() : "";
+                    switch (estado) {
+                        case "PENDIENTE":  pendientes++; break;
+                        case "APROBADA":   aprobadas++;  break;
+                        case "PAGADA":
+                            pagadas++;
+                            rentados++;
+                            if (s.getMonto() != null) gastado += s.getMonto();
+                            break;
+                        case "RECHAZADA":  rechazadas++; break;
+                    }
+                }
+
+                int total = lista.size();
+                actualizarBarras(pendientes, aprobadas, pagadas, rechazadas, total);
+                if (tvStatRentados != null) tvStatRentados.setText(String.valueOf(rentados));
+                double g = gastado;
+                if (tvStatGastado != null) tvStatGastado.setText("$" + (int) g);
+            }
+            @Override public void onFailure(Call<List<SolicitudRenta>> call, Throwable t) {}
+        });
+
+        // Cargar dinero ganado (solicitudes como arrendador pagadas)
+        apiService.getSolicitudesArrendador(userId).enqueue(new Callback<List<SolicitudRenta>>() {
+            @Override
+            public void onResponse(Call<List<SolicitudRenta>> call,
+                                   Response<List<SolicitudRenta>> response) {
+                if (!isAdded() || response.body() == null) return;
+                double ganado = 0;
+                for (SolicitudRenta s : response.body()) {
+                    if ("PAGADA".equalsIgnoreCase(s.getEstado()) && s.getMonto() != null)
+                        ganado += s.getMonto();
+                }
+                double g = ganado;
+                if (tvStatGanado != null) tvStatGanado.setText("$" + (int) g);
+            }
+            @Override public void onFailure(Call<List<SolicitudRenta>> call, Throwable t) {}
+        });
+    }
+
+    private void actualizarBarras(int pendientes, int aprobadas, int pagadas, int rechazadas, int total) {
+        if (!isAdded()) return;
+        int maxWidth = (int) (220 * getResources().getDisplayMetrics().density);
+        int max = Math.max(total, 1);
+
+        setBarWidth(barPendiente, tvBarPendiente, pendientes, max, maxWidth);
+        setBarWidth(barAprobada,  tvBarAprobada,  aprobadas,  max, maxWidth);
+        setBarWidth(barPagada,    tvBarPagada,    pagadas,    max, maxWidth);
+        setBarWidth(barRechazada, tvBarRechazada, rechazadas, max, maxWidth);
+    }
+
+    private void setBarWidth(View bar, TextView label, int value, int max, int maxWidth) {
+        if (bar == null || label == null) return;
+        android.view.ViewGroup.LayoutParams params = bar.getLayoutParams();
+        params.width = value == 0 ? 4 : (int) ((float) value / max * maxWidth);
+        bar.setLayoutParams(params);
+        label.setText(String.valueOf(value));
     }
 
     public static class ItemHistorial {

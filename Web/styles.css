@@ -1941,3 +1941,99 @@ a.btn-pagar {
   justify-content: center;
 }
 #chatbot-input button:hover { background: #0d2e6b; }
+
+/* ===== ESTADÍSTICAS ===== */
+.stats-section {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.stats-titulo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #134299;
+  margin-bottom: 20px;
+}
+.stats-subtitulo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 14px;
+}
+.stats-cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.stat-card {
+  flex: 1;
+  min-width: 120px;
+  background: #f5f8ff;
+  border: 1px solid #e0e8ff;
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat-num {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #134299;
+}
+.stat-num.naranja { color: #F57C00; }
+.stat-num.amarillo { color: #FFB300; }
+.stat-num.verde { color: #2E7D32; }
+.stat-num.rojo { color: #C62828; }
+.stat-num.azul { color: #134299; }
+.stat-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+}
+.stats-chart-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 20px 24px;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bar-label {
+  width: 90px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #555;
+  flex-shrink: 0;
+}
+.bar-track {
+  flex: 1;
+  background: #f0f0f0;
+  border-radius: 8px;
+  height: 20px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.6s ease;
+  min-width: 4px;
+}
+.bar-count {
+  width: 28px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #555;
+  text-align: right;
+  flex-shrink: 0;
+}

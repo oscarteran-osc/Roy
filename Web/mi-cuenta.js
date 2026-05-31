@@ -114,3 +114,94 @@ if (btnCerrar) {
 }
 
 cargarPerfil();
+
+// ===== ESTADÍSTICAS =====
+async function cargarEstadisticas() {
+  const session = getSession();
+  if (!session) return;
+  const userId = session.idUsuario;
+
+  const COLORES = {
+    PENDIENTE: '#FF9800',
+    APROBADA:  '#4CAF50',
+    PAGADA:    '#134299',
+    RECHAZADA: '#F44336'
+  };
+
+  try {
+    // Objetos publicados
+    const objRes = await fetch(`${API}/api/objeto/arrendador/${userId}`);
+    if (objRes.ok) {
+      const objs = await objRes.json();
+      document.getElementById('stat-publicados').textContent = objs.length;
+    }
+  } catch(e) {}
+
+  try {
+    // Solicitudes como arrendatario
+    const res = await fetch(`${API}/api/solicitudes/arrendatario/${userId}`);
+    if (!res.ok) return;
+    const lista = await res.json();
+
+    const conteo = { PENDIENTE: 0, APROBADA: 0, PAGADA: 0, RECHAZADA: 0 };
+    let rentados = 0, gastado = 0;
+
+    lista.forEach(s => {
+      const estado = (s.estado || '').toUpperCase();
+      if (conteo[estado] !== undefined) conteo[estado]++;
+      if (estado === 'PAGADA') {
+        rentados++;
+        gastado += s.monto || 0;
+      }
+    });
+
+    document.getElementById('stat-rentados').textContent = rentados;
+    document.getElementById('stat-gastado').textContent  = '$' + Math.round(gastado);
+
+    // Gráfica de barras
+    const total = lista.length || 1;
+    const chart = document.getElementById('bar-chart');
+    if (chart) {
+      chart.innerHTML = Object.entries(conteo).map(([estado, n]) => `
+        <div class="bar-row">
+          <span class="bar-label">${estado.charAt(0) + estado.slice(1).toLowerCase()}</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${Math.max(2, (n/total)*100)}%;background:${COLORES[estado]};"></div>
+          </div>
+          <span class="bar-count">${n}</span>
+        </div>`).join('');
+    }
+  } catch(e) {}
+
+  try {
+    // Dinero ganado como arrendador
+    const res = await fetch(`${API}/api/solicitudes/arrendador/${userId}`);
+    if (res.ok) {
+      const lista = await res.json();
+      const ganado = lista
+        .filter(s => (s.estado || '').toUpperCase() === 'PAGADA')
+        .reduce((sum, s) => sum + (s.monto || 0), 0);
+      document.getElementById('stat-ganado').textContent = '$' + Math.round(ganado);
+    }
+  } catch(e) {}
+
+  try {
+    // Calificación promedio
+    const objRes = await fetch(`${API}/api/objeto/arrendador/${userId}`);
+    if (objRes.ok) {
+      const objs = await objRes.json();
+      let totalCalif = 0, count = 0;
+      for (const obj of objs.slice(0, 10)) {
+        const rRes = await fetch(`${API}/api/resenas/objeto/${obj.idObjeto}`);
+        if (rRes.ok) {
+          const resenas = await rRes.json();
+          resenas.forEach(r => { if (r.calificacion) { totalCalif += r.calificacion; count++; } });
+        }
+      }
+      const promedio = count > 0 ? (totalCalif / count).toFixed(1) : '—';
+      document.getElementById('stat-calificacion').textContent = promedio;
+    }
+  } catch(e) {}
+}
+
+cargarEstadisticas();
