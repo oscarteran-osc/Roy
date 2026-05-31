@@ -46,12 +46,13 @@
         </div>
         <p class="cuenta-sidebar-nombre" id="sidebar-nombre">Nombre de Usuario</p>
         <p class="cuenta-sidebar-zona" id="sidebar-zona">CDMX</p>
-        <div class="cuenta-sidebar-rating">⭐ 4.5</div>
+        <div class="cuenta-sidebar-rating" id="sidebar-calificacion">⭐ —</div>
 
         <hr class="cuenta-sidebar-divider"/>
 
         <button class="cuenta-sidebar-link active" onclick="cambiarPanel('info')">Información personal</button>
         <button class="cuenta-sidebar-link" onclick="cambiarPanel('historial')">Historial</button>
+        <a href="chats.html" class="cuenta-sidebar-link" style="display:block;text-align:left;text-decoration:none;">💬 Mis Chats</a>
 
         <a href="index.html" class="cuenta-cerrar-sesion">Cerrar sesión</a>
       </div>
@@ -83,27 +84,11 @@
         </div>
 
         <!-- PANEL HISTORIAL -->
-        <div id="panel-historial" style="display:none;">
-          <p class="cuenta-subtitulo">Historial</p>
-          <hr class="cuenta-hr"/>
-
-          <div class="historial-item">
-            <img src="https://images.unsplash.com/photo-1478827536114-da961b7f86d2?w=80&q=80" alt="Tienda"/>
-            <div>
-              <p class="historial-nombre">Tienda de campaña 4 - 5 personas</p>
-              <p class="historial-fechas">12/10/25 - 20/10/25</p>
-            </div>
+                <div id="panel-historial" style="display:none;">
+          <h3 class="cuenta-panel-titulo">Historial de rentas</h3>
+          <div id="historial-lista">
+            <p style="color:#888;padding:20px;">Cargando historial...</p>
           </div>
-
-          <div class="historial-item">
-            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=80&q=80" alt="Cámara"/>
-            <div>
-              <p class="historial-nombre">Cámara Canon EOS</p>
-              <p class="historial-fechas">01/09/25 - 05/09/25</p>
-            </div>
-          </div>
-
-        </div>
 
       </div>
     </div>
