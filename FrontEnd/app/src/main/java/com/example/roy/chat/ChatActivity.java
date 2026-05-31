@@ -94,6 +94,13 @@ public class ChatActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         if (!mensajes.isEmpty())
                             rvMensajes.scrollToPosition(mensajes.size() - 1);
+                        // Marcar mensajes como leídos
+                        if (miUserId != -1) {
+                            apiService.marcarLeidosPorSolicitud(idSolicitud, miUserId).enqueue(new Callback<Void>() {
+                                @Override public void onResponse(Call<Void> c, Response<Void> r) {}
+                                @Override public void onFailure(Call<Void> c, Throwable t) {}
+                            });
+                        }
                     }
                 }
                 @Override
