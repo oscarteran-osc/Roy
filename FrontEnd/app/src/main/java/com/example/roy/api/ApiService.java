@@ -206,4 +206,9 @@ public interface ApiService {
     Call<com.example.roy.models.Mensaje> enviarMensaje(
             @Path("idRemitente") int idRemitente,
             @Body com.example.roy.models.MensajeRequest request);
+
+    @retrofit2.http.PUT("api/mensajes/solicitud/{idSolicitud}/leidos/{idDestinatario}")
+    Call<Void> marcarLeidosPorSolicitud(
+            @retrofit2.http.Path("idSolicitud") int idSolicitud,
+            @retrofit2.http.Path("idDestinatario") int idDestinatario);
 }
