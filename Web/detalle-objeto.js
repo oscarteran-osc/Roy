@@ -43,11 +43,20 @@ function pintarDetalle(obj) {
   const descItems = (obj.descripcion || 'Sin descripción.').split('. ').filter(d => d.trim());
   document.getElementById('detalle-desc-list').innerHTML =
     descItems.map(d => `<li>${d.trim().replace(/\.$/, '')}.</li>`).join('');
-  const img = obj.imagenUrl || placeholder;
-    document.getElementById('img-principal').src = img;
+  const imgs = [
+    obj.imagenUrl  || null,
+    obj.imagenUrl2 || null,
+    obj.imagenUrl3 || null
+  ].filter(Boolean);
+  const img = imgs[0] || placeholder;
+  document.getElementById('img-principal').src = img;
   document.querySelectorAll('.thumb').forEach((t, i) => {
-    if (i === 0) { t.src = img; t.style.display = 'block'; }
-    else { t.style.display = 'none'; }
+    if (imgs[i]) {
+      t.src = imgs[i];
+      t.style.display = 'block';
+    } else {
+      t.style.display = 'none';
+    }
   });
   document.getElementById('breadcrumb-cat').textContent = catNombre;
   document.getElementById('breadcrumb-cat').href        = 'resultados.html?cat=' + (obj.categoria || '');
