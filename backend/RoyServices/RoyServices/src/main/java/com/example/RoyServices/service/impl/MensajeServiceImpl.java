@@ -50,6 +50,11 @@ public class MensajeServiceImpl implements MensajeService {
     }
 
     @Override
+    public void marcarLeidosPorSolicitud(Integer idSolicitud, Integer idDestinatario) {
+        mensajeRepository.marcarLeidosPorSolicitud(idSolicitud, idDestinatario);
+    }
+
+    @Override
     public Mensaje marcarComoLeido(Integer idMensaje) {
         Mensaje m = mensajeRepository.findById(idMensaje)
                 .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
