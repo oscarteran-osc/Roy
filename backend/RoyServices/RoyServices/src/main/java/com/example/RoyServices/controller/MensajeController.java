@@ -58,10 +58,19 @@ public class MensajeController {
         return ResponseEntity.ok(mensajeService.obtenerMensajesPorSolicitud(idSolicitud));
     }
 
-    // PATCH marcar leído
+    // PATCH marcar leído uno
     @PatchMapping("/{idMensaje}/leido")
     public ResponseEntity<Mensaje> marcarComoLeido(@PathVariable Integer idMensaje) {
         return ResponseEntity.ok(mensajeService.marcarComoLeido(idMensaje));
+    }
+
+    // PUT marcar todos como leídos en una solicitud para un destinatario
+    @PutMapping("/solicitud/{idSolicitud}/leidos/{idDestinatario}")
+    public ResponseEntity<Void> marcarLeidosPorSolicitud(
+            @PathVariable Integer idSolicitud,
+            @PathVariable Integer idDestinatario) {
+        mensajeService.marcarLeidosPorSolicitud(idSolicitud, idDestinatario);
+        return ResponseEntity.ok().build();
     }
 }
 
