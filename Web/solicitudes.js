@@ -128,7 +128,8 @@ async function accionSolicitud(idSolicitud, accion, btn) {
 }
 
 async function cancelarSolicitud(idSolicitud, btn) {
-  if (!confirm('¿Deseas cancelar esta solicitud?')) return;\n  btn.disabled = true;
+  if (!confirm('¿Deseas cancelar esta solicitud?')) return;
+  btn.disabled = true;
   try {
     const res = await fetch(`${API}/api/solicitudes/${idSolicitud}`, { method: 'DELETE' });
     if (res.ok) {
@@ -144,3 +145,4 @@ async function cancelarSolicitud(idSolicitud, btn) {
 }
 
 cargarSolicitudes();
+
