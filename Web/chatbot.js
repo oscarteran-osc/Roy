@@ -36,8 +36,8 @@ function crearChatbotUI() {
   win.id = 'chatbot-window';
   win.classList.add('oculto');
   win.innerHTML = `
-    <div id="chatbot-header"><span>🤖 ROYer</span>
-      <div><span>🤖</span> ROY Assistant</div>
+    <div id="chatbot-header">
+      <div><span>🤖</span> ROYer</div>
       <button id="chatbot-close" onclick="toggleChatbot()">✕</button>
     </div>
     <div id="chatbot-mensajes">
