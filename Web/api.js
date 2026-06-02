@@ -1,4 +1,4 @@
-const API = 'http://localhost:8080';
+const API = 'https://roy-production-b7a0.up.railway.app';
 
 function getSession() {
   const data = localStorage.getItem('roy_session');
