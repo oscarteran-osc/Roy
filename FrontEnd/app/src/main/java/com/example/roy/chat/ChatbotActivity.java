@@ -21,7 +21,7 @@ import okhttp3.*;
 public class ChatbotActivity extends AppCompatActivity {
 
     // Usa el backend de ROY como intermediario (evita problemas de red y seguridad)
-    private static final String BACKEND_URL = "http://10.0.2.2:8080/api/chatbot/mensaje";
+    private static final String BACKEND_URL = "https://roy-production-b7a0.up.railway.app/api/chatbot/mensaje";
     private static final String SYSTEM_PROMPT =
         "Eres ROY Assistant, el asistente virtual de ROY (plataforma de renta de objetos). " +
         "Responde SIEMPRE en español, de forma amable y breve. Solo responde preguntas sobre ROY.\n\n" +
