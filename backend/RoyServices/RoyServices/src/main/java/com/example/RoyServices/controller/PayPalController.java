@@ -28,8 +28,8 @@ public class PayPalController {
 
     private static final String SUCCESS_URL_ANDROID = "com.example.roy://paypalpay";
     private static final String CANCEL_URL_ANDROID = "com.example.roy://paypalcancel";
-    private static final String SUCCESS_URL_WEB = "http://127.0.0.1:5500/pagar.html";
-    private static final String CANCEL_URL_WEB = "http://127.0.0.1:5500/solicitudes.html";
+    private static final String SUCCESS_URL_WEB = "https://roy-seven.vercel.app/pagar.html";
+    private static final String CANCEL_URL_WEB = "https://roy-seven.vercel.app/solicitudes.html";
 
     @PostMapping("/crear-orden")
     public ResponseEntity<?> crearOrden(
